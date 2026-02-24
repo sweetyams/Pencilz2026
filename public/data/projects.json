@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "title": "Waschies ",
+    "category": "Shopify Migration",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+    "image": "http://localhost:3001/uploads/1771962342376-waschies-bis-besteller-hero-desktop.jpg",
+    "services": [
+      "Design",
+      "Development"
+    ],
+    "link": ""
+  },
+  {
+    "services": [
+      ""
+    ],
+    "title": "Humanrace",
+    "category": "Shopify Development",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+    "image": "http://localhost:3001/uploads/1771962368449-Humanrace.jpg",
+    "id": 1771962369695
+  },
+  {
+    "services": [
+      ""
+    ],
+    "title": "test",
+    "category": "test",
+    "description": "test",
+    "image": "http://localhost:3001/uploads/1771964701450-Humanrace.jpg",
+    "link": "",
+    "id": 1771964703424
+  }
+]

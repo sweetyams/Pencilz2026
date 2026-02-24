@@ -1,0 +1,22 @@
+{
+  "about": {
+    "title": "About",
+    "content": "About page content goes here"
+  },
+  "services": {
+    "title": "Services",
+    "content": "Services page content goes here"
+  },
+  "faq": {
+    "title": "FAQ",
+    "content": "FAQ page content goes here"
+  },
+  "terms": {
+    "title": "Terms & Conditions",
+    "content": "Terms & Conditions content goes here"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "content": "Privacy Policy content goes here"
+  }
+}
