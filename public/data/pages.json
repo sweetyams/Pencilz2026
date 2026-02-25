@@ -1,4 +1,42 @@
 {
+  "home": {
+    "heroImage": "",
+    "heroText": "",
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": "",
+    "heroButtons": [
+      {
+        "id": "1771983856299",
+        "text": "Shopify builds",
+        "subtext": "",
+        "icon": "",
+        "link": ""
+      },
+      {
+        "id": "1771983985148",
+        "text": "Marketing",
+        "subtext": "Starter packs available",
+        "icon": "",
+        "link": ""
+      },
+      {
+        "id": "1771984002946",
+        "text": "Design Systems",
+        "subtext": "Complete Design Systems",
+        "icon": "",
+        "link": ""
+      },
+      {
+        "id": "1771984003551",
+        "text": "Start-up Support",
+        "subtext": "Custom Apps, no vibe coding.",
+        "icon": "",
+        "link": ""
+      }
+    ]
+  },
   "about": {
     "title": "About",
     "content": "About page content goes here"

@@ -1,9 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useScroll } from 'framer-motion'
 import ProjectCard from '../components/ProjectCard'
+import StickyCard from '../components/StickyCard'
+import SEO from '../components/SEO'
+import Button from '../components/Button'
 
 const Home = () => {
   const [projects, setProjects] = useState([])
   const [settings, setSettings] = useState({ email: '', logo: '', companyName: '' })
+  const [homePage, setHomePage] = useState({ heroImage: '', heroText: 'Your start up accelerator' })
+  const containerRef = useRef(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  })
 
   useEffect(() => {
     fetch('http://localhost:3001/api/projects')
@@ -15,6 +26,11 @@ const Home = () => {
       .then(res => res.json())
       .then(data => setSettings(data))
       .catch(() => {})
+    
+    fetch('http://localhost:3001/api/pages/home')
+      .then(res => res.json())
+      .then(data => setHomePage(data))
+      .catch(() => {})
   }, [])
 
   const emailSubject = encodeURIComponent("Let's Create Something Amazing Together! 🚀")
@@ -23,13 +39,21 @@ const Home = () => {
   )
 
   return (
-    <div className="w-full">
+    <div className="w-full" style={{ maxWidth: '1600px', margin: '0 auto' }}>
+      <SEO
+        title={homePage.metaTitle || 'Pencilz - Your start up accelerator'}
+        description={homePage.metaDescription || 'Shopify builds, marketing, design, and start-up support services'}
+        keywords={homePage.metaKeywords || 'shopify, web design, marketing, startup, development'}
+        ogImage={homePage.ogImage || homePage.heroImage}
+        ogUrl={window.location.href}
+      />
+      
       {/* Hero Section */}
       <div style={{ padding: '20px' }}>
         <div 
           className="relative w-full overflow-hidden"
           style={{ 
-            height: '756px',
+            aspectRatio: window.innerWidth < 768 ? '4/5' : '2/1',
             borderRadius: '20px'
           }}
         >
@@ -41,96 +65,138 @@ const Home = () => {
               className="absolute w-full h-full object-cover"
               style={{ opacity: 0.9 }}
             />
-            <img 
-              src="https://www.figma.com/api/mcp/asset/26748e56-2819-4d62-aaff-c0eb66393394"
-              alt=""
-              className="absolute w-full h-full object-cover"
-            />
+            {homePage.heroImage && (
+              <img 
+                src={homePage.heroImage}
+                alt=""
+                className="absolute w-full h-full object-cover"
+              />
+            )}
           </div>
 
           {/* Hero Text */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center md:p-0 p-5">
             <h1 
-              className="text-white text-center font-semibold"
-              style={{ fontSize: '96px', lineHeight: 'normal' }}
+              className="text-white text-center font-semibold md:text-[96px] text-[50px]"
+              style={{ lineHeight: 'normal' }}
             >
-              Your start up accelerator
+              {homePage.heroText || 'Your start up accelerator'}
             </h1>
           </div>
 
-          {/* Service Pills */}
+          {/* Service Pills - Desktop Only */}
           <div 
-            className="absolute flex gap-4"
+            className="absolute md:flex hidden flex-row gap-4"
             style={{ 
               bottom: '24px',
-              left: '25px',
-              right: '25px',
-              flexWrap: 'wrap'
+              left: '24px',
+              right: '24px'
             }}
           >
-            <div 
-              className="flex items-center justify-between px-10 py-2.5"
-              style={{ 
-                backgroundColor: '#e7fe89',
-                borderRadius: '70px',
-                height: '72px',
-                minWidth: '334px'
-              }}
-            >
-              <p className="text-2xl text-black">Shopify builds</p>
-              <svg width="39" height="19" viewBox="0 0 39 19" fill="none">
-                <path d="M29.5 2L37 9.5L29.5 17" stroke="black" strokeWidth="2"/>
-                <path d="M2 9.5H37" stroke="black" strokeWidth="2"/>
-              </svg>
-            </div>
-
-            <div 
-              className="bg-white flex flex-col justify-center px-10 py-2.5"
-              style={{ 
-                borderRadius: '70px',
-                minWidth: '333px'
-              }}
-            >
-              <p className="text-2xl text-black">Marketing</p>
-              <p className="text-base text-black">Starter packs available</p>
-            </div>
-
-            <div 
-              className="bg-white flex flex-col justify-center px-10 py-2.5"
-              style={{ 
-                borderRadius: '70px',
-                minWidth: '334px'
-              }}
-            >
-              <p className="text-2xl text-black">Design</p>
-              <p className="text-base text-black">Design system refresh</p>
-            </div>
-
-            <div 
-              className="bg-white flex flex-col justify-center px-10 py-2.5"
-              style={{ 
-                borderRadius: '70px',
-                minWidth: '334px'
-              }}
-            >
-              <p className="text-2xl text-black">Start-up Support</p>
-              <p className="text-base text-black">Custom Apps, no vibe coding.</p>
-            </div>
+            {homePage.heroButtons && homePage.heroButtons.map((button) => (
+              button.subtext ? (
+                <div 
+                  key={button.id}
+                  className="bg-white flex flex-col justify-center px-10 py-2.5 flex-1 border border-black rounded-[70px] transition-all duration-300 hover:bg-[#e7fe89] hover:border-dashed cursor-pointer"
+                  style={{ minHeight: '72px' }}
+                  onClick={() => {
+                    if (button.link.startsWith('http')) {
+                      window.location.href = button.link
+                    } else {
+                      window.location.href = button.link
+                    }
+                  }}
+                >
+                  <p className="text-2xl text-black">{button.text}</p>
+                  <p className="text-base text-black">{button.subtext}</p>
+                </div>
+              ) : (
+                <Button 
+                  key={button.id}
+                  to={button.link.startsWith('http') ? undefined : button.link}
+                  href={button.link.startsWith('http') ? button.link : undefined}
+                  icon={button.icon}
+                  className="flex-1"
+                  style={{ height: '72px' }}
+                >
+                  {button.text}
+                </Button>
+              )
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Projects Section */}
-      <div style={{ padding: '20px' }}>
-        {projects.map(project => (
-          <ProjectCard key={project.id} project={project} />
+      {/* Service Pills - Mobile Only */}
+      <div className="md:hidden flex flex-col gap-4" style={{ padding: '20px', marginTop: '20px' }}>
+        {homePage.heroButtons && homePage.heroButtons.map((button) => (
+          button.subtext ? (
+            <div 
+              key={button.id}
+              className="bg-white flex flex-col justify-center px-10 py-2.5 border border-black rounded-[70px] transition-all duration-300 hover:bg-[#e7fe89] hover:border-dashed"
+              style={{ minHeight: '72px' }}
+              onClick={() => {
+                if (button.link.startsWith('http')) {
+                  window.location.href = button.link
+                } else {
+                  window.location.href = button.link
+                }
+              }}
+            >
+              <p className="text-2xl text-black">{button.text}</p>
+              <p className="text-base text-black">{button.subtext}</p>
+            </div>
+          ) : (
+            <Button 
+              key={button.id}
+              to={button.link.startsWith('http') ? undefined : button.link}
+              href={button.link.startsWith('http') ? button.link : undefined}
+              icon={button.icon}
+              style={{ height: '72px' }}
+            >
+              {button.text}
+            </Button>
+          )
         ))}
       </div>
+
+      {/* Projects Section - Sticky Stack */}
+      {projects.length > 0 && (
+        <div 
+          ref={containerRef}
+          style={{ 
+            position: 'relative',
+            marginTop: '48px',
+            paddingBottom: '30px'
+          }}
+        >
+          {projects.slice(0, 3).map((project, i) => (
+            <StickyCard
+              key={project.id}
+              project={project}
+              index={i}
+              scrollYProgress={scrollYProgress}
+              totalCards={3}
+            />
+          ))}
+        </div>
+      )}
+      
+      {/* Remaining Projects */}
+      {projects.length > 3 && (
+        <div style={{ padding: '0 20px' }}>
+          {projects.slice(3).map(project => (
+            <div key={project.id} style={{ marginBottom: '20px' }}>
+              <ProjectCard project={project} />
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Contact Section */}
       <div 
         className="w-full flex items-center justify-center"
-        style={{ padding: '200px 0' }}
+        style={{ padding: '48px 20px 200px 20px' }}
       >
         <div 
           className="flex flex-col items-center gap-6"
@@ -139,23 +205,15 @@ const Home = () => {
           <p className="text-2xl text-black text-center w-full">
             Start a project
           </p>
-          <a
+          <Button
             href={`mailto:${settings.email}?subject=${emailSubject}&body=${emailBody}`}
+            variant="primary"
+            className="w-full"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full flex items-center justify-between px-5 py-2.5 cursor-pointer hover:opacity-80 transition-opacity"
-            style={{ 
-              backgroundColor: '#e7fe89',
-              border: '1px dashed black',
-              borderRadius: '70px'
-            }}
           >
-            <p className="text-2xl text-black">{settings.email}</p>
-            <svg width="39" height="19" viewBox="0 0 39 19" fill="none">
-              <path d="M29.5 2L37 9.5L29.5 17" stroke="black" strokeWidth="2"/>
-              <path d="M2 9.5H37" stroke="black" strokeWidth="2"/>
-            </svg>
-          </a>
+            {settings.email}
+          </Button>
         </div>
       </div>
     </div>

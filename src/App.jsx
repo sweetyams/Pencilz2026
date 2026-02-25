@@ -8,6 +8,7 @@ import News from './pages/News'
 import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
 import FAQ from './pages/FAQ'
+import TestStack from './pages/TestStack'
 import CMSLogin from './cms/CMSLogin'
 import CMSDashboard from './cms/CMSDashboard'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -17,6 +18,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/test-stack" element={<TestStack />} />
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="services" element={<Services />} />

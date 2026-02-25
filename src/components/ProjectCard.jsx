@@ -33,6 +33,14 @@ const ProjectCard = ({ project }) => {
             filter: isOpen ? 'blur(8px)' : 'blur(0px)'
           }}
         />
+        {/* Bottom gradient for text readability */}
+        <div 
+          className="absolute inset-x-0 bottom-0 pointer-events-none"
+          style={{
+            height: '300px',
+            background: 'linear-gradient(to top, rgba(0, 0, 0, 0.15), transparent)'
+          }}
+        />
         {/* Blur overlay when open */}
         <div 
           className="absolute inset-0 transition-opacity duration-500"

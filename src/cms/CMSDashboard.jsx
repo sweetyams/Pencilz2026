@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import ProjectForm from './ProjectForm'
 import SettingsForm from './SettingsForm'
+import HomePageForm from './HomePageForm'
 import NewsForm from './NewsForm'
 import PageEditor from './PageEditor'
 
@@ -149,6 +150,12 @@ const CMSDashboard = () => {
             className={`pb-2 px-4 ${activeTab === 'pages' ? 'border-b-2 border-black font-bold' : ''}`}
           >
             Pages
+          </button>
+          <button
+            onClick={() => setActiveTab('home')}
+            className={`pb-2 px-4 ${activeTab === 'home' ? 'border-b-2 border-black font-bold' : ''}`}
+          >
+            Home Page
           </button>
           <button
             onClick={() => setActiveTab('settings')}
@@ -315,6 +322,9 @@ const CMSDashboard = () => {
             </div>
           </>
         )}
+
+        {/* Home Page Tab */}
+        {activeTab === 'home' && <HomePageForm />}
 
         {/* Settings Tab */}
         {activeTab === 'settings' && <SettingsForm />}

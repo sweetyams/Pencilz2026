@@ -113,6 +113,62 @@ const ProjectForm = ({ project, onSave, onCancel }) => {
               placeholder="https://example.com"
             />
           </div>
+
+          {/* SEO Fields */}
+          <div className="border-t pt-4 mt-4">
+            <h4 className="font-semibold mb-3">SEO Settings</h4>
+            
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">Meta Title</label>
+              <input
+                {...register('metaTitle')}
+                className="w-full px-3 py-2 border rounded-lg"
+                placeholder="Project title for search engines"
+                maxLength="60"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Recommended: 50-60 characters. This appears in search results and browser tabs.
+              </p>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">Meta Description</label>
+              <textarea
+                {...register('metaDescription')}
+                className="w-full px-3 py-2 border rounded-lg"
+                rows="2"
+                placeholder="Brief description of the project"
+                maxLength="160"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Recommended: 150-160 characters. This appears in search results below the title.
+              </p>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1">Keywords</label>
+              <input
+                {...register('metaKeywords')}
+                className="w-full px-3 py-2 border rounded-lg"
+                placeholder="web design, branding, shopify"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Comma-separated keywords relevant to this project.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Social Share Image (OG Image)</label>
+              <input
+                {...register('ogImage')}
+                className="w-full px-3 py-2 border rounded-lg"
+                placeholder="Leave blank to use project image"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Recommended: 1200x630px. Used when sharing on social media. Defaults to project image if empty.
+              </p>
+            </div>
+          </div>
         </div>
         <div className="flex gap-2 mt-6">
           <button

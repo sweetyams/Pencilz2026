@@ -9,9 +9,17 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const app = express()
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
-app.use(cors())
+// CORS configuration
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.FRONTEND_URL || true
+    : 'http://localhost:5173',
+  credentials: true
+}
+
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')))
 
@@ -194,6 +202,15 @@ app.get('/api/pages', (req, res) => {
   }
 })
 
+app.get('/api/pages/:pageName', (req, res) => {
+  try {
+    const pages = JSON.parse(fs.readFileSync(pagesFile, 'utf8'))
+    res.json(pages[req.params.pageName] || {})
+  } catch (error) {
+    res.json({})
+  }
+})
+
 app.put('/api/pages/:pageName', (req, res) => {
   try {
     const pages = JSON.parse(fs.readFileSync(pagesFile, 'utf8'))
@@ -208,3 +225,12 @@ app.put('/api/pages/:pageName', (req, res) => {
 app.listen(PORT, () => {
   console.log(`API server running on http://localhost:${PORT}`)
 })
+
+// Serve React app in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'dist')))
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+  })
+}

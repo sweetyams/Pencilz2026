@@ -1,6 +1,21 @@
 {
   "logo": "http://localhost:3001/uploads/1771964880028-logo.svg",
+  "hamburgerIcon": "http://localhost:3001/uploads/1771969143564-hamburger.svg",
   "email": "hello@pencilz.works",
   "companyName": "Pencilz + Friends",
-  "location": "Montreal"
+  "location": "Montreal",
+  "buttonIcon": "http://localhost:3001/uploads/1771983568485-button.svg",
+  "services": [
+    { "id": "1", "name": "Shopify builds", "link": "/services" },
+    { "id": "2", "name": "Marketing", "link": "/services" },
+    { "id": "3", "name": "Design", "link": "/services" },
+    { "id": "4", "name": "Start-up Support", "link": "/services" }
+  ],
+  "servicesDescription": "We help startups and established businesses build, grow, and scale with custom Shopify solutions, strategic marketing, thoughtful design, and comprehensive startup support.",
+  "aboutItems": [
+    { "id": "1", "name": "Our Story", "link": "/about" },
+    { "id": "2", "name": "Team", "link": "/about" },
+    { "id": "3", "name": "Careers", "link": "/about" }
+  ],
+  "aboutDescription": "Pencilz + Friends is a creative agency based in Montreal, dedicated to helping businesses thrive through innovative digital solutions and strategic partnerships."
 }
