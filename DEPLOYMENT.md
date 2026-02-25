@@ -20,28 +20,61 @@ The project is already linked to Vercel. If you need to re-link:
 vercel link
 ```
 
-### 2. Enable Upstash Redis (Database)
+### 2. Choose Your Database (Pick One)
 
-For persistent data storage on Vercel:
+The database adapter supports multiple backends. Choose the one that fits your needs:
 
-1. Go to your project on [vercel.com](https://vercel.com)
-2. Navigate to **Integrations** tab
+#### Option A: Upstash Redis via Vercel (Recommended)
+
+1. Go to [vercel.com/dashboard](https://vercel.com/dashboard)
+2. Select your project → **Integrations**
 3. Search for **Upstash Redis**
-4. Click **Add Integration**
-5. Follow the setup wizard
-6. Select your project
+4. Click **Add Integration** and follow setup
 
-Vercel will automatically add the required environment variables:
-- `KV_REST_API_URL` (or `UPSTASH_REDIS_REST_URL`)
-- `KV_REST_API_TOKEN` (or `UPSTASH_REDIS_REST_TOKEN`)
+Environment variables added automatically:
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
 
-### 3. Install Redis Package
+#### Option B: Vercel KV (Legacy)
 
-```bash
-npm install @vercel/kv
+1. Go to your project → **Storage** tab
+2. Click **Create Database** → Select **KV**
+3. Name it and create
+
+Environment variables added automatically:
+- `KV_REST_API_URL`
+- `KV_REST_API_TOKEN`
+
+#### Option C: Custom Redis Server
+
+Add these environment variables in Vercel:
+
+```
+REDIS_URL=redis://your-redis-server:6379
 ```
 
-Note: @vercel/kv works with Upstash Redis integration.
+Works with:
+- Redis Labs
+- AWS ElastiCache
+- DigitalOcean Redis
+- Any Redis-compatible server
+
+#### Option D: No Database (Development Only)
+
+Skip database setup - uses JSON files (data won't persist on Vercel)
+
+### 3. Install Required Packages
+
+```bash
+# For Vercel KV / Upstash (Options A & B)
+npm install @vercel/kv
+
+# For custom Redis (Option C)
+npm install redis
+
+# Or install both
+npm install @vercel/kv redis
+```
 
 ### 4. Deploy
 
@@ -57,22 +90,31 @@ npm run deploy
 - Run `npm run dev` for frontend
 
 ### Production (Vercel)
-- Uses Vercel KV (Redis) for persistent storage
-- Serverless functions handle API requests
-- Static files served from CDN
+The database adapter automatically detects and uses (in order of priority):
+
+1. **Upstash Redis** (via Vercel Integration) - if `UPSTASH_REDIS_REST_URL` exists
+2. **Vercel KV** (legacy) - if `KV_REST_API_URL` exists
+3. **Custom Redis** - if `REDIS_URL` exists
+4. **File System** (fallback) - not recommended for production
 
 ## Environment Variables
 
 ### Local (.env.local)
 ```
-# Automatically created by Vercel CLI
-KV_REST_API_URL=your_kv_url
+# Option A: Upstash Redis
+UPSTASH_REDIS_REST_URL=your_url
+UPSTASH_REDIS_REST_TOKEN=your_token
+
+# Option B: Vercel KV
+KV_REST_API_URL=your_url
 KV_REST_API_TOKEN=your_token
-KV_REST_API_READ_ONLY_TOKEN=your_read_token
+
+# Option C: Custom Redis
+REDIS_URL=redis://your-server:6379
 ```
 
 ### Vercel Dashboard
-All environment variables are automatically configured when you create the KV database.
+Environment variables are automatically configured when you add the integration.
 
 ## File Uploads
 
