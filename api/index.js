@@ -203,7 +203,7 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 })
 
 // Debug endpoint to check database status
-app.get('/api/debug/db-status', async (req, res) => {
+app.get('/api/db-status', async (req, res) => {
   await db.ensureInitialized()
   res.json({
     storageType: db.storageType,
