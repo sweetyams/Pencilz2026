@@ -21,7 +21,7 @@ const Navigation = () => {
   return (
     <>
       <nav className="bg-white shadow-sm sticky top-0 z-50 w-full">
-        <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '16px 20px' }}>
+        <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 20px' }}>
           <div className="flex items-center justify-between">
             {/* Left side - Hamburger on mobile, Desktop menu on desktop */}
             <div className="flex items-center">
