@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import LazyImage from '../components/LazyImage'
 import { API_URL } from '../config'
 
 const News = () => {
@@ -18,13 +19,14 @@ const News = () => {
         {news.length === 0 ? (
           <p className="text-gray-500">No news articles yet.</p>
         ) : (
-          news.map(item => (
+          news.map((item, index) => (
             <article key={item.id} className="border-b pb-8">
               {item.image && (
-                <img 
+                <LazyImage 
                   src={item.image} 
                   alt={item.title}
                   className="w-full h-64 object-cover rounded-lg mb-4"
+                  priority={index === 0}
                 />
               )}
               <div className="flex gap-2 text-sm text-gray-500 mb-2">

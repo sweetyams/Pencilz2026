@@ -4,6 +4,7 @@ import ProjectCard from '../components/ProjectCard'
 import StickyCard from '../components/StickyCard'
 import SEO from '../components/SEO'
 import Button from '../components/Button'
+import LazyImage from '../components/LazyImage'
 import { API_URL } from '../config'
 
 const Home = () => {
@@ -60,17 +61,19 @@ const Home = () => {
         >
           {/* Background Images */}
           <div className="absolute inset-0">
-            <img 
+            <LazyImage 
               src="https://www.figma.com/api/mcp/asset/d467fd6e-154f-456c-b346-3780beb81779"
               alt=""
               className="absolute w-full h-full object-cover"
               style={{ opacity: 0.9 }}
+              priority={true}
             />
             {homePage.heroImage && (
-              <img 
+              <LazyImage 
                 src={homePage.heroImage}
-                alt=""
+                alt="Hero background"
                 className="absolute w-full h-full object-cover"
+                priority={true}
               />
             )}
           </div>

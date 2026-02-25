@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import LazyImage from './LazyImage'
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, priority = false }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleCardClick = () => {
@@ -25,13 +26,14 @@ const ProjectCard = ({ project }) => {
     >
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img 
+        <LazyImage 
           src={project.image} 
           alt={project.title}
           className="w-full h-full object-cover transition-all duration-500"
           style={{
             filter: isOpen ? 'blur(8px)' : 'blur(0px)'
           }}
+          priority={priority}
         />
         {/* Bottom gradient for text readability */}
         <div 

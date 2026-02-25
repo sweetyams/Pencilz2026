@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import LazyImage from './LazyImage'
 import { API_URL } from '../config'
 
 const Footer = () => {
@@ -19,11 +20,12 @@ const Footer = () => {
         <div className="mb-8 w-full">
           <Link to="/">
             {settings.logo ? (
-              <img 
+              <LazyImage 
                 src={settings.logo} 
                 alt="Pencilz" 
                 className="w-full h-auto"
                 style={{ display: 'block' }}
+                priority={false}
               />
             ) : (
               <h1 className="text-8xl font-black text-center">PENCILZ</h1>

@@ -25,7 +25,7 @@ const StickyCard = ({ project, index, scrollYProgress, totalCards }) => {
           margin: '0 auto'
         }}
       >
-        <ProjectCard project={project} />
+        <ProjectCard project={project} priority={index === 0} />
       </motion.div>
     </div>
   )

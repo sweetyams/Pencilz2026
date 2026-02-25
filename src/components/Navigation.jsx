@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import LazyImage from './LazyImage'
 import { API_URL } from '../config'
 
 const Navigation = () => {
@@ -31,7 +32,12 @@ const Navigation = () => {
                 aria-label="Toggle menu"
               >
                 {settings.hamburgerIcon ? (
-                  <img src={settings.hamburgerIcon} alt="Menu" className="w-6 h-6" />
+                  <LazyImage 
+                    src={settings.hamburgerIcon} 
+                    alt="Menu" 
+                    className="w-6 h-6"
+                    priority={true}
+                  />
                 ) : (
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <line x1="3" y1="6" x2="21" y2="6" />
@@ -74,11 +80,12 @@ const Navigation = () => {
               {/* Mobile Logo */}
               {settings.logo && (
                 <Link to="/">
-                  <img 
+                  <LazyImage 
                     src={settings.logo} 
                     alt="Pencilz" 
                     className="md:hidden h-5"
                     style={{ height: '20px', width: 'auto' }}
+                    priority={true}
                   />
                 </Link>
               )}
