@@ -51,11 +51,10 @@ const Home = () => {
       />
       
       {/* Hero Section */}
-      <div style={{ padding: '20px' }}>
+      <div className="p-5 md:p-[20px]">
         <div 
-          className="relative w-full overflow-hidden"
+          className="relative w-full overflow-hidden aspect-[4/5] md:aspect-[2/1]"
           style={{ 
-            aspectRatio: window.innerWidth < 768 ? '4/5' : '2/1',
             borderRadius: '20px'
           }}
         >
@@ -90,7 +89,7 @@ const Home = () => {
 
           {/* Service Pills - Desktop Only */}
           <div 
-            className="absolute md:flex hidden flex-row gap-4"
+            className="absolute lg:flex hidden flex-row gap-4"
             style={{ 
               bottom: '24px',
               left: '24px',
@@ -98,69 +97,51 @@ const Home = () => {
             }}
           >
             {homePage.heroButtons && homePage.heroButtons.map((button) => (
-              button.subtext ? (
-                <div 
-                  key={button.id}
-                  className="bg-white flex flex-col justify-center px-10 py-2.5 flex-1 border border-black rounded-[70px] transition-all duration-300 hover:bg-[#e7fe89] hover:border-dashed cursor-pointer"
-                  style={{ minHeight: '72px' }}
-                  onClick={() => {
-                    if (button.link.startsWith('http')) {
-                      window.location.href = button.link
-                    } else {
-                      window.location.href = button.link
-                    }
-                  }}
-                >
-                  <p className="text-2xl text-black">{button.text}</p>
-                  <p className="text-base text-black">{button.subtext}</p>
-                </div>
-              ) : (
-                <Button 
-                  key={button.id}
-                  to={button.link.startsWith('http') ? undefined : button.link}
-                  href={button.link.startsWith('http') ? button.link : undefined}
-                  icon={button.icon}
-                  className="flex-1"
-                  style={{ height: '72px' }}
-                >
-                  {button.text}
-                </Button>
-              )
+              <Button 
+                key={button.id}
+                to={button.link.startsWith('http') ? undefined : button.link}
+                href={button.link.startsWith('http') ? button.link : undefined}
+                icon={button.icon}
+                subtext={button.subtext}
+                className="flex-1"
+                style={{ minHeight: '72px' }}
+              >
+                {button.text}
+              </Button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Service Pills - Mobile Only */}
-      <div className="md:hidden flex flex-col gap-4" style={{ padding: '20px', marginTop: '20px' }}>
+      {/* Service Pills - Tablet (2-up grid) */}
+      <div className="hidden md:grid lg:hidden grid-cols-2 gap-4 px-5 md:px-[20px] mt-5">
         {homePage.heroButtons && homePage.heroButtons.map((button) => (
-          button.subtext ? (
-            <div 
-              key={button.id}
-              className="bg-white flex flex-col justify-center px-10 py-2.5 border border-black rounded-[70px] transition-all duration-300 hover:bg-[#e7fe89] hover:border-dashed"
-              style={{ minHeight: '72px' }}
-              onClick={() => {
-                if (button.link.startsWith('http')) {
-                  window.location.href = button.link
-                } else {
-                  window.location.href = button.link
-                }
-              }}
-            >
-              <p className="text-2xl text-black">{button.text}</p>
-              <p className="text-base text-black">{button.subtext}</p>
-            </div>
-          ) : (
-            <Button 
-              key={button.id}
-              to={button.link.startsWith('http') ? undefined : button.link}
-              href={button.link.startsWith('http') ? button.link : undefined}
-              icon={button.icon}
-              style={{ height: '72px' }}
-            >
-              {button.text}
-            </Button>
-          )
+          <Button 
+            key={button.id}
+            to={button.link.startsWith('http') ? undefined : button.link}
+            href={button.link.startsWith('http') ? button.link : undefined}
+            icon={button.icon}
+            subtext={button.subtext}
+            style={{ minHeight: '72px' }}
+          >
+            {button.text}
+          </Button>
+        ))}
+      </div>
+
+      {/* Service Pills - Mobile (stacked) */}
+      <div className="md:hidden flex flex-col gap-4 px-5 mt-5">
+        {homePage.heroButtons && homePage.heroButtons.map((button) => (
+          <Button 
+            key={button.id}
+            to={button.link.startsWith('http') ? undefined : button.link}
+            href={button.link.startsWith('http') ? button.link : undefined}
+            icon={button.icon}
+            subtext={button.subtext}
+            style={{ minHeight: '72px' }}
+          >
+            {button.text}
+          </Button>
         ))}
       </div>
 
@@ -188,7 +169,7 @@ const Home = () => {
       
       {/* Remaining Projects */}
       {projects.length > 3 && (
-        <div style={{ padding: '0 20px' }}>
+        <div className="px-5 md:px-[20px]">
           {projects.slice(3).map(project => (
             <div key={project.id} style={{ marginBottom: '20px' }}>
               <ProjectCard project={project} />
@@ -199,8 +180,7 @@ const Home = () => {
 
       {/* Contact Section */}
       <div 
-        className="w-full flex items-center justify-center"
-        style={{ padding: '48px 20px 200px 20px' }}
+        className="w-full flex items-center justify-center px-5 md:px-[20px] pt-12 pb-[200px]"
       >
         <div 
           className="flex flex-col items-center gap-6"

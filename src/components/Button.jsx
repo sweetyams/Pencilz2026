@@ -21,40 +21,85 @@ const Button = ({
     </svg>
   )
 
+  // Base styles
   const baseStyles = `
-    flex items-center justify-between px-10 py-2.5 
-    rounded-[70px] transition-all duration-300 ease-in-out
-    border border-black
+    border border-black flex items-center relative rounded-[70px] transition-all duration-300 ease-in-out
   `
 
-  const variantStyles = {
-    default: isHovered 
-      ? 'bg-[#e7fe89] border-dashed' 
-      : 'bg-white border-solid',
-    primary: 'bg-[#e7fe89] border-dashed'
-  }
+  // Background and border based on hover
+  const stateStyles = isHovered 
+    ? 'bg-[#e7fe89] border-dashed' 
+    : 'bg-white border-solid'
 
-  const combinedClassName = `${baseStyles} ${variantStyles[variant]} ${className}`
+  // Fixed padding - no change on hover
+  const paddingStyles = 'px-6 py-4 lg:px-6 lg:py-3'
+
+  // Layout - mobile always justify-between, desktop only on hover
+  const layoutStyles = 'justify-between lg:justify-start'
+  const layoutHoverStyles = isHovered ? 'lg:justify-between' : ''
+
+  const variantStyles = variant === 'primary' ? 'bg-[#e7fe89] border-dashed' : ''
+
+  const combinedClassName = `${baseStyles} ${stateStyles} ${paddingStyles} ${layoutStyles} ${layoutHoverStyles} ${variantStyles} ${className}`
 
   const content = subtext ? (
     <>
-      <div className="flex flex-col">
-        <span className="text-2xl text-black">{children}</span>
-        <span className="text-base text-black">{subtext}</span>
+      {/* Mobile/Tablet: side by side text with space-between */}
+      <p className="lg:hidden font-['IBM_Plex_Sans',sans-serif] font-normal text-[20px] leading-[1.155] text-black text-left">
+        {children}
+      </p>
+      <p className="lg:hidden font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] leading-[1.155] text-black text-left">
+        {subtext}
+      </p>
+      
+      {/* Desktop: stacked text, left-aligned */}
+      <div className="hidden lg:flex flex-col gap-1 leading-[1.155] text-black items-start">
+        <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[20px] text-left">
+          {children}
+        </p>
+        <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-left">
+          {subtext}
+        </p>
       </div>
-      {icon ? (
-        <img src={icon} alt="" className="w-[39px] h-[19px] flex-shrink-0" />
-      ) : (
-        <div className="flex-shrink-0">{defaultIcon}</div>
+      
+      {/* Icon - only visible on hover for desktop */}
+      {isHovered && (
+        <>
+          {icon ? (
+            <img 
+              src={icon} 
+              alt="" 
+              className="hidden lg:block w-[39px] h-[19px] flex-shrink-0"
+            />
+          ) : (
+            <div className="hidden lg:block flex-shrink-0">
+              {defaultIcon}
+            </div>
+          )}
+        </>
       )}
     </>
   ) : (
     <>
-      <span className="text-2xl text-black">{children}</span>
-      {icon ? (
-        <img src={icon} alt="" className="w-[39px] h-[19px] flex-shrink-0" />
-      ) : (
-        <div className="flex-shrink-0">{defaultIcon}</div>
+      <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[20px] leading-[1.155] text-black text-left">
+        {children}
+      </span>
+      
+      {/* Icon - only visible on hover for desktop */}
+      {isHovered && (
+        <>
+          {icon ? (
+            <img 
+              src={icon} 
+              alt="" 
+              className="hidden lg:block w-[39px] h-[19px] flex-shrink-0"
+            />
+          ) : (
+            <div className="hidden lg:block flex-shrink-0">
+              {defaultIcon}
+            </div>
+          )}
+        </>
       )}
     </>
   )
