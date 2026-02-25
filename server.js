@@ -4,6 +4,7 @@ import cors from 'cors'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { db } from './lib/db.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -64,18 +65,18 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 })
 
 // Projects endpoints
-app.get('/api/projects', (req, res) => {
+app.get('/api/projects', async (req, res) => {
   try {
-    const data = fs.readFileSync(projectsFile, 'utf8')
-    res.json(JSON.parse(data))
+    const data = await db.read('projects.json')
+    res.json(data || [])
   } catch (error) {
     res.json([])
   }
 })
 
-app.post('/api/projects', (req, res) => {
+app.post('/api/projects', async (req, res) => {
   try {
-    const projects = JSON.parse(fs.readFileSync(projectsFile, 'utf8'))
+    const projects = await db.read('projects.json') || []
     const newProject = {
       ...req.body,
       id: Date.now(),
@@ -84,16 +85,16 @@ app.post('/api/projects', (req, res) => {
         : req.body.services
     }
     projects.push(newProject)
-    fs.writeFileSync(projectsFile, JSON.stringify(projects, null, 2))
+    await db.write('projects.json', projects)
     res.json(newProject)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
 })
 
-app.put('/api/projects/:id', (req, res) => {
+app.put('/api/projects/:id', async (req, res) => {
   try {
-    const projects = JSON.parse(fs.readFileSync(projectsFile, 'utf8'))
+    const projects = await db.read('projects.json') || []
     const index = projects.findIndex(p => p.id === parseInt(req.params.id))
     if (index !== -1) {
       projects[index] = {
@@ -103,7 +104,7 @@ app.put('/api/projects/:id', (req, res) => {
           ? req.body.services.split(',').map(s => s.trim())
           : req.body.services
       }
-      fs.writeFileSync(projectsFile, JSON.stringify(projects, null, 2))
+      await db.write('projects.json', projects)
       res.json(projects[index])
     } else {
       res.status(404).json({ error: 'Project not found' })
@@ -113,11 +114,11 @@ app.put('/api/projects/:id', (req, res) => {
   }
 })
 
-app.delete('/api/projects/:id', (req, res) => {
+app.delete('/api/projects/:id', async (req, res) => {
   try {
-    const projects = JSON.parse(fs.readFileSync(projectsFile, 'utf8'))
+    const projects = await db.read('projects.json') || []
     const filtered = projects.filter(p => p.id !== parseInt(req.params.id))
-    fs.writeFileSync(projectsFile, JSON.stringify(filtered, null, 2))
+    await db.write('projects.json', filtered)
     res.json({ success: true })
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -125,34 +126,34 @@ app.delete('/api/projects/:id', (req, res) => {
 })
 
 // News endpoints
-app.get('/api/news', (req, res) => {
+app.get('/api/news', async (req, res) => {
   try {
-    const data = fs.readFileSync(newsFile, 'utf8')
-    res.json(JSON.parse(data))
+    const data = await db.read('news.json')
+    res.json(data || [])
   } catch (error) {
     res.json([])
   }
 })
 
-app.post('/api/news', (req, res) => {
+app.post('/api/news', async (req, res) => {
   try {
-    const news = JSON.parse(fs.readFileSync(newsFile, 'utf8'))
+    const news = await db.read('news.json') || []
     const newItem = { ...req.body, id: Date.now() }
     news.push(newItem)
-    fs.writeFileSync(newsFile, JSON.stringify(news, null, 2))
+    await db.write('news.json', news)
     res.json(newItem)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
 })
 
-app.put('/api/news/:id', (req, res) => {
+app.put('/api/news/:id', async (req, res) => {
   try {
-    const news = JSON.parse(fs.readFileSync(newsFile, 'utf8'))
+    const news = await db.read('news.json') || []
     const index = news.findIndex(n => n.id === parseInt(req.params.id))
     if (index !== -1) {
       news[index] = { ...req.body, id: parseInt(req.params.id) }
-      fs.writeFileSync(newsFile, JSON.stringify(news, null, 2))
+      await db.write('news.json', news)
       res.json(news[index])
     } else {
       res.status(404).json({ error: 'News not found' })
@@ -162,11 +163,11 @@ app.put('/api/news/:id', (req, res) => {
   }
 })
 
-app.delete('/api/news/:id', (req, res) => {
+app.delete('/api/news/:id', async (req, res) => {
   try {
-    const news = JSON.parse(fs.readFileSync(newsFile, 'utf8'))
+    const news = await db.read('news.json') || []
     const filtered = news.filter(n => n.id !== parseInt(req.params.id))
-    fs.writeFileSync(newsFile, JSON.stringify(filtered, null, 2))
+    await db.write('news.json', filtered)
     res.json({ success: true })
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -174,18 +175,18 @@ app.delete('/api/news/:id', (req, res) => {
 })
 
 // Settings endpoints
-app.get('/api/settings', (req, res) => {
+app.get('/api/settings', async (req, res) => {
   try {
-    const data = fs.readFileSync(settingsFile, 'utf8')
-    res.json(JSON.parse(data))
+    const data = await db.read('settings.json')
+    res.json(data || { logo: '', email: '', companyName: '' })
   } catch (error) {
     res.json({ logo: '', email: '', companyName: '' })
   }
 })
 
-app.put('/api/settings', (req, res) => {
+app.put('/api/settings', async (req, res) => {
   try {
-    fs.writeFileSync(settingsFile, JSON.stringify(req.body, null, 2))
+    await db.write('settings.json', req.body)
     res.json(req.body)
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -193,29 +194,29 @@ app.put('/api/settings', (req, res) => {
 })
 
 // Pages endpoints
-app.get('/api/pages', (req, res) => {
+app.get('/api/pages', async (req, res) => {
   try {
-    const data = fs.readFileSync(pagesFile, 'utf8')
-    res.json(JSON.parse(data))
+    const data = await db.read('pages.json')
+    res.json(data || {})
   } catch (error) {
     res.json({})
   }
 })
 
-app.get('/api/pages/:pageName', (req, res) => {
+app.get('/api/pages/:pageName', async (req, res) => {
   try {
-    const pages = JSON.parse(fs.readFileSync(pagesFile, 'utf8'))
+    const pages = await db.read('pages.json') || {}
     res.json(pages[req.params.pageName] || {})
   } catch (error) {
     res.json({})
   }
 })
 
-app.put('/api/pages/:pageName', (req, res) => {
+app.put('/api/pages/:pageName', async (req, res) => {
   try {
-    const pages = JSON.parse(fs.readFileSync(pagesFile, 'utf8'))
+    const pages = await db.read('pages.json') || {}
     pages[req.params.pageName] = req.body
-    fs.writeFileSync(pagesFile, JSON.stringify(pages, null, 2))
+    await db.write('pages.json', pages)
     res.json(pages[req.params.pageName])
   } catch (error) {
     res.status(500).json({ error: error.message })
