@@ -202,4 +202,16 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
   res.json({ url: `/uploads/${req.file.filename}` })
 })
 
+// Debug endpoint to check database status
+app.get('/api/debug/db-status', async (req, res) => {
+  await db.ensureInitialized()
+  res.json({
+    storageType: db.storageType,
+    isProduction: process.env.VERCEL === '1',
+    hasRedisUrl: !!process.env.REDIS_URL,
+    hasKvUrl: !!process.env.KV_REST_API_URL,
+    hasUpstashUrl: !!process.env.UPSTASH_REDIS_REST_URL
+  })
+})
+
 export default app
