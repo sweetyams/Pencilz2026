@@ -62,6 +62,7 @@ const pagesFile = path.join(__dirname, 'public/data/pages.json')
 // Upload image
 app.post('/api/upload', upload.single('image'), (req, res) => {
   if (req.file) {
+    // Return relative URL so it works in both dev and production
     res.json({ url: `/uploads/${req.file.filename}` })
   } else {
     res.status(400).json({ error: 'No file uploaded' })

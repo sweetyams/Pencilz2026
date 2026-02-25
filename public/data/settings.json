@@ -1,10 +1,10 @@
 {
-  "logo": "http://localhost:3001/uploads/1771964880028-logo.svg",
-  "hamburgerIcon": "http://localhost:3001/uploads/1771969143564-hamburger.svg",
+  "logo": "/uploads/1771964880028-logo.svg",
+  "hamburgerIcon": "/uploads/1771969143564-hamburger.svg",
   "email": "hello@pencilz.works",
   "companyName": "Pencilz + Friends",
   "location": "Montreal",
-  "buttonIcon": "http://localhost:3001/uploads/1771983568485-button.svg",
+  "buttonIcon": "/uploads/1771983568485-button.svg",
   "services": [
     { "id": "1", "name": "Shopify builds", "link": "/services" },
     { "id": "2", "name": "Marketing", "link": "/services" },

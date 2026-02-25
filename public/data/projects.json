@@ -4,7 +4,7 @@
     "title": "Waschies ",
     "category": "Shopify Migration",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-    "image": "http://localhost:3001/uploads/1771962342376-waschies-bis-besteller-hero-desktop.jpg",
+    "image": "/uploads/1771962342376-waschies-bis-besteller-hero-desktop.jpg",
     "services": [
       "Design",
       "Development"
@@ -18,7 +18,7 @@
     "title": "Humanrace",
     "category": "Shopify Development",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-    "image": "http://localhost:3001/uploads/1771962368449-Humanrace.jpg",
+    "image": "/uploads/1771962368449-Humanrace.jpg",
     "id": 1771962369695
   },
   {
@@ -28,7 +28,7 @@
     "title": "Khloud",
     "category": "React native app",
     "description": "test",
-    "image": "http://localhost:3001/uploads/1771968320858-Fanova.jpg",
+    "image": "/uploads/1771968320858-Fanova.jpg",
     "link": "",
     "id": 1771964703424
   },
@@ -39,7 +39,7 @@
     "title": "Libertine",
     "category": "Design,development,marketing",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-    "image": "http://localhost:3001/uploads/1771968339978-Libertine.jpg",
+    "image": "/uploads/1771968339978-Libertine.jpg",
     "link": "",
     "id": 1771968348377
   },
@@ -50,7 +50,7 @@
     "title": "Craighill",
     "category": "Design, development",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-    "image": "http://localhost:3001/uploads/1771968364784-Craighill.jpg",
+    "image": "/uploads/1771968364784-Craighill.jpg",
     "link": "",
     "id": 1771968365855
   },
@@ -61,7 +61,7 @@
     "title": "Thensome",
     "category": "Design, development",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-    "image": "http://localhost:3001/uploads/1771968377820-Thensome.jpg",
+    "image": "/uploads/1771968377820-Thensome.jpg",
     "link": "",
     "id": 1771968385273
   },
@@ -72,7 +72,7 @@
     "title": "Janine",
     "category": "Internal project",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-    "image": "http://localhost:3001/uploads/1771968398331-Janine.jpg",
+    "image": "/uploads/1771968398331-Janine.jpg",
     "link": "",
     "id": 1771968401452
   }
