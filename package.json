@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "server": "node server.js",
     "deploy": "vercel --prod",
-    "deploy:preview": "vercel"
+    "deploy:preview": "vercel",
+    "migrate": "node scripts/migrate-to-redis.js"
   },
   "dependencies": {
     "@vercel/kv": "^3.0.0",
