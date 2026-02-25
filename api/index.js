@@ -4,6 +4,7 @@ import multer from 'multer'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import fs from 'fs'
+import { db } from '../lib/db.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -43,110 +44,154 @@ const upload = multer({
 // Serve uploaded files
 app.use('/uploads', express.static(join(__dirname, '../public/uploads')))
 
-// Helper functions
-const getDataPath = (filename) => join(__dirname, '../public/data', filename)
-
-const readJSON = (filename) => {
-  try {
-    const data = fs.readFileSync(getDataPath(filename), 'utf8')
-    return JSON.parse(data)
-  } catch (error) {
-    return filename === 'projects.json' ? [] : 
-           filename === 'news.json' ? [] : 
-           filename === 'settings.json' ? {} : 
-           {}
-  }
-}
-
-const writeJSON = (filename, data) => {
-  fs.writeFileSync(getDataPath(filename), JSON.stringify(data, null, 2))
-}
-
 // Projects endpoints
-app.get('/api/projects', (req, res) => {
-  res.json(readJSON('projects.json'))
-})
-
-app.post('/api/projects', (req, res) => {
-  const projects = readJSON('projects.json')
-  const newProject = { ...req.body, id: Date.now() }
-  projects.push(newProject)
-  writeJSON('projects.json', projects)
-  res.json(newProject)
-})
-
-app.put('/api/projects/:id', (req, res) => {
-  const projects = readJSON('projects.json')
-  const index = projects.findIndex(p => p.id === parseInt(req.params.id))
-  if (index !== -1) {
-    projects[index] = { ...projects[index], ...req.body }
-    writeJSON('projects.json', projects)
-    res.json(projects[index])
-  } else {
-    res.status(404).json({ error: 'Project not found' })
+app.get('/api/projects', async (req, res) => {
+  try {
+    const data = await db.read('projects.json')
+    res.json(data || [])
+  } catch (error) {
+    res.json([])
   }
 })
 
-app.delete('/api/projects/:id', (req, res) => {
-  let projects = readJSON('projects.json')
-  projects = projects.filter(p => p.id !== parseInt(req.params.id))
-  writeJSON('projects.json', projects)
-  res.json({ success: true })
+app.post('/api/projects', async (req, res) => {
+  try {
+    const projects = await db.read('projects.json') || []
+    const newProject = {
+      ...req.body,
+      id: Date.now(),
+      services: typeof req.body.services === 'string' 
+        ? req.body.services.split(',').map(s => s.trim())
+        : req.body.services
+    }
+    projects.push(newProject)
+    await db.write('projects.json', projects)
+    res.json(newProject)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.put('/api/projects/:id', async (req, res) => {
+  try {
+    const projects = await db.read('projects.json') || []
+    const index = projects.findIndex(p => p.id === parseInt(req.params.id))
+    if (index !== -1) {
+      projects[index] = {
+        ...req.body,
+        id: parseInt(req.params.id),
+        services: typeof req.body.services === 'string'
+          ? req.body.services.split(',').map(s => s.trim())
+          : req.body.services
+      }
+      await db.write('projects.json', projects)
+      res.json(projects[index])
+    } else {
+      res.status(404).json({ error: 'Project not found' })
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.delete('/api/projects/:id', async (req, res) => {
+  try {
+    const projects = await db.read('projects.json') || []
+    const filtered = projects.filter(p => p.id !== parseInt(req.params.id))
+    await db.write('projects.json', filtered)
+    res.json({ success: true })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
 })
 
 // News endpoints
-app.get('/api/news', (req, res) => {
-  res.json(readJSON('news.json'))
-})
-
-app.post('/api/news', (req, res) => {
-  const news = readJSON('news.json')
-  const newArticle = { ...req.body, id: Date.now() }
-  news.push(newArticle)
-  writeJSON('news.json', news)
-  res.json(newArticle)
-})
-
-app.put('/api/news/:id', (req, res) => {
-  const news = readJSON('news.json')
-  const index = news.findIndex(n => n.id === parseInt(req.params.id))
-  if (index !== -1) {
-    news[index] = { ...news[index], ...req.body }
-    writeJSON('news.json', news)
-    res.json(news[index])
-  } else {
-    res.status(404).json({ error: 'Article not found' })
+app.get('/api/news', async (req, res) => {
+  try {
+    const data = await db.read('news.json')
+    res.json(data || [])
+  } catch (error) {
+    res.json([])
   }
 })
 
-app.delete('/api/news/:id', (req, res) => {
-  let news = readJSON('news.json')
-  news = news.filter(n => n.id !== parseInt(req.params.id))
-  writeJSON('news.json', news)
-  res.json({ success: true })
+app.post('/api/news', async (req, res) => {
+  try {
+    const news = await db.read('news.json') || []
+    const newItem = { ...req.body, id: Date.now() }
+    news.push(newItem)
+    await db.write('news.json', news)
+    res.json(newItem)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.put('/api/news/:id', async (req, res) => {
+  try {
+    const news = await db.read('news.json') || []
+    const index = news.findIndex(n => n.id === parseInt(req.params.id))
+    if (index !== -1) {
+      news[index] = { ...req.body, id: parseInt(req.params.id) }
+      await db.write('news.json', news)
+      res.json(news[index])
+    } else {
+      res.status(404).json({ error: 'News not found' })
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.delete('/api/news/:id', async (req, res) => {
+  try {
+    const news = await db.read('news.json') || []
+    const filtered = news.filter(n => n.id !== parseInt(req.params.id))
+    await db.write('news.json', filtered)
+    res.json({ success: true })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
 })
 
 // Settings endpoints
-app.get('/api/settings', (req, res) => {
-  res.json(readJSON('settings.json'))
+app.get('/api/settings', async (req, res) => {
+  try {
+    const data = await db.read('settings.json')
+    res.json(data || { logo: '', email: '', companyName: '' })
+  } catch (error) {
+    res.json({ logo: '', email: '', companyName: '' })
+  }
 })
 
-app.put('/api/settings', (req, res) => {
-  writeJSON('settings.json', req.body)
-  res.json(req.body)
+app.put('/api/settings', async (req, res) => {
+  try {
+    await db.write('settings.json', req.body)
+    res.json(req.body)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
 })
 
 // Pages endpoints
-app.get('/api/pages/:pageName', (req, res) => {
-  const pages = readJSON('pages.json')
-  res.json(pages[req.params.pageName] || {})
+app.get('/api/pages/:pageName', async (req, res) => {
+  try {
+    const pages = await db.read('pages.json') || {}
+    res.json(pages[req.params.pageName] || {})
+  } catch (error) {
+    res.json({})
+  }
 })
 
-app.put('/api/pages/:pageName', (req, res) => {
-  const pages = readJSON('pages.json')
-  pages[req.params.pageName] = req.body
-  writeJSON('pages.json', pages)
-  res.json(req.body)
+app.put('/api/pages/:pageName', async (req, res) => {
+  try {
+    const pages = await db.read('pages.json') || {}
+    pages[req.params.pageName] = req.body
+    await db.write('pages.json', pages)
+    res.json(pages[req.params.pageName])
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
 })
 
 // Upload endpoint

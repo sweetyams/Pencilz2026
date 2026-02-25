@@ -5,6 +5,10 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { db } from './lib/db.js'
+import dotenv from 'dotenv'
+
+// Load environment variables from .env.local
+dotenv.config({ path: '.env.local' })
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
