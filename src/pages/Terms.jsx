@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Button from '../components/Button'
+import { API_URL } from '../config'
 
 const Terms = () => {
   const [settings, setSettings] = useState({
@@ -9,7 +10,7 @@ const Terms = () => {
   })
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/settings')
+    fetch(`${API_URL}/api/settings`)
       .then(res => res.json())
       .then(data => setSettings(data))
       .catch(() => {})

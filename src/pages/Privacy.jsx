@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
+import { API_URL } from '../config'
 
 const Privacy = () => {
   const [page, setPage] = useState({ title: 'Privacy Policy', content: '' })
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/pages')
+    fetch(`${API_URL}/api/pages`)
       .then(res => res.json())
       .then(data => setPage(data.privacy || page))
       .catch(() => {})

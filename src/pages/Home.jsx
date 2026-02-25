@@ -4,6 +4,7 @@ import ProjectCard from '../components/ProjectCard'
 import StickyCard from '../components/StickyCard'
 import SEO from '../components/SEO'
 import Button from '../components/Button'
+import { API_URL } from '../config'
 
 const Home = () => {
   const [projects, setProjects] = useState([])
@@ -17,17 +18,17 @@ const Home = () => {
   })
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/projects')
+    fetch(`${API_URL}/api/projects`)
       .then(res => res.json())
       .then(data => setProjects(data))
       .catch(() => setProjects([]))
     
-    fetch('http://localhost:3001/api/settings')
+    fetch(`${API_URL}/api/settings`)
       .then(res => res.json())
       .then(data => setSettings(data))
       .catch(() => {})
     
-    fetch('http://localhost:3001/api/pages/home')
+    fetch(`${API_URL}/api/pages/home`)
       .then(res => res.json())
       .then(data => setHomePage(data))
       .catch(() => {})

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
+import { API_URL } from '../config'
 
 const News = () => {
   const [news, setNews] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/news')
+    fetch(`${API_URL}/api/news`)
       .then(res => res.json())
       .then(data => setNews(data))
       .catch(() => setNews([]))

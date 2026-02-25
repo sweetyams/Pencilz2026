@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { API_URL } from '../config'
 
 const Footer = () => {
   const [settings, setSettings] = useState({ email: '', logo: '', companyName: '' })
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/settings')
+    fetch(`${API_URL}/api/settings`)
       .then(res => res.json())
       .then(data => setSettings(data))
       .catch(() => {})
