@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
+import { API_URL } from '../config'
 
 const SettingsForm = () => {
   const { register, handleSubmit, setValue, watch } = useForm()
@@ -14,7 +15,7 @@ const SettingsForm = () => {
   const buttonIconValue = watch('buttonIcon')
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/settings')
+    fetch(`${API_URL}/api/settings`)
       .then(res => res.json())
       .then(data => {
         setSettings(data)
@@ -40,7 +41,7 @@ const SettingsForm = () => {
     formData.append('image', file)
 
     try {
-      const response = await fetch('http://localhost:3001/api/upload', {
+      const response = await fetch(`${API_URL}/api/upload`, {
         method: 'POST',
         body: formData
       })
@@ -48,7 +49,7 @@ const SettingsForm = () => {
       if (!response.ok) throw new Error('Upload failed')
       
       const data = await response.json()
-      setValue('logo', `http://localhost:3001${data.url}`)
+      setValue('logo', data.url)
       alert('Logo uploaded successfully!')
     } catch (error) {
       alert('Error uploading logo: ' + error.message)
@@ -66,7 +67,7 @@ const SettingsForm = () => {
     formData.append('image', file)
 
     try {
-      const response = await fetch('http://localhost:3001/api/upload', {
+      const response = await fetch(`${API_URL}/api/upload`, {
         method: 'POST',
         body: formData
       })
@@ -74,7 +75,7 @@ const SettingsForm = () => {
       if (!response.ok) throw new Error('Upload failed')
       
       const data = await response.json()
-      setValue('hamburgerIcon', `http://localhost:3001${data.url}`)
+      setValue('hamburgerIcon', data.url)
       alert('Hamburger icon uploaded successfully!')
     } catch (error) {
       alert('Error uploading hamburger icon: ' + error.message)
@@ -92,7 +93,7 @@ const SettingsForm = () => {
     formData.append('image', file)
 
     try {
-      const response = await fetch('http://localhost:3001/api/upload', {
+      const response = await fetch(`${API_URL}/api/upload`, {
         method: 'POST',
         body: formData
       })
@@ -100,7 +101,7 @@ const SettingsForm = () => {
       if (!response.ok) throw new Error('Upload failed')
       
       const data = await response.json()
-      setValue('buttonIcon', `http://localhost:3001${data.url}`)
+      setValue('buttonIcon', data.url)
       alert('Button icon uploaded successfully!')
     } catch (error) {
       alert('Error uploading button icon: ' + error.message)
@@ -118,7 +119,7 @@ const SettingsForm = () => {
         aboutItems
       }
       console.log('Saving settings:', payload)
-      const response = await fetch('http://localhost:3001/api/settings', {
+      const response = await fetch(`${API_URL}/api/settings`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json'

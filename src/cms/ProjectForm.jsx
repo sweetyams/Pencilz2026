@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
+import { API_URL } from '../config'
 
 const ProjectForm = ({ project, onSave, onCancel }) => {
   const { register, handleSubmit, setValue, watch } = useForm({
@@ -22,7 +23,7 @@ const ProjectForm = ({ project, onSave, onCancel }) => {
     formData.append('image', file)
 
     try {
-      const response = await fetch('http://localhost:3001/api/upload', {
+      const response = await fetch(`${API_URL}/api/upload`, {
         method: 'POST',
         body: formData
       })
@@ -32,7 +33,7 @@ const ProjectForm = ({ project, onSave, onCancel }) => {
       }
       
       const data = await response.json()
-      setValue('image', `http://localhost:3001${data.url}`)
+      setValue('image', data.url)
       alert('Image uploaded successfully!')
     } catch (error) {
       alert('Error uploading image. Make sure the API server is running: ' + error.message)

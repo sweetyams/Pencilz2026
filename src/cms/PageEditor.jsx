@@ -1,12 +1,13 @@
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
+import { API_URL } from '../config'
 
 const PageEditor = ({ pageName, onClose }) => {
   const { register, handleSubmit, setValue } = useForm()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/pages')
+    fetch(`${API_URL}/api/pages`)
       .then(res => res.json())
       .then(data => {
         if (data[pageName]) {
@@ -19,7 +20,7 @@ const PageEditor = ({ pageName, onClose }) => {
 
   const onSave = async (data) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/pages/${pageName}`, {
+      const response = await fetch(`${API_URL}/api/pages/${pageName}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)

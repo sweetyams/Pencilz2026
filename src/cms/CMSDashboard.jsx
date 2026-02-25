@@ -6,6 +6,7 @@ import SettingsForm from './SettingsForm'
 import HomePageForm from './HomePageForm'
 import NewsForm from './NewsForm'
 import PageEditor from './PageEditor'
+import { API_URL } from '../config'
 
 const CMSDashboard = () => {
   const [activeTab, setActiveTab] = useState('projects')
@@ -18,14 +19,14 @@ const CMSDashboard = () => {
   const navigate = useNavigate()
 
   const loadProjects = () => {
-    fetch('http://localhost:3001/api/projects')
+    fetch(`${API_URL}/api/projects`)
       .then(res => res.json())
       .then(data => setProjects(data))
       .catch(() => setProjects([]))
   }
 
   const loadNews = () => {
-    fetch('http://localhost:3001/api/news')
+    fetch(`${API_URL}/api/news`)
       .then(res => res.json())
       .then(data => setNews(data))
       .catch(() => setNews([]))
@@ -44,8 +45,8 @@ const CMSDashboard = () => {
   const handleSaveProject = async (project) => {
     try {
       const url = project.id 
-        ? `http://localhost:3001/api/projects/${project.id}`
-        : 'http://localhost:3001/api/projects'
+        ? `${API_URL}/api/projects/${project.id}`
+        : `${API_URL}/api/projects`
       
       const method = project.id ? 'PUT' : 'POST'
       
@@ -68,7 +69,7 @@ const CMSDashboard = () => {
   const handleDeleteProject = async (id) => {
     if (confirm('Delete this project?')) {
       try {
-        const response = await fetch(`http://localhost:3001/api/projects/${id}`, {
+        const response = await fetch(`${API_URL}/api/projects/${id}`, {
           method: 'DELETE'
         })
         if (response.ok) {
@@ -83,8 +84,8 @@ const CMSDashboard = () => {
   const handleSaveNews = async (newsItem) => {
     try {
       const url = newsItem.id 
-        ? `http://localhost:3001/api/news/${newsItem.id}`
-        : 'http://localhost:3001/api/news'
+        ? `${API_URL}/api/news/${newsItem.id}`
+        : `${API_URL}/api/news`
       
       const method = newsItem.id ? 'PUT' : 'POST'
       
@@ -107,7 +108,7 @@ const CMSDashboard = () => {
   const handleDeleteNews = async (id) => {
     if (confirm('Delete this news item?')) {
       try {
-        const response = await fetch(`http://localhost:3001/api/news/${id}`, {
+        const response = await fetch(`${API_URL}/api/news/${id}`, {
           method: 'DELETE'
         })
         if (response.ok) {
