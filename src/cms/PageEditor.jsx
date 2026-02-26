@@ -1,22 +1,37 @@
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import { API_URL } from '../config'
+import Input from '../components/ui/Input'
+import Textarea from '../components/ui/Textarea'
+import Button from '../components/ui/Button'
 
 const PageEditor = ({ pageName, onClose }) => {
-  const { register, handleSubmit, setValue } = useForm()
+  const { register, handleSubmit, formState: { isSubmitting } } = useForm()
   const [loading, setLoading] = useState(true)
+  const [pageData, setPageData] = useState({ title: '', content: '' })
 
   useEffect(() => {
+    setLoading(true)
     fetch(`${API_URL}/api/pages`)
       .then(res => res.json())
       .then(data => {
         if (data[pageName]) {
-          setValue('title', data[pageName].title)
-          setValue('content', data[pageName].content)
+          setPageData({
+            title: data[pageName].title || '',
+            content: data[pageName].content || ''
+          })
+        } else {
+          setPageData({
+            title: '',
+            content: ''
+          })
         }
         setLoading(false)
       })
-  }, [pageName, setValue])
+      .catch(() => {
+        setLoading(false)
+      })
+  }, [pageName])
 
   const onSave = async (data) => {
     try {
@@ -35,48 +50,38 @@ const PageEditor = ({ pageName, onClose }) => {
     }
   }
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <div className="text-center py-8 text-gray-500">Loading...</div>
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h3 className="text-xl font-bold mb-4">Edit {pageName} Page</h3>
-      <form onSubmit={handleSubmit(onSave)}>
-        <div className="grid gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Page Title</label>
-            <input
-              {...register('title')}
-              className="w-full px-3 py-2 border rounded-lg"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Content</label>
-            <textarea
-              {...register('content')}
-              className="w-full px-3 py-2 border rounded-lg"
-              rows="10"
-              required
-            />
-          </div>
+    <form onSubmit={handleSubmit(onSave)}>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="p-6 space-y-6">
+          <Input
+            label="Page Title"
+            {...register('title')}
+            defaultValue={pageData.title}
+            required
+          />
+          <Textarea
+            label="Content"
+            {...register('content')}
+            defaultValue={pageData.content}
+            rows={10}
+            required
+          />
         </div>
-        <div className="flex gap-2 mt-6">
-          <button
-            type="submit"
-            className="bg-black text-white px-4 py-2 rounded-lg hover:opacity-80"
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className="bg-gray-200 px-4 py-2 rounded-lg hover:opacity-80"
-          >
+
+        {/* Action Bar */}
+        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-3">
+          <Button type="button" variant="secondary" onClick={onClose}>
             Cancel
-          </button>
+          </Button>
+          <Button type="submit">
+            Save Changes
+          </Button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   )
 }
 

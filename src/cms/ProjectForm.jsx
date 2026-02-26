@@ -1,193 +1,384 @@
-import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import { useState, useEffect } from 'react'
 import { API_URL } from '../config'
+import FormSection from '../components/ui/FormSection'
+import Input from '../components/ui/Input'
+import Textarea from '../components/ui/Textarea'
+import FileInput from '../components/ui/FileInput'
+import TagInput from '../components/ui/TagInput'
+import Button from '../components/ui/Button'
 
-const ProjectForm = ({ project, onSave, onCancel }) => {
-  const { register, handleSubmit, setValue, watch } = useForm({
-    defaultValues: {
-      ...project,
-      services: Array.isArray(project.services) 
-        ? project.services.join(', ') 
-        : project.services || ''
+const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
+  const [availableTags, setAvailableTags] = useState([])
+  
+  // Load taxonomy first
+  useEffect(() => {
+    fetch(`${API_URL}/api/settings`)
+      .then(res => res.json())
+      .then(data => {
+        setAvailableTags(data.taxonomy || [])
+      })
+      .catch(err => console.error('Error loading taxonomy:', err))
+  }, [])
+  
+  // Convert project services/category to tag format, filtering out removed tags
+  const projectServices = Array.isArray(project.services)
+    ? project.services
+        .map(s => {
+          const tagName = typeof s === 'string' ? s : s.name
+          // Only include if tag exists in taxonomy
+          const existsInTaxonomy = availableTags.some(t => t.name === tagName)
+          if (!existsInTaxonomy && availableTags.length > 0) {
+            console.warn(`Tag "${tagName}" no longer exists in taxonomy, filtering out`)
+            return null
+          }
+          return typeof s === 'string' ? { id: s, name: s, link: '' } : s
+        })
+        .filter(Boolean)
+    : []
+  
+  const projectCategory = project.category 
+    ? (() => {
+        const categoryName = typeof project.category === 'string' ? project.category : project.category.name
+        // Only include if tag exists in taxonomy
+        const existsInTaxonomy = availableTags.some(t => t.name === categoryName)
+        if (!existsInTaxonomy && availableTags.length > 0) {
+          console.warn(`Category "${categoryName}" no longer exists in taxonomy, filtering out`)
+          return []
+        }
+        return [typeof project.category === 'string' ? { id: project.category, name: project.category, link: '' } : project.category]
+      })()
+    : []
+
+  const { control, handleSubmit, watch, setValue, reset, formState: { errors, isSubmitting, isDirty } } = useForm({
+    values: {
+      id: project.id || undefined,
+      title: project.title || '',
+      category: projectCategory,
+      link: project.link || '',
+      description: project.description || '',
+      services: projectServices,
+      image: project.image || '',
+      metaTitle: project.metaTitle || '',
+      metaDescription: project.metaDescription || '',
+      metaKeywords: project.metaKeywords || '',
+      ogImage: project.ogImage || ''
     }
   })
-  const [uploading, setUploading] = useState(false)
+
+  // Watch the image field to debug
   const imageValue = watch('image')
+  console.log('🎨 ProjectForm: Current image value from form:', imageValue)
+  console.log('📦 ProjectForm: Project prop:', project)
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0]
-    if (!file) return
+  // Notify parent of changes
+  useEffect(() => {
+    if (isDirty && onFormChange) {
+      onFormChange()
+    }
+  }, [isDirty, onFormChange])
 
-    setUploading(true)
-    const formData = new FormData()
-    formData.append('image', file)
+  // Reset form when project changes (for cancel/discard)
+  useEffect(() => {
+    // Only reset if we have taxonomy loaded to properly filter tags
+    if (availableTags.length === 0) return
+    
+    reset({
+      id: project.id || undefined,
+      title: project.title || '',
+      category: projectCategory,
+      link: project.link || '',
+      description: project.description || '',
+      services: projectServices,
+      image: project.image || '',
+      metaTitle: project.metaTitle || '',
+      metaDescription: project.metaDescription || '',
+      metaKeywords: project.metaKeywords || '',
+      ogImage: project.ogImage || ''
+    })
+  }, [project, reset, availableTags])
 
+  const handleCreateTag = (name) => {
+    const newTag = {
+      id: `tag-${Date.now()}`,
+      name: name,
+      link: '',
+      type: 'general',
+      usageCount: 0
+    }
+    setAvailableTags([...availableTags, newTag])
+    
+    // Save to settings
+    fetch(`${API_URL}/api/settings`)
+      .then(res => res.json())
+      .then(settings => {
+        const updated = {
+          ...settings,
+          taxonomy: [...(settings.taxonomy || []), newTag]
+        }
+        return fetch(`${API_URL}/api/settings`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated)
+        })
+      })
+      .catch(err => console.error('Error saving new tag:', err))
+    
+    return newTag
+  }
+
+  const handleImageUpload = async (file) => {
+    if (!file) return null
+    
+    console.log('📤 ProjectForm: Starting upload for:', file.name)
+    
     try {
+      const formData = new FormData()
+      formData.append('image', file)
+      
       const response = await fetch(`${API_URL}/api/upload`, {
         method: 'POST',
         body: formData
       })
       
       if (!response.ok) {
-        throw new Error('Upload failed')
+        const error = await response.text()
+        throw new Error(`Upload failed: ${error}`)
       }
       
       const data = await response.json()
-      setValue('image', data.url)
-      alert('Image uploaded successfully!')
+      console.log('✅ ProjectForm: Upload successful, URL:', data.url)
+      console.log('📊 ProjectForm: Full response:', data)
+      return data.url
     } catch (error) {
-      alert('Error uploading image. Make sure the API server is running: ' + error.message)
-    } finally {
-      setUploading(false)
+      console.error('❌ ProjectForm: Upload error:', error)
+      alert('Error uploading image: ' + error.message)
+      throw error
     }
   }
 
+  const onSubmit = (data) => {
+    // Convert tags back to simple format for storage
+    const formattedData = {
+      ...data,
+      services: Array.isArray(data.services) 
+        ? data.services.map(s => s.name)
+        : [],
+      category: Array.isArray(data.category) && data.category.length > 0
+        ? data.category[0].name
+        : ''
+    }
+    onSave(formattedData)
+  }
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h3 className="text-xl font-bold mb-4">
-        {project.id ? 'Edit Project' : 'Add Project'}
-      </h3>
-      <form onSubmit={handleSubmit(onSave)}>
-        <div className="grid gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Title</label>
-            <input
-              {...register('title')}
-              className="w-full px-3 py-2 border rounded-lg"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Category</label>
-            <input
-              {...register('category')}
-              className="w-full px-3 py-2 border rounded-lg"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Description</label>
-            <textarea
-              {...register('description')}
-              className="w-full px-3 py-2 border rounded-lg"
-              rows="3"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Image</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="w-full px-3 py-2 border rounded-lg mb-2"
-              disabled={uploading}
-            />
-            <input
-              {...register('image', { required: !imageValue })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Or paste image URL"
-            />
-            {uploading && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
-            {imageValue && (
-              <div className="mt-2">
-                <img src={imageValue} alt="Preview" className="h-32 object-cover rounded" />
-              </div>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Services (comma-separated)
-            </label>
-            <input
-              {...register('services')}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Design, Development, Branding"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Project Link</label>
-            <input
-              {...register('link')}
-              type="url"
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="https://example.com"
-            />
-          </div>
-
-          {/* SEO Fields */}
-          <div className="border-t pt-4 mt-4">
-            <h4 className="font-semibold mb-3">SEO Settings</h4>
-            
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Meta Title</label>
-              <input
-                {...register('metaTitle')}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="Project title for search engines"
-                maxLength="60"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Recommended: 50-60 characters. This appears in search results and browser tabs.
-              </p>
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Meta Description</label>
-              <textarea
-                {...register('metaDescription')}
-                className="w-full px-3 py-2 border rounded-lg"
-                rows="2"
-                placeholder="Brief description of the project"
-                maxLength="160"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Recommended: 150-160 characters. This appears in search results below the title.
-              </p>
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Keywords</label>
-              <input
-                {...register('metaKeywords')}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="web design, branding, shopify"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Comma-separated keywords relevant to this project.
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">Social Share Image (OG Image)</label>
-              <input
-                {...register('ogImage')}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="Leave blank to use project image"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Recommended: 1200x630px. Used when sharing on social media. Defaults to project image if empty.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="flex gap-2 mt-6">
-          <button
-            type="submit"
-            className="bg-black text-white px-4 py-2 rounded-lg hover:opacity-80"
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="p-6 space-y-8">
+          {/* Basic Information Section */}
+          <FormSection 
+            title="Basic Information"
+            description="Essential details about the project"
           >
-            Save
-          </button>
-          <button
+            <Controller
+              name="title"
+              control={control}
+              rules={{ required: 'Project title is required' }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  label="Project Title"
+                  placeholder="e.g., Humanrace Website Redesign"
+                  error={errors.title?.message}
+                  helperText="This will be displayed as the main project heading"
+                />
+              )}
+            />
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <Controller
+                name="category"
+                control={control}
+                rules={{ 
+                  required: 'Category is required',
+                  validate: value => (Array.isArray(value) && value.length > 0) || 'Category is required'
+                }}
+                render={({ field }) => (
+                  <TagInput
+                    label="Category"
+                    value={field.value || []}
+                    onChange={(tags) => field.onChange(tags.slice(0, 1))} // Only allow one category
+                    availableTags={availableTags}
+                    onCreateTag={handleCreateTag}
+                    placeholder="Select or create category..."
+                    error={errors.category?.message}
+                    helperText="Select one category (e.g., Shopify Migration, E-commerce)"
+                  />
+                )}
+              />
+              
+              <Controller
+                name="link"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    label="Project Link"
+                    type="url"
+                    placeholder="https://example.com"
+                    helperText="Optional external link to the live project"
+                  />
+                )}
+              />
+            </div>
+            
+            <Controller
+              name="description"
+              control={control}
+              rules={{ required: 'Description is required' }}
+              render={({ field }) => (
+                <Textarea
+                  {...field}
+                  label="Description"
+                  rows={4}
+                  placeholder="Describe the project, your role, and key achievements..."
+                  error={errors.description?.message}
+                  helperText="Provide a compelling overview of the project"
+                />
+              )}
+            />
+            
+            <Controller
+              name="services"
+              control={control}
+              render={({ field }) => (
+                <TagInput
+                  label="Services Provided"
+                  value={field.value || []}
+                  onChange={field.onChange}
+                  availableTags={availableTags}
+                  onCreateTag={handleCreateTag}
+                  placeholder="Select or create services..."
+                  helperText="Select multiple services (e.g., Design, Development, Branding)"
+                />
+              )}
+            />
+          </FormSection>
+
+          {/* Media Section */}
+          <FormSection 
+            title="Project Media"
+            description="Upload images and visual assets"
+          >
+            <Controller
+              name="image"
+              control={control}
+              rules={{ required: !project.image ? 'Project image is required' : false }}
+              render={({ field }) => {
+                console.log('🎛️ Controller render - field.value:', field.value)
+                return (
+                  <FileInput
+                    label="Featured Image"
+                    accept="image/*"
+                    onUpload={handleImageUpload}
+                    value={field.value}
+                    onChange={(url) => {
+                      console.log('🔄 Controller onChange called with:', url)
+                      field.onChange(url)
+                    }}
+                    error={errors.image?.message}
+                    helperText="Recommended: 1200x800px, JPG or PNG"
+                  />
+                )
+              }}
+            />
+          </FormSection>
+
+          {/* SEO & Metadata Section (Collapsible) */}
+          <FormSection 
+            title="SEO & Metadata"
+            description="Optimize for search engines and social sharing"
+            collapsible
+            defaultOpen={false}
+          >
+            <Controller
+              name="metaTitle"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  label="Meta Title"
+                  placeholder="Project title for search engines"
+                  maxLength={60}
+                  helperText="50-60 characters recommended. Appears in search results and browser tabs."
+                />
+              )}
+            />
+            
+            <Controller
+              name="metaDescription"
+              control={control}
+              render={({ field }) => (
+                <Textarea
+                  {...field}
+                  label="Meta Description"
+                  rows={2}
+                  placeholder="Brief description for search results"
+                  maxLength={160}
+                  showCount
+                  helperText="150-160 characters recommended. Appears below the title in search results."
+                />
+              )}
+            />
+            
+            <Controller
+              name="metaKeywords"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  label="Keywords"
+                  placeholder="web design, branding, shopify"
+                  helperText="Comma-separated keywords relevant to this project"
+                />
+              )}
+            />
+            
+            <Controller
+              name="ogImage"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  label="Social Share Image (OG Image)"
+                  placeholder="Leave blank to use project image"
+                  helperText="1200x630px recommended. Used when sharing on social media."
+                />
+              )}
+            />
+          </FormSection>
+        </div>
+
+        {/* Action Bar */}
+        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-3 rounded-b-lg">
+          <Button
             type="button"
+            variant="secondary"
             onClick={onCancel}
-            className="bg-gray-200 px-4 py-2 rounded-lg hover:opacity-80"
+            disabled={isSubmitting}
           >
             Cancel
-          </button>
+          </Button>
+          <Button
+            type="submit"
+            variant="primary"
+            loading={isSubmitting}
+          >
+            {project?.id ? 'Save Changes' : 'Create Project'}
+          </Button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   )
 }
 

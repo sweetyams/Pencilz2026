@@ -6,6 +6,7 @@ import SEO from '../components/SEO'
 import Button from '../components/Button'
 import LazyImage from '../components/LazyImage'
 import { API_URL } from '../config'
+import { getImageUrl } from '../utils/imageUrl'
 
 const Home = () => {
   const [projects, setProjects] = useState([])
@@ -35,10 +36,13 @@ const Home = () => {
       .catch(() => {})
   }, [])
 
-  const emailSubject = encodeURIComponent("Let's Create Something Amazing Together! 🚀")
-  const emailBody = encodeURIComponent(
-    `Hi there!\n\nI'm excited to explore the possibility of working together on a project.\n\nHere's what I'm thinking:\n\n[Tell us about your project vision]\n\nLooking forward to bringing this to life!\n\nBest regards`
+  const emailSubject = encodeURIComponent(
+    homePage.emailSubject || "Let's Create Something Amazing Together! 🚀"
   )
+  const emailBody = encodeURIComponent(
+    homePage.emailBody || `Hi there!\n\nI'm excited to explore the possibility of working together on a project.\n\nHere's what I'm thinking:\n\n[Tell us about your project vision]\n\nLooking forward to bringing this to life!\n\nBest regards`
+  )
+  const contactEmail = homePage.contactEmail || settings.email
 
   return (
     <div className="w-full" style={{ maxWidth: '1600px', margin: '0 auto' }}>
@@ -69,7 +73,7 @@ const Home = () => {
             />
             {homePage.heroImage && (
               <LazyImage 
-                src={homePage.heroImage}
+                src={getImageUrl(homePage.heroImage)}
                 alt="Hero background"
                 className="absolute w-full h-full object-cover"
                 priority={true}
@@ -187,16 +191,16 @@ const Home = () => {
           style={{ width: '481px' }}
         >
           <p className="text-2xl text-black text-center w-full">
-            Start a project
+            {homePage.contactHeading || 'Start a project'}
           </p>
           <Button
-            href={`mailto:${settings.email}?subject=${emailSubject}&body=${emailBody}`}
+            href={`mailto:${contactEmail}?subject=${emailSubject}&body=${emailBody}`}
             variant="primary"
             className="w-full"
             target="_blank"
             rel="noopener noreferrer"
           >
-            {settings.email}
+            {homePage.contactButtonText || contactEmail}
           </Button>
         </div>
       </div>

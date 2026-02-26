@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import LazyImage from './LazyImage'
 import { API_URL } from '../config'
+import { getImageUrl } from '../utils/imageUrl'
 
 const Footer = () => {
   const [settings, setSettings] = useState({ email: '', logo: '', companyName: '' })
@@ -21,7 +22,7 @@ const Footer = () => {
           <Link to="/">
             {settings.logo ? (
               <LazyImage 
-                src={settings.logo} 
+                src={getImageUrl(settings.logo)}
                 alt="Pencilz" 
                 className="w-full h-auto"
                 style={{ display: 'block' }}

@@ -1,11 +1,12 @@
 {
   "home": {
-    "heroImage": "",
     "heroText": "",
+    "contactHeading": "Lets start a project",
     "metaTitle": "",
     "metaDescription": "",
     "metaKeywords": "",
     "ogImage": "",
+    "heroImage": "/uploads/1772124562037-Hero.jpg",
     "heroButtons": [
       {
         "id": "1771983856299",

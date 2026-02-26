@@ -1,65 +1,65 @@
-# Implementation Tasks: Radix UI CMS Implementation (Streamlined)
+# Implementation Tasks: Ark UI CMS Implementation (Streamlined)
 
 ## Phase 1: Setup (30 min)
 
-- [-] 1. Install Dependencies
-  - [ ] 1.1 Install Radix UI packages: `npm install @radix-ui/react-label @radix-ui/react-alert-dialog`
-  - [ ] 1.2 Install testing packages: `npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom`
-  - [ ] 1.3 Create vitest.config.js with basic setup
-  - [ ] 1.4 Update package.json with test script: `"test": "vitest"`
-  - [ ] 1.5 Create src/components/ui/ directory
+- [x] 1. Install Dependencies
+  - [x] 1.1 Install Ark UI packages: `npm install @ark-ui/react`
+  - [x] 1.2 Install testing packages: `npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom`
+  - [x] 1.3 Create vitest.config.js with basic setup
+  - [x] 1.4 Update package.json with test script: `"test": "vitest"`
+  - [x] 1.5 Create src/components/ui/ directory
 
 ## Phase 2: Core UI Components (2-3 hours)
 
-- [ ] 2. Build Essential Components
-  - [ ] 2.1 Create Input component (src/components/ui/Input.jsx) with label, error, helper text
-  - [ ] 2.2 Create Textarea component (src/components/ui/Textarea.jsx) with character counter
-  - [ ] 2.3 Create Button component (src/components/ui/Button.jsx) with variants and loading
-  - [ ] 2.4 Create FileInput component (src/components/ui/FileInput.jsx) with drag-drop
-  - [ ] 2.5 Create AlertDialog component (src/components/ui/AlertDialog.jsx)
-  - [ ] 2.6 Create Card component (src/components/ui/Card.jsx)
-  - [ ] 2.7 Create FormSection component (src/components/ui/FormSection.jsx) with collapsible
-  - [ ] 2.8 Write basic smoke tests for each component (one test file per component)
+- [x] 2. Build Essential Components
+  - [x] 2.1 Create Input component (src/components/ui/Input.jsx) with label, error, helper text
+  - [x] 2.2 Create Textarea component (src/components/ui/Textarea.jsx) with character counter
+  - [x] 2.3 Create Button component (src/components/ui/Button.jsx) with variants and loading
+  - [x] 2.4 Create FileInput component (src/components/ui/FileInput.jsx) with drag-drop
+  - [x] 2.5 Create AlertDialog component (src/components/ui/AlertDialog.jsx)
+  - [x] 2.6 Create Card component (src/components/ui/Card.jsx)
+  - [x] 2.7 Create FormSection component (src/components/ui/FormSection.jsx) with collapsible
+  - [x] 2.8 Write basic smoke tests for each component (one test file per component)
 
 ## Phase 3: Login & Dashboard (1-2 hours)
 
-- [ ] 3. Update Login and Dashboard
-  - [ ] 3.1 Refactor CMSLogin with new Input and Button components
-  - [ ] 3.2 Add centered card layout and icons
-  - [ ] 3.3 Refactor CMSDashboard with sidebar navigation (replace tabs)
-  - [ ] 3.4 Replace confirm() with AlertDialog for delete actions
-  - [ ] 3.5 Update project/news cards with Card component
-  - [ ] 3.6 Write basic test for login flow
+- [x] 3. Update Login and Dashboard
+  - [x] 3.1 Refactor CMSLogin with new Input and Button components
+  - [x] 3.2 Add centered card layout and icons
+  - [x] 3.3 Refactor CMSDashboard with sidebar navigation (replace tabs)
+  - [x] 3.4 Replace confirm() with AlertDialog for delete actions
+  - [x] 3.5 Update project/news cards with Card component
+  - [x] 3.6 Write basic test for login flow
 
 ## Phase 4: Forms Refactor (3-4 hours)
 
-- [ ] 4. Update All Forms
-  - [ ] 4.1 Refactor ProjectForm with grouped sections (Basic Info, Media, SEO collapsible)
-  - [ ] 4.2 Refactor NewsForm with new components
-  - [ ] 4.3 Refactor SettingsForm with sections (Brand, Navigation, Contact)
-  - [ ] 4.4 Refactor HomePageForm with sections (Hero, CTAs, SEO collapsible)
-  - [ ] 4.5 Refactor PageEditor with new components
-  - [ ] 4.6 Write one integration test per form (submit and verify data)
+- [x] 4. Update All Forms
+  - [x] 4.1 Refactor ProjectForm with grouped sections (Basic Info, Media, SEO collapsible)
+  - [x] 4.2 Refactor NewsForm with new components
+  - [x] 4.3 Refactor SettingsForm with sections (Brand, Navigation, Contact)
+  - [x] 4.4 Refactor HomePageForm with sections (Hero, CTAs, SEO collapsible)
+  - [x] 4.5 Refactor PageEditor with new components
+  - [x] 4.6 Write one integration test per form (submit and verify data)
 
 ## Phase 5: Essential Testing (1-2 hours)
 
-- [ ] 5. Critical Tests Only
-  - [ ] 5.1 Create test utilities (renderWithProviders, mock API responses)
-  - [ ] 5.2 Test data persistence: existing fields preserved when saving
-  - [ ] 5.3 Test environment config: API_URL uses env variable
-  - [ ] 5.4 Test form validation: required fields enforced
-  - [ ] 5.5 Test file uploads: image upload and preview works
-  - [ ] 5.6 Run accessibility audit with browser DevTools (manual)
+- [x] 5. Critical Tests Only
+  - [x] 5.1 Create test utilities (renderWithProviders, mock API responses)
+  - [x] 5.2 Test data persistence: existing fields preserved when saving
+  - [x] 5.3 Test environment config: API_URL uses env variable
+  - [x] 5.4 Test form validation: required fields enforced
+  - [x] 5.5 Test file uploads: image upload and preview works
+  - [x] 5.6 Run accessibility audit with browser DevTools (manual)
 
 ## Phase 6: Polish & Deploy (1 hour)
 
-- [ ] 6. Final Touches
-  - [ ] 6.1 Test on mobile viewport (responsive check)
-  - [ ] 6.2 Test keyboard navigation (Tab through forms)
-  - [ ] 6.3 Remove console.logs and unused imports
-  - [ ] 6.4 Run `npm run build` and verify no errors
-  - [ ] 6.5 Create .env.example with VITE_API_URL
-  - [ ] 6.6 Update README with new testing commands
+- [x] 6. Final Touches
+  - [x] 6.1 Test on mobile viewport (responsive check)
+  - [x] 6.2 Test keyboard navigation (Tab through forms)
+  - [x] 6.3 Remove console.logs and unused imports
+  - [x] 6.4 Run `npm run build` and verify no errors
+  - [x] 6.5 Create .env.example with VITE_API_URL
+  - [x] 6.6 Update README with new testing commands
 
 ## Simplified Testing Approach
 

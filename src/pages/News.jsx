@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import LazyImage from '../components/LazyImage'
 import { API_URL } from '../config'
+import { getImageUrl } from '../utils/imageUrl'
 
 const News = () => {
   const [news, setNews] = useState([])
@@ -23,7 +24,7 @@ const News = () => {
             <article key={item.id} className="border-b pb-8">
               {item.image && (
                 <LazyImage 
-                  src={item.image} 
+                  src={getImageUrl(item.image)}
                   alt={item.title}
                   className="w-full h-64 object-cover rounded-lg mb-4"
                   priority={index === 0}

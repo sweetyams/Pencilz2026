@@ -1,57 +1,80 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import Input from '../components/ui/Input'
+import Button from '../components/ui/Button'
 
 const CMSLogin = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (login(username, password)) {
-      navigate('/cms')
-    } else {
-      setError('Invalid credentials')
-    }
+    setLoading(true)
+    setError('')
+    
+    // Simulate async login
+    setTimeout(() => {
+      if (login(username, password)) {
+        navigate('/cms')
+      } else {
+        setError('Invalid credentials. Please try again.')
+        setLoading(false)
+      }
+    }, 500)
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6">CMS Login</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Username</label>
-            <input
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Pencilz CMS</h1>
+          <p className="text-sm text-gray-600">Sign in to manage your content</p>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              label="Username"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
+              placeholder="admin"
               required
+              autoFocus
             />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Password</label>
-            <input
+            
+            <Input
+              label="Password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
+              placeholder="Enter your password"
               required
+              error={error}
             />
+            
+            <Button 
+              type="submit" 
+              variant="solid" 
+              size="md"
+              className="w-full"
+              loading={loading}
+            >
+              Sign In
+            </Button>
+          </form>
+          
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <p className="text-xs text-center text-gray-500">
+              Default: <span className="font-medium">admin</span> / <span className="font-medium">admin123</span>
+            </p>
           </div>
-          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-          <button
-            type="submit"
-            className="w-full bg-black text-white py-2 rounded-lg hover:opacity-80"
-          >
-            Login
-          </button>
-        </form>
-        <p className="text-sm text-gray-500 mt-4">Default: admin / admin123</p>
+        </div>
       </div>
     </div>
   )

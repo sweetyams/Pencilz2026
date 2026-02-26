@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import LazyImage from './LazyImage'
 import { API_URL } from '../config'
+import { getImageUrl } from '../utils/imageUrl'
 
 const Navigation = () => {
   const [settings, setSettings] = useState({})
@@ -126,7 +127,7 @@ const Navigation = () => {
               >
                 {settings.hamburgerIcon ? (
                   <LazyImage 
-                    src={settings.hamburgerIcon} 
+                    src={getImageUrl(settings.hamburgerIcon)}
                     alt="Menu" 
                     className="w-6 h-6"
                     priority={true}
@@ -180,7 +181,7 @@ const Navigation = () => {
               {settings.logo && (
                 <Link to="/">
                   <LazyImage 
-                    src={settings.logo} 
+                    src={getImageUrl(settings.logo)}
                     alt="Pencilz" 
                     className="md:hidden h-5"
                     style={{ height: '20px', width: 'auto' }}

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import LazyImage from './LazyImage'
+import { getImageUrl } from '../utils/imageUrl'
 
 const ProjectCard = ({ project, priority = false }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -27,7 +28,7 @@ const ProjectCard = ({ project, priority = false }) => {
       {/* Background Image */}
       <div className="absolute inset-0">
         <LazyImage 
-          src={project.image} 
+          src={getImageUrl(project.image)}
           alt={project.title}
           className="w-full h-full object-cover transition-all duration-500"
           style={{
@@ -94,9 +95,9 @@ const ProjectCard = ({ project, priority = false }) => {
             {project.description}
           </p>
 
-          {project.services && project.services.length > 0 && (
+          {project.services && project.services.length > 0 && project.services.some(s => s && s.trim()) && (
             <ul className="space-y-2 mb-6">
-              {project.services.map((service, i) => (
+              {project.services.filter(s => s && s.trim()).map((service, i) => (
                 <li key={i} className="text-sm">• {service}</li>
               ))}
             </ul>

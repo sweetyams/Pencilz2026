@@ -1,131 +1,136 @@
-import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { useForm, Controller } from 'react-hook-form'
 import { API_URL } from '../config'
+import FormSection from '../components/ui/FormSection'
+import Input from '../components/ui/Input'
+import Textarea from '../components/ui/Textarea'
+import FileInput from '../components/ui/FileInput'
+import Button from '../components/ui/Button'
 
-const NewsForm = ({ newsItem, onSave, onCancel }) => {
-  const { register, handleSubmit, setValue, watch } = useForm({
-    defaultValues: newsItem
+const NewsForm = ({ newsItem = {}, onSave, onCancel }) => {
+  const { register, handleSubmit, control, watch, formState: { isSubmitting, errors } } = useForm({
+    values: {
+      id: newsItem.id || undefined,
+      title: newsItem.title || '',
+      category: newsItem.category || '',
+      date: newsItem.date || new Date().toISOString().split('T')[0],
+      excerpt: newsItem.excerpt || '',
+      content: newsItem.content || '',
+      image: newsItem.image || ''
+    }
   })
-  const [uploading, setUploading] = useState(false)
   const imageValue = watch('image')
+  console.log('🎨 NewsForm: Current image value from form:', imageValue)
+  console.log('📦 NewsForm: NewsItem prop:', newsItem)
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0]
-    if (!file) return
+  // No need for useEffect - using 'values' instead of 'defaultValues'
 
-    setUploading(true)
-    const formData = new FormData()
-    formData.append('image', file)
-
+  const handleImageUpload = async (file) => {
+    if (!file) return null
+    
+    console.log('📤 NewsForm: Starting upload for:', file.name)
+    
     try {
+      const formData = new FormData()
+      formData.append('image', file)
+      
       const response = await fetch(`${API_URL}/api/upload`, {
         method: 'POST',
         body: formData
       })
       
-      if (!response.ok) throw new Error('Upload failed')
+      if (!response.ok) {
+        const error = await response.text()
+        throw new Error(`Upload failed: ${error}`)
+      }
       
       const data = await response.json()
-      setValue('image', data.url)
-      alert('Image uploaded successfully!')
+      console.log('✅ NewsForm: Upload successful, URL:', data.url)
+      console.log('📊 NewsForm: Full response:', data)
+      return data.url
     } catch (error) {
+      console.error('❌ NewsForm: Upload error:', error)
       alert('Error uploading image: ' + error.message)
-    } finally {
-      setUploading(false)
+      throw error
     }
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h3 className="text-xl font-bold mb-4">
-        {newsItem.id ? 'Edit News' : 'Add News'}
-      </h3>
-      <form onSubmit={handleSubmit(onSave)}>
-        <div className="grid gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Title</label>
-            <input
+    <form onSubmit={handleSubmit(onSave)}>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="p-6 space-y-6">
+          <FormSection title="Basic Information">
+            <Input
+              label="Title"
               {...register('title')}
-              className="w-full px-3 py-2 border rounded-lg"
               required
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Category</label>
-            <input
+            <Input
+              label="Category"
               {...register('category')}
-              className="w-full px-3 py-2 border rounded-lg"
               placeholder="Insights, News, Updates"
               required
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Excerpt</label>
-            <textarea
+            <Input
+              label="Date"
+              type="date"
+              {...register('date')}
+              required
+            />
+          </FormSection>
+
+          <FormSection title="Content">
+            <Textarea
+              label="Excerpt"
               {...register('excerpt')}
-              className="w-full px-3 py-2 border rounded-lg"
-              rows="2"
+              rows={2}
               placeholder="Short description"
               required
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Content</label>
-            <textarea
+            <Textarea
+              label="Content"
               {...register('content')}
-              className="w-full px-3 py-2 border rounded-lg"
-              rows="6"
+              rows={6}
               required
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Featured Image</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="w-full px-3 py-2 border rounded-lg mb-2"
-              disabled={uploading}
+          </FormSection>
+
+          <FormSection title="Featured Image">
+            <Controller
+              name="image"
+              control={control}
+              rules={{ required: !newsItem.image ? 'Featured image is required' : false }}
+              render={({ field }) => {
+                console.log('🎛️ NewsForm Controller render - field.value:', field.value)
+                return (
+                  <FileInput
+                    label="Upload Image"
+                    accept="image/*"
+                    onUpload={handleImageUpload}
+                    value={field.value}
+                    onChange={(url) => {
+                      console.log('🔄 NewsForm Controller onChange called with:', url)
+                      field.onChange(url)
+                    }}
+                    error={errors.image?.message}
+                    helperText="Recommended: 1200x800px, JPG or PNG"
+                  />
+                )
+              }}
             />
-            <input
-              {...register('image')}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Or paste image URL"
-            />
-            {uploading && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
-            {imageValue && (
-              <div className="mt-2">
-                <img src={imageValue} alt="Preview" className="h-32 object-cover rounded" />
-              </div>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Date</label>
-            <input
-              {...register('date')}
-              type="date"
-              className="w-full px-3 py-2 border rounded-lg"
-              required
-            />
-          </div>
+          </FormSection>
         </div>
-        <div className="flex gap-2 mt-6">
-          <button
-            type="submit"
-            className="bg-black text-white px-4 py-2 rounded-lg hover:opacity-80"
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="bg-gray-200 px-4 py-2 rounded-lg hover:opacity-80"
-          >
+
+        {/* Action Bar */}
+        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-3">
+          <Button type="button" variant="secondary" onClick={onCancel}>
             Cancel
-          </button>
+          </Button>
+          <Button type="submit">
+            {newsItem?.id ? 'Save Changes' : 'Create Article'}
+          </Button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   )
 }
 

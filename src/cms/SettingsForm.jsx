@@ -1,12 +1,16 @@
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import { API_URL } from '../config'
+import Card from '../components/ui/Card'
+import FormSection from '../components/ui/FormSection'
+import Input from '../components/ui/Input'
+import Textarea from '../components/ui/Textarea'
+import FileInput from '../components/ui/FileInput'
+import Button from '../components/ui/Button'
+import SortableList from '../components/ui/SortableList'
 
 const SettingsForm = () => {
-  const { register, handleSubmit, setValue, watch } = useForm()
-  const [uploading, setUploading] = useState(false)
-  const [uploadingHamburger, setUploadingHamburger] = useState(false)
-  const [uploadingButtonIcon, setUploadingButtonIcon] = useState(false)
+  const { register, handleSubmit, setValue, watch, reset } = useForm()
   const [settings, setSettings] = useState({})
   const [services, setServices] = useState([])
   const [aboutItems, setAboutItems] = useState([])
@@ -19,106 +23,55 @@ const SettingsForm = () => {
       .then(res => res.json())
       .then(data => {
         setSettings(data)
-        setValue('email', data.email)
-        setValue('companyName', data.companyName)
-        setValue('location', data.location)
-        setValue('logo', data.logo)
-        setValue('hamburgerIcon', data.hamburgerIcon)
-        setValue('buttonIcon', data.buttonIcon)
-        setValue('servicesDescription', data.servicesDescription)
-        setValue('aboutDescription', data.aboutDescription)
+        reset({
+          email: data.email || '',
+          companyName: data.companyName || '',
+          location: data.location || '',
+          logo: data.logo || '',
+          hamburgerIcon: data.hamburgerIcon || '',
+          buttonIcon: data.buttonIcon || '',
+          servicesDescription: data.servicesDescription || '',
+          aboutDescription: data.aboutDescription || ''
+        })
         setServices(data.services || [])
         setAboutItems(data.aboutItems || [])
       })
-  }, [setValue])
+  }, [reset])
 
-  const handleLogoUpload = async (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-
-    setUploading(true)
-    const formData = new FormData()
-    formData.append('image', file)
-
+  const handleImageUpload = async (file) => {
+    if (!file) return null
+    
     try {
+      const formData = new FormData()
+      formData.append('image', file)
+      
       const response = await fetch(`${API_URL}/api/upload`, {
         method: 'POST',
         body: formData
       })
       
-      if (!response.ok) throw new Error('Upload failed')
+      if (!response.ok) {
+        const error = await response.text()
+        throw new Error(`Upload failed: ${error}`)
+      }
       
       const data = await response.json()
-      setValue('logo', data.url)
-      alert('Logo uploaded successfully!')
+      console.log('SettingsForm: Upload successful:', data.url)
+      return data.url
     } catch (error) {
-      alert('Error uploading logo: ' + error.message)
-    } finally {
-      setUploading(false)
-    }
-  }
-
-  const handleHamburgerIconUpload = async (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-
-    setUploadingHamburger(true)
-    const formData = new FormData()
-    formData.append('image', file)
-
-    try {
-      const response = await fetch(`${API_URL}/api/upload`, {
-        method: 'POST',
-        body: formData
-      })
-      
-      if (!response.ok) throw new Error('Upload failed')
-      
-      const data = await response.json()
-      setValue('hamburgerIcon', data.url)
-      alert('Hamburger icon uploaded successfully!')
-    } catch (error) {
-      alert('Error uploading hamburger icon: ' + error.message)
-    } finally {
-      setUploadingHamburger(false)
-    }
-  }
-
-  const handleButtonIconUpload = async (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-
-    setUploadingButtonIcon(true)
-    const formData = new FormData()
-    formData.append('image', file)
-
-    try {
-      const response = await fetch(`${API_URL}/api/upload`, {
-        method: 'POST',
-        body: formData
-      })
-      
-      if (!response.ok) throw new Error('Upload failed')
-      
-      const data = await response.json()
-      setValue('buttonIcon', data.url)
-      alert('Button icon uploaded successfully!')
-    } catch (error) {
-      alert('Error uploading button icon: ' + error.message)
-    } finally {
-      setUploadingButtonIcon(false)
+      console.error('SettingsForm: Upload error:', error)
+      alert('Error uploading image: ' + error.message)
+      throw error
     }
   }
 
   const onSave = async (data) => {
-    console.log('Form submitted with data:', data)
     try {
       const payload = {
         ...data,
         services,
         aboutItems
       }
-      console.log('Saving settings:', payload)
       const response = await fetch(`${API_URL}/api/settings`, {
         method: 'PUT',
         headers: { 
@@ -127,22 +80,17 @@ const SettingsForm = () => {
         body: JSON.stringify(payload)
       })
       
-      console.log('Response status:', response.status)
-      
       if (response.ok) {
         const savedData = await response.json()
-        console.log('Saved data:', savedData)
         setSettings(savedData)
         setServices(savedData.services || [])
         setAboutItems(savedData.aboutItems || [])
         alert('Settings saved successfully!')
       } else {
         const errorText = await response.text()
-        console.error('Save failed:', errorText)
         alert('Failed to save settings: ' + errorText)
       }
     } catch (error) {
-      console.error('Error saving settings:', error)
       alert('Error saving settings: ' + error.message)
     }
   }
@@ -184,240 +132,192 @@ const SettingsForm = () => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h3 className="text-xl font-bold mb-4">Site Settings</h3>
-      <form onSubmit={handleSubmit(onSave)}>
-        <div className="grid gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Logo</label>
-            <input
-              type="file"
+    <div className="max-w-2xl mx-auto px-4 py-6">
+      <h3 className="text-2xl font-bold mb-6">Site Settings</h3>
+      <form onSubmit={handleSubmit(onSave)} className="space-y-6">
+        {/* Brand Identity Section */}
+        <Card>
+          <FormSection title="Brand Identity">
+            <FileInput
+              label="Logo"
               accept="image/*,image/svg+xml,.svg"
-              onChange={handleLogoUpload}
-              className="w-full px-3 py-2 border rounded-lg mb-2"
-              disabled={uploading}
+              onUpload={handleImageUpload}
+              value={logoValue}
+              onChange={(url) => setValue('logo', url)}
+              helperText="Upload your logo (SVG, PNG, JPG)"
             />
-            <input
-              {...register('logo')}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Or paste logo URL"
-            />
-            {uploading && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
-            {logoValue && (
-              <div className="mt-2">
-                <img src={logoValue} alt="Logo Preview" className="h-32 object-contain rounded" />
-              </div>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Hamburger Menu Icon</label>
-            <input
-              type="file"
+
+            <FileInput
+              label="Hamburger Menu Icon"
               accept="image/*,image/svg+xml,.svg"
-              onChange={handleHamburgerIconUpload}
-              className="w-full px-3 py-2 border rounded-lg mb-2"
-              disabled={uploadingHamburger}
+              onUpload={handleImageUpload}
+              value={hamburgerIconValue}
+              onChange={(url) => setValue('hamburgerIcon', url)}
+              helperText="Upload hamburger icon (SVG recommended)"
             />
-            <input
-              {...register('hamburgerIcon')}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Or paste hamburger icon URL"
+
+            <FileInput
+              label="Button Arrow Icon (SVG)"
+              accept="image/svg+xml,.svg"
+              onUpload={handleImageUpload}
+              value={buttonIconValue}
+              onChange={(url) => setValue('buttonIcon', url)}
+              helperText="Upload button icon (SVG only)"
             />
-            {uploadingHamburger && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
-            {hamburgerIconValue && (
-              <div className="mt-2">
-                <img src={hamburgerIconValue} alt="Hamburger Icon Preview" className="h-16 object-contain rounded" />
-              </div>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Contact Email</label>
-            <input
-              {...register('email')}
+          </FormSection>
+        </Card>
+
+        {/* Contact Information Section */}
+        <Card>
+          <FormSection title="Contact Information">
+            <Input
+              label="Contact Email"
               type="email"
-              className="w-full px-3 py-2 border rounded-lg"
+              {...register('email')}
               required
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Company Name</label>
-            <input
+            <Input
+              label="Company Name"
               {...register('companyName')}
-              className="w-full px-3 py-2 border rounded-lg"
               placeholder="e.g., Pencilz + Friends"
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Location</label>
-            <input
+            <Input
+              label="Location"
               {...register('location')}
-              className="w-full px-3 py-2 border rounded-lg"
               placeholder="e.g., Montreal"
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Button Arrow Icon (SVG)</label>
-            <input
-              type="file"
-              accept="image/svg+xml,.svg"
-              onChange={handleButtonIconUpload}
-              className="w-full px-3 py-2 border rounded-lg mb-2"
-              disabled={uploadingButtonIcon}
-            />
-            <input
-              {...register('buttonIcon')}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Or paste button icon URL"
-            />
-            {uploadingButtonIcon && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
-            {buttonIconValue && (
-              <div className="mt-2">
-                <img src={buttonIconValue} alt="Button Icon Preview" className="h-8 object-contain rounded" />
-              </div>
-            )}
-          </div>
-        </div>
+          </FormSection>
+        </Card>
 
-        {/* Services Section */}
-        <div className="border-t pt-4 mt-4">
-          <div className="flex justify-between items-center mb-3">
-            <h4 className="font-semibold">Services Menu Items</h4>
-            <button
-              type="button"
-              onClick={addService}
-              className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
-            >
-              + Add Service
-            </button>
-          </div>
+        {/* Services Navigation Section */}
+        <Card>
+          <FormSection title="Services Navigation">
+            <div className="flex justify-between items-center mb-3">
+              <h4 className="font-medium text-sm">Menu Items</h4>
+              <Button
+                type="button"
+                onClick={addService}
+                variant="secondary"
+                size="sm"
+              >
+                + Add Service
+              </Button>
+            </div>
 
-          {services.map((service, index) => (
-            <div key={service.id} className="border rounded-lg p-4 mb-3 bg-gray-50">
-              <div className="flex justify-between items-center mb-3">
-                <h5 className="font-medium">Service {index + 1}</h5>
-                <button
-                  type="button"
-                  onClick={() => removeService(service.id)}
-                  className="text-red-600 hover:text-red-800 text-sm"
+            <SortableList
+              items={services}
+              onReorder={setServices}
+              emptyMessage="No services yet. Click 'Add Service' to create one."
+              defaultOpen={false}
+              getTitleFromItem={(service) => service.name || 'Untitled Service'}
+              getHeaderActions={(service) => (
+                <div
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    removeService(service.id)
+                  }}
+                  className="text-red-600 hover:text-red-800 text-xl leading-none px-2 py-1 cursor-pointer select-none"
+                  title="Remove service"
+                  role="button"
+                  tabIndex={0}
                 >
-                  Remove
-                </button>
-              </div>
-
-              <div className="grid gap-3">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Service Name</label>
-                  <input
+                  ×
+                </div>
+              )}
+              renderItem={(service) => (
+                <div className="space-y-3">
+                  <Input
+                    label="Service Name"
                     value={service.name}
                     onChange={(e) => updateService(service.id, 'name', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg"
                     placeholder="e.g., Shopify builds"
                   />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Link URL</label>
-                  <input
+                  <Input
+                    label="Link URL"
                     value={service.link}
                     onChange={(e) => updateService(service.id, 'link', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg"
                     placeholder="e.g., /services or https://example.com"
                   />
                 </div>
-              </div>
-            </div>
-          ))}
+              )}
+            />
 
-          {services.length === 0 && (
-            <p className="text-gray-500 text-sm text-center py-4">
-              No services yet. Click "Add Service" to create one.
-            </p>
-          )}
-
-          <div className="mt-4">
-            <label className="block text-sm font-medium mb-1">Services Description</label>
-            <textarea
+            <Textarea
+              label="Services Description"
               {...register('servicesDescription')}
-              className="w-full px-3 py-2 border rounded-lg"
-              rows="3"
+              rows={3}
               placeholder="Description text that appears in the services megamenu"
             />
-          </div>
-        </div>
+          </FormSection>
+        </Card>
 
-        {/* About Section */}
-        <div className="border-t pt-4 mt-4">
-          <div className="flex justify-between items-center mb-3">
-            <h4 className="font-semibold">About Menu Items</h4>
-            <button
-              type="button"
-              onClick={addAboutItem}
-              className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
-            >
-              + Add About Item
-            </button>
-          </div>
+        {/* About Navigation Section */}
+        <Card>
+          <FormSection title="About Navigation">
+            <div className="flex justify-between items-center mb-3">
+              <h4 className="font-medium text-sm">Menu Items</h4>
+              <Button
+                type="button"
+                onClick={addAboutItem}
+                variant="secondary"
+                size="sm"
+              >
+                + Add About Item
+              </Button>
+            </div>
 
-          {aboutItems.map((item, index) => (
-            <div key={item.id} className="border rounded-lg p-4 mb-3 bg-gray-50">
-              <div className="flex justify-between items-center mb-3">
-                <h5 className="font-medium">About Item {index + 1}</h5>
-                <button
-                  type="button"
-                  onClick={() => removeAboutItem(item.id)}
-                  className="text-red-600 hover:text-red-800 text-sm"
+            <SortableList
+              items={aboutItems}
+              onReorder={setAboutItems}
+              emptyMessage="No about items yet. Click 'Add About Item' to create one."
+              defaultOpen={false}
+              getTitleFromItem={(item) => item.name || 'Untitled Item'}
+              getHeaderActions={(item) => (
+                <div
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    removeAboutItem(item.id)
+                  }}
+                  className="text-red-600 hover:text-red-800 text-xl leading-none px-2 py-1 cursor-pointer select-none"
+                  title="Remove item"
+                  role="button"
+                  tabIndex={0}
                 >
-                  Remove
-                </button>
-              </div>
-
-              <div className="grid gap-3">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Item Name</label>
-                  <input
+                  ×
+                </div>
+              )}
+              renderItem={(item) => (
+                <div className="space-y-3">
+                  <Input
+                    label="Item Name"
                     value={item.name}
                     onChange={(e) => updateAboutItem(item.id, 'name', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg"
                     placeholder="e.g., Our Story"
                   />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Link URL</label>
-                  <input
+                  <Input
+                    label="Link URL"
                     value={item.link}
                     onChange={(e) => updateAboutItem(item.id, 'link', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg"
                     placeholder="e.g., /about or https://example.com"
                   />
                 </div>
-              </div>
-            </div>
-          ))}
+              )}
+            />
 
-          {aboutItems.length === 0 && (
-            <p className="text-gray-500 text-sm text-center py-4">
-              No about items yet. Click "Add About Item" to create one.
-            </p>
-          )}
-
-          <div className="mt-4">
-            <label className="block text-sm font-medium mb-1">About Description</label>
-            <textarea
+            <Textarea
+              label="About Description"
               {...register('aboutDescription')}
-              className="w-full px-3 py-2 border rounded-lg"
-              rows="3"
+              rows={3}
               placeholder="Description text that appears in the about megamenu"
             />
-          </div>
-        </div>
+          </FormSection>
+        </Card>
 
-        <button
-          type="submit"
-          className="mt-6 bg-black text-white px-4 py-2 rounded-lg hover:opacity-80"
-        >
+        <Button type="submit" className="w-full">
           Save Settings
-        </button>
+        </Button>
       </form>
     </div>
   )

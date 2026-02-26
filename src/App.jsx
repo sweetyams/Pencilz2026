@@ -11,6 +11,9 @@ import FAQ from './pages/FAQ'
 import TestStack from './pages/TestStack'
 import CMSLogin from './cms/CMSLogin'
 import CMSDashboard from './cms/CMSDashboard'
+import ProjectEditPage from './cms/ProjectEditPage'
+import NewsEditPage from './cms/NewsEditPage'
+import PageEditPage from './cms/PageEditPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -30,6 +33,9 @@ function App() {
           </Route>
           <Route path="/cms/login" element={<CMSLogin />} />
           <Route path="/cms" element={<ProtectedRoute><CMSDashboard /></ProtectedRoute>} />
+          <Route path="/cms/projects/:id" element={<ProtectedRoute><ProjectEditPage /></ProtectedRoute>} />
+          <Route path="/cms/news/:id" element={<ProtectedRoute><NewsEditPage /></ProtectedRoute>} />
+          <Route path="/cms/pages/:pageName" element={<ProtectedRoute><PageEditPage /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

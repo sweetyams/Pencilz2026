@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getImageUrl } from '../utils/imageUrl'
 
 const Button = ({ 
   children, 
@@ -28,7 +29,7 @@ const Button = ({
 
   // Background and border based on hover
   const stateStyles = isHovered 
-    ? 'bg-[#e7fe89] border-dashed' 
+    ? 'bg-[#89FED7] border-dashed' 
     : 'bg-white border-solid'
 
   // Fixed padding - no change on hover
@@ -38,7 +39,7 @@ const Button = ({
   const layoutStyles = 'justify-between lg:justify-start'
   const layoutHoverStyles = isHovered ? 'lg:justify-between' : ''
 
-  const variantStyles = variant === 'primary' ? 'bg-[#e7fe89] border-dashed' : ''
+  const variantStyles = variant === 'primary' ? 'bg-[#89FED7] border-dashed' : ''
 
   const combinedClassName = `${baseStyles} ${stateStyles} ${paddingStyles} ${layoutStyles} ${layoutHoverStyles} ${variantStyles} ${className}`
 
@@ -67,7 +68,7 @@ const Button = ({
         <>
           {icon ? (
             <img 
-              src={icon} 
+              src={getImageUrl(icon)}
               alt="" 
               className="hidden lg:block w-[39px] h-[19px] flex-shrink-0"
             />
@@ -90,7 +91,7 @@ const Button = ({
         <>
           {icon ? (
             <img 
-              src={icon} 
+              src={getImageUrl(icon)}
               alt="" 
               className="hidden lg:block w-[39px] h-[19px] flex-shrink-0"
             />
