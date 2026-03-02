@@ -11,11 +11,17 @@ try {
   const gitBranch = execSync('git rev-parse --abbrev-ref HEAD').toString().trim()
   const buildTime = new Date().toISOString()
   
+  // Use Vercel environment variables if available
+  const vercelGitCommitSha = process.env.VERCEL_GIT_COMMIT_SHA
+  const vercelGitCommitRef = process.env.VERCEL_GIT_COMMIT_REF
+  
   const buildInfo = {
-    hash: gitHash,
-    branch: gitBranch,
+    hash: vercelGitCommitSha ? vercelGitCommitSha.substring(0, 7) : gitHash,
+    branch: vercelGitCommitRef || gitBranch,
     timestamp: buildTime,
-    version: `${gitBranch}-${gitHash}`
+    version: vercelGitCommitSha 
+      ? `${vercelGitCommitRef || 'main'}-${vercelGitCommitSha.substring(0, 7)}`
+      : `${gitBranch}-${gitHash}`
   }
 
   const outputPath = path.join(__dirname, '../src/buildInfo.json')

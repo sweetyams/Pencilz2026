@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "node scripts/generate-build-info.js && npm run build",
   "builds": [
     {
       "src": "package.json",
