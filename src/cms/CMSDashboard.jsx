@@ -19,13 +19,20 @@ const CMSDashboard = () => {
   const [projects, setProjects] = useState([])
   const [news, setNews] = useState([])
   const [deleteDialog, setDeleteDialog] = useState({ open: false, id: null, type: null })
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
   const { logout } = useAuth()
   const navigate = useNavigate()
 
   // Update URL when section changes
   const handleSectionChange = (sectionId) => {
+    if (hasUnsavedChanges) {
+      if (!confirm('You have unsaved changes. Are you sure you want to leave?')) {
+        return
+      }
+    }
     setActiveSection(sectionId)
     setSearchParams({ section: sectionId })
+    setHasUnsavedChanges(false)
   }
 
   // Sync activeSection with URL on mount and URL changes
@@ -63,8 +70,30 @@ const CMSDashboard = () => {
   }, [])
 
   const handleLogout = () => {
+    if (hasUnsavedChanges) {
+      if (!confirm('You have unsaved changes. Are you sure you want to leave?')) {
+        return
+      }
+    }
     logout()
     navigate('/cms/login')
+  }
+
+  const handleSaveChanges = () => {
+    const form = document.querySelector('form')
+    if (form) {
+      form.requestSubmit()
+    }
+  }
+
+  const handleCancelChanges = () => {
+    // Trigger form reset by toggling section
+    const currentSection = activeSection
+    setActiveSection(null)
+    setTimeout(() => {
+      setActiveSection(currentSection)
+      setHasUnsavedChanges(false)
+    }, 0)
   }
 
   const confirmDelete = async () => {
@@ -117,12 +146,33 @@ const CMSDashboard = () => {
               ))}
             </div>
           </div>
-          <Button variant="ghost" size="sm" onClick={handleLogout}>
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            Sign Out
-          </Button>
+          <div className="flex items-center gap-3">
+            {/* Save/Cancel actions when changes detected */}
+            {hasUnsavedChanges && (
+              <>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleCancelChanges}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleSaveChanges}
+                >
+                  Save Changes
+                </Button>
+              </>
+            )}
+            <Button variant="ghost" size="sm" onClick={handleLogout}>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Sign Out
+            </Button>
+          </div>
         </div>
       </nav>
 
@@ -415,7 +465,10 @@ const CMSDashboard = () => {
               <h2 className="text-2xl font-bold text-gray-900">Home Page</h2>
               <p className="text-sm text-gray-600 mt-1">Customize your homepage content</p>
             </div>
-            <HomePageForm />
+            <HomePageForm 
+              onFormChange={() => setHasUnsavedChanges(true)}
+              onSaveSuccess={() => setHasUnsavedChanges(false)}
+            />
           </div>
         )}
 
@@ -426,7 +479,10 @@ const CMSDashboard = () => {
               <h2 className="text-2xl font-bold text-gray-900">Settings</h2>
               <p className="text-sm text-gray-600 mt-1">Configure global site settings</p>
             </div>
-            <SettingsForm />
+            <SettingsForm 
+              onFormChange={() => setHasUnsavedChanges(true)}
+              onSaveSuccess={() => setHasUnsavedChanges(false)}
+            />
           </div>
         )}
 
@@ -437,7 +493,10 @@ const CMSDashboard = () => {
               <h2 className="text-2xl font-bold text-gray-900">Tags & Taxonomy</h2>
               <p className="text-sm text-gray-600 mt-1">Manage reusable tags for projects</p>
             </div>
-            <TaxonomyForm />
+            <TaxonomyForm 
+              onFormChange={() => setHasUnsavedChanges(true)}
+              onSaveSuccess={() => setHasUnsavedChanges(false)}
+            />
           </div>
         )}
       </main>

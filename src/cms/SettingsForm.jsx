@@ -9,14 +9,27 @@ import FileInput from '../components/ui/FileInput'
 import Button from '../components/ui/Button'
 import SortableList from '../components/ui/SortableList'
 
-const SettingsForm = () => {
-  const { register, handleSubmit, setValue, watch, reset } = useForm()
+const SettingsForm = ({ onFormChange, onSaveSuccess }) => {
+  const { register, handleSubmit, setValue, watch, reset, formState: { isDirty } } = useForm()
   const [settings, setSettings] = useState({})
   const [services, setServices] = useState([])
   const [aboutItems, setAboutItems] = useState([])
+  const [initialServices, setInitialServices] = useState([])
+  const [initialAboutItems, setInitialAboutItems] = useState([])
   const logoValue = watch('logo')
   const hamburgerIconValue = watch('hamburgerIcon')
   const buttonIconValue = watch('buttonIcon')
+
+  // Track changes in services and about items
+  const servicesChanged = JSON.stringify(services) !== JSON.stringify(initialServices)
+  const aboutItemsChanged = JSON.stringify(aboutItems) !== JSON.stringify(initialAboutItems)
+
+  // Notify parent of changes
+  useEffect(() => {
+    if ((isDirty || servicesChanged || aboutItemsChanged) && onFormChange) {
+      onFormChange()
+    }
+  }, [isDirty, servicesChanged, aboutItemsChanged, onFormChange])
 
   useEffect(() => {
     fetch(`${API_URL}/api/settings`)
@@ -35,6 +48,8 @@ const SettingsForm = () => {
         })
         setServices(data.services || [])
         setAboutItems(data.aboutItems || [])
+        setInitialServices(data.services || [])
+        setInitialAboutItems(data.aboutItems || [])
       })
   }, [reset])
 
@@ -85,6 +100,11 @@ const SettingsForm = () => {
         setSettings(savedData)
         setServices(savedData.services || [])
         setAboutItems(savedData.aboutItems || [])
+        setInitialServices(savedData.services || [])
+        setInitialAboutItems(savedData.aboutItems || [])
+        if (onSaveSuccess) {
+          onSaveSuccess()
+        }
         alert('Settings saved successfully!')
       } else {
         const errorText = await response.text()

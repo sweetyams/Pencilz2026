@@ -1,13 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import multer from 'multer'
-import { fileURLToPath } from 'url'
-import { dirname, join } from 'path'
-import fs from 'fs'
+import { put } from '@vercel/blob'
 import { db } from '../lib/db.js'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
 
 const app = express()
 
@@ -15,22 +10,9 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// File upload configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadDir = join(__dirname, '../public/uploads')
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true })
-    }
-    cb(null, uploadDir)
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname)
-  }
-})
-
+// File upload configuration - use memory storage for Vercel
 const upload = multer({ 
-  storage,
+  storage: multer.memoryStorage(),
   fileFilter: (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml']
     if (allowedTypes.includes(file.mimetype)) {
@@ -38,11 +20,11 @@ const upload = multer({
     } else {
       cb(new Error('Invalid file type'))
     }
+  },
+  limits: {
+    fileSize: 4.5 * 1024 * 1024 // 4.5MB limit for Vercel Blob
   }
 })
-
-// Serve uploaded files
-app.use('/uploads', express.static(join(__dirname, '../public/uploads')))
 
 // Projects endpoints
 app.get('/api/projects', async (req, res) => {
@@ -194,12 +176,25 @@ app.put('/api/pages/:pageName', async (req, res) => {
   }
 })
 
-// Upload endpoint
-app.post('/api/upload', upload.single('image'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' })
+// Upload endpoint - use Vercel Blob storage
+app.post('/api/upload', upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' })
+    }
+
+    // Upload to Vercel Blob
+    const filename = `${Date.now()}-${req.file.originalname}`
+    const blob = await put(filename, req.file.buffer, {
+      access: 'public',
+      contentType: req.file.mimetype
+    })
+
+    res.json({ url: blob.url })
+  } catch (error) {
+    console.error('Upload error:', error)
+    res.status(500).json({ error: error.message })
   }
-  res.json({ url: `/uploads/${req.file.filename}` })
 })
 
 // Debug endpoint to check database status

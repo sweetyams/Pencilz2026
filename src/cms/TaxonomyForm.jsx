@@ -7,10 +7,21 @@ import Button from '../components/ui/Button'
 import SortableList from '../components/ui/SortableList'
 import AlertDialog from '../components/ui/AlertDialog'
 
-const TaxonomyForm = () => {
+const TaxonomyForm = ({ onFormChange, onSaveSuccess }) => {
   const [taxonomy, setTaxonomy] = useState([])
+  const [initialTaxonomy, setInitialTaxonomy] = useState([])
   const [loading, setLoading] = useState(true)
   const [deleteConfirm, setDeleteConfirm] = useState({ show: false, tag: null })
+
+  // Track changes
+  const taxonomyChanged = JSON.stringify(taxonomy) !== JSON.stringify(initialTaxonomy)
+
+  // Notify parent of changes
+  useEffect(() => {
+    if (taxonomyChanged && onFormChange) {
+      onFormChange()
+    }
+  }, [taxonomyChanged, onFormChange])
 
   useEffect(() => {
     loadTaxonomy()
@@ -21,6 +32,7 @@ const TaxonomyForm = () => {
       const response = await fetch(`${API_URL}/api/settings`)
       const data = await response.json()
       setTaxonomy(data.taxonomy || [])
+      setInitialTaxonomy(data.taxonomy || [])
     } catch (error) {
       console.error('Error loading taxonomy:', error)
     } finally {
@@ -45,6 +57,10 @@ const TaxonomyForm = () => {
       })
 
       if (saveResponse.ok) {
+        setInitialTaxonomy(taxonomy)
+        if (onSaveSuccess) {
+          onSaveSuccess()
+        }
         alert('Taxonomy saved successfully!')
       } else {
         throw new Error('Failed to save')
@@ -153,6 +169,9 @@ const TaxonomyForm = () => {
         const errorText = await saveResponse.text()
         throw new Error('Failed to save taxonomy: ' + errorText)
       }
+      
+      // Update initial state after successful save
+      setInitialTaxonomy(taxonomyToSave)
     } catch (error) {
       console.error('Error auto-saving taxonomy:', error)
       alert('Error saving taxonomy: ' + error.message)

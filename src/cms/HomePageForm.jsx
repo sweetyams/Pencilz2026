@@ -9,11 +9,22 @@ import FileInput from '../components/ui/FileInput'
 import Button from '../components/ui/Button'
 import SortableList from '../components/ui/SortableList'
 
-const HomePageForm = () => {
-  const { register, handleSubmit, setValue, watch } = useForm()
+const HomePageForm = ({ onFormChange, onSaveSuccess }) => {
+  const { register, handleSubmit, setValue, watch, formState: { isDirty } } = useForm()
   const [homePage, setHomePage] = useState({})
   const [heroButtons, setHeroButtons] = useState([])
+  const [initialHeroButtons, setInitialHeroButtons] = useState([])
   const heroImageValue = watch('heroImage')
+
+  // Track changes in hero buttons
+  const heroButtonsChanged = JSON.stringify(heroButtons) !== JSON.stringify(initialHeroButtons)
+
+  // Notify parent of changes
+  useEffect(() => {
+    if ((isDirty || heroButtonsChanged) && onFormChange) {
+      onFormChange()
+    }
+  }, [isDirty, heroButtonsChanged, onFormChange])
 
   useEffect(() => {
     fetch(`${API_URL}/api/pages/home`)
@@ -37,6 +48,7 @@ const HomePageForm = () => {
         setValue('metaKeywords', data.metaKeywords)
         setValue('ogImage', data.ogImage)
         setHeroButtons(data.heroButtons || [])
+        setInitialHeroButtons(data.heroButtons || [])
       })
       .catch(error => {
         console.error('Error loading home page:', error)
@@ -89,6 +101,10 @@ const HomePageForm = () => {
         const savedData = await response.json()
         setHomePage(savedData)
         setHeroButtons(savedData.heroButtons || [])
+        setInitialHeroButtons(savedData.heroButtons || [])
+        if (onSaveSuccess) {
+          onSaveSuccess()
+        }
         alert('Home page settings saved successfully!')
       } else {
         const errorText = await response.text()
