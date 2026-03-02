@@ -11,6 +11,7 @@ import AlertDialog from '../components/ui/AlertDialog'
 import EmptyState from '../components/ui/EmptyState'
 import { API_URL } from '../config'
 import { getImageUrl } from '../utils/imageUrl'
+import buildInfo from '../buildInfo.json'
 
 const CMSDashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -513,6 +514,16 @@ const CMSDashboard = () => {
         onCancel={() => setDeleteDialog({ open: false, id: null, type: null })}
         variant="danger"
       />
+
+      {/* Build Info */}
+      <div className="fixed bottom-2 left-2 text-[10px] text-gray-400 font-mono select-none pointer-events-none">
+        {buildInfo.version} • {new Date(buildInfo.timestamp).toLocaleString('en-US', { 
+          month: 'short', 
+          day: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        })}
+      </div>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import PageEditor from './PageEditor'
 import Button from '../components/ui/Button'
+import buildInfo from '../buildInfo.json'
 
 const PageEditPage = () => {
   const { pageName } = useParams()
@@ -48,6 +49,16 @@ const PageEditPage = () => {
           pageName={pageName}
           onClose={handleClose}
         />
+      </div>
+
+      {/* Build Info */}
+      <div className="fixed bottom-2 left-2 text-[10px] text-gray-400 font-mono select-none pointer-events-none">
+        {buildInfo.version} • {new Date(buildInfo.timestamp).toLocaleString('en-US', { 
+          month: 'short', 
+          day: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        })}
       </div>
     </div>
   )
