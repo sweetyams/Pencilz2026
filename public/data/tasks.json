@@ -1,0 +1,24 @@
+{
+  "tasks": [
+    {
+      "id": "e1ad11fd-0b96-4dc0-b9ce-f0e22ee8eb61",
+      "pageUrl": "http://localhost:5173/",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div.hidden.md:grid.lg:hidden.grid-cols-2.gap-4.px-5.md:px-[20px].mt-5:nth-child(2) > button.border.border-black.flex.items-center.relative.rounded-[70px].transition-all.duration-300.ease-in-out.bg-[#89FED7].border-dashed.px-6.py-4.lg:px-6.lg:py-3.justify-between.lg:justify-start.lg:justify-between:nth-child(1)",
+      "comment": "change the hover colour effect",
+      "creator": "willem",
+      "status": "open",
+      "createdAt": "2026-03-03T23:20:15.469Z",
+      "updatedAt": "2026-03-03T23:20:15.469Z"
+    },
+    {
+      "id": "e7e4eb04-7acd-405e-b56d-951a2a51e1ba",
+      "pageUrl": "http://localhost:5173/",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div.w-full.flex.items-center.justify-center.px-5.md:px-[20px].pt-12.pb-[200px]:nth-child(6) > div.flex.flex-col.items-center.gap-6",
+      "comment": "the padding is too small",
+      "creator": "willem",
+      "status": "open",
+      "createdAt": "2026-03-03T23:22:37.050Z",
+      "updatedAt": "2026-03-03T23:22:37.050Z"
+    }
+  ]
+}

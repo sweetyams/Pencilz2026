@@ -4,6 +4,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import SettingsForm from './SettingsForm'
 import HomePageForm from './HomePageForm'
 import TaxonomyForm from './TaxonomyForm'
+import UserDashboard from './UserDashboard'
+import TaskDashboard from './TaskDashboard'
 import Button from '../components/ui/Button'
 import Table from '../components/ui/Table'
 import DropdownMenu from '../components/ui/DropdownMenu'
@@ -47,9 +49,11 @@ const CMSDashboard = () => {
   const navigation = [
     { id: 'projects', label: 'Projects', icon: '📁' },
     { id: 'news', label: 'News', icon: '📰' },
+    { id: 'tasks', label: 'Tasks', icon: '✓' },
     { id: 'pages', label: 'Pages', icon: '📄' },
     { id: 'home', label: 'Home Page', icon: '🏠' },
     { id: 'taxonomy', label: 'Tags & Taxonomy', icon: '🏷️' },
+    { id: 'users', label: 'Users', icon: '👥' },
     { id: 'settings', label: 'Settings', icon: '⚙️' }
   ]
 
@@ -516,6 +520,12 @@ const CMSDashboard = () => {
             />
           </div>
         )}
+
+        {/* Users Section */}
+        {activeSection === 'users' && <UserDashboard />}
+
+        {/* Tasks Section */}
+        {activeSection === 'tasks' && <TaskDashboard />}
       </main>
 
       {/* Delete Confirmation Dialog */}

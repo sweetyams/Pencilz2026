@@ -96,5 +96,6 @@
       "type": "general",
       "usageCount": 1
     }
-  ]
+  ],
+  "visualFeedbackEnabled": true
 }

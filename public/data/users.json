@@ -1,0 +1,16 @@
+{
+  "users": [
+    {
+      "id": "c9e71250-f92d-46a7-b64c-c377e8ffc4b7",
+      "username": "willem",
+      "passwordHash": "$2b$10$NrOsBww7OYKORuBh3YSk3uZ8umWchhIlx/OUH4oH0YLRP.tnIFwrK",
+      "createdAt": "2026-03-03T00:00:00.000Z"
+    },
+    {
+      "id": "2942a455-7dc6-4a0a-a1b1-22243628d14e",
+      "username": "yann",
+      "passwordHash": "$2b$10$2E2K2xN12JSf4B2gfZ7UteFnfcZZyURvJG58WGVPbyP58m1Dw6/YS",
+      "createdAt": "2026-03-03T00:00:00.000Z"
+    }
+  ]
+}

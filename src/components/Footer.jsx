@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import LazyImage from './LazyImage'
+import { useAuth } from '../contexts/AuthContext'
 import { API_URL } from '../config'
 import { getImageUrl } from '../utils/imageUrl'
 
-const Footer = () => {
-  const [settings, setSettings] = useState({ email: '', logo: '', companyName: '' })
+const Footer = ({ onActivateFeedbackMode }) => {
+  const [settings, setSettings] = useState({ email: '', logo: '', companyName: '', visualFeedbackEnabled: false })
+  const { user } = useAuth()
 
   useEffect(() => {
     fetch(`${API_URL}/api/settings`)
@@ -13,6 +15,8 @@ const Footer = () => {
       .then(data => setSettings(data))
       .catch(() => {})
   }, [])
+
+  const showAddComments = user && settings.visualFeedbackEnabled
 
   return (
     <footer className="bg-white mt-auto w-full">
@@ -40,6 +44,17 @@ const Footer = () => {
           <Link to="/privacy" className="hover:opacity-70">Privacy Policy</Link>
           <Link to="/faq" className="hover:opacity-70">Faq</Link>
           <Link to="/" className="text-gray-600 hover:opacity-70">{settings.companyName}</Link>
+          {showAddComments && (
+            <button
+              onClick={onActivateFeedbackMode}
+              className="text-blue-600 hover:opacity-70 flex items-center gap-1"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+              </svg>
+              Add Comments
+            </button>
+          )}
           {import.meta.env.DEV && (
             <Link to="/tests" className="text-blue-600 hover:opacity-70">Tests</Link>
           )}

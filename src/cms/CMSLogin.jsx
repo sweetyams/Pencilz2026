@@ -17,15 +17,14 @@ const CMSLogin = () => {
     setLoading(true)
     setError('')
     
-    // Simulate async login
-    setTimeout(() => {
-      if (login(username, password)) {
-        navigate('/cms')
-      } else {
-        setError('Invalid credentials. Please try again.')
-        setLoading(false)
-      }
-    }, 500)
+    const success = await login(username, password)
+    
+    if (success) {
+      navigate('/cms')
+    } else {
+      setError('Invalid username or password. Please try again.')
+      setLoading(false)
+    }
   }
 
   return (
@@ -71,7 +70,7 @@ const CMSLogin = () => {
           
           <div className="mt-4 pt-4 border-t border-gray-200">
             <p className="text-xs text-center text-gray-500">
-              Default: <span className="font-medium">admin</span> / <span className="font-medium">admin123</span>
+              Users: <span className="font-medium">willem</span> / <span className="font-medium">yann</span>
             </p>
           </div>
         </div>

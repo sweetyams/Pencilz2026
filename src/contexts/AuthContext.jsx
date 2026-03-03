@@ -9,29 +9,47 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+  const [user, setUser] = useState(() => {
     // Initialize from localStorage immediately
-    return localStorage.getItem('cms_auth') === 'true'
+    const storedUser = localStorage.getItem('cms_user')
+    return storedUser ? JSON.parse(storedUser) : null
   })
   const [isLoading, setIsLoading] = useState(false)
 
-  const login = (username, password) => {
-    // Simple auth - replace with your actual credentials
-    if (username === 'admin' && password === 'admin123') {
-      setIsAuthenticated(true)
-      localStorage.setItem('cms_auth', 'true')
-      return true
+  const login = async (username, password) => {
+    setIsLoading(true)
+    try {
+      const response = await fetch('http://localhost:3001/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      
+      if (response.ok) {
+        const { user } = await response.json()
+        setUser(user)
+        localStorage.setItem('cms_user', JSON.stringify(user))
+        return true
+      }
+      return false
+    } catch (error) {
+      console.error('Login error:', error)
+      return false
+    } finally {
+      setIsLoading(false)
     }
-    return false
   }
 
   const logout = () => {
-    setIsAuthenticated(false)
-    localStorage.removeItem('cms_auth')
+    setUser(null)
+    localStorage.removeItem('cms_user')
   }
 
+  // Maintain backward compatibility with isAuthenticated
+  const isAuthenticated = !!user
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   )
