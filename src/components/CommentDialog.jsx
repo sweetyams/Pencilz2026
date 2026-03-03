@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import Button from './ui/Button'
 import { API_URL } from '../config'
 
-const CommentDialog = ({ isOpen, selector, pageUrl, user, onClose, onSuccess }) => {
+const CommentDialog = ({ isOpen, selector, screenshot, metadata, pageUrl, user, onClose, onSuccess }) => {
   const [comment, setComment] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -13,8 +13,13 @@ const CommentDialog = ({ isOpen, selector, pageUrl, user, onClose, onSuccess }) 
     if (isOpen) {
       setComment('')
       setError('')
+      console.log('🔍 CommentDialog opened with:', { 
+        hasScreenshot: !!screenshot, 
+        hasMetadata: !!metadata,
+        screenshotLength: screenshot?.length 
+      })
     }
-  }, [isOpen])
+  }, [isOpen, screenshot, metadata])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -34,20 +39,71 @@ const CommentDialog = ({ isOpen, selector, pageUrl, user, onClose, onSuccess }) 
     setIsSubmitting(true)
 
     try {
-      const response = await fetch(`${API_URL}/api/tasks`, {
+      let screenshotUrl = null
+
+      // Upload screenshot if available
+      if (screenshot) {
+        console.log('📸 Uploading screenshot...')
+        try {
+          // Convert data URL to blob
+          const response = await fetch(screenshot)
+          const blob = await response.blob()
+          console.log('📦 Blob created:', blob.size, 'bytes')
+          
+          // Create form data for upload
+          const formData = new FormData()
+          formData.append('image', blob, `feedback-${Date.now()}.png`)
+
+          // Upload to server
+          const uploadResponse = await fetch(`${API_URL}/api/upload`, {
+            method: 'POST',
+            body: formData
+          })
+
+          console.log('📤 Upload response status:', uploadResponse.status)
+
+          if (uploadResponse.ok) {
+            const uploadData = await uploadResponse.json()
+            screenshotUrl = uploadData.url
+            console.log('✅ Screenshot uploaded:', screenshotUrl)
+          } else {
+            const errorData = await uploadResponse.json()
+            console.error('❌ Upload failed:', errorData)
+          }
+        } catch (uploadError) {
+          console.error('❌ Screenshot upload failed:', uploadError)
+          // Continue without screenshot
+        }
+      } else {
+        console.log('⚠️ No screenshot to upload')
+      }
+
+      console.log('📝 Creating task with:', { 
+        pageUrl, 
+        selector, 
+        comment: comment.trim(), 
+        creator: user.username,
+        screenshot: screenshotUrl,
+        hasMetadata: !!metadata 
+      })
+
+      // Create task with screenshot URL and metadata
+      const taskResponse = await fetch(`${API_URL}/api/tasks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           pageUrl,
           selector,
           comment: comment.trim(),
-          creator: user.username
+          creator: user.username,
+          screenshot: screenshotUrl,
+          metadata: metadata || {}
         })
       })
 
-      const data = await response.json()
+      const data = await taskResponse.json()
 
-      if (!response.ok) {
+      if (!taskResponse.ok) {
         setError(data.error || 'Failed to create task')
         setIsSubmitting(false)
         return
@@ -102,6 +158,18 @@ const CommentDialog = ({ isOpen, selector, pageUrl, user, onClose, onSuccess }) 
                 <Dialog.Title className="text-lg font-semibold text-gray-900 mb-2">
                   Add Feedback Comment
                 </Dialog.Title>
+
+                {screenshot && (
+                  <div className="mb-4 p-3 bg-gray-50 rounded border border-gray-200">
+                    <div className="text-xs text-gray-500 mb-2">Screenshot Preview:</div>
+                    <img 
+                      src={screenshot} 
+                      alt="Selected element" 
+                      className="max-w-full h-auto rounded border border-gray-300"
+                      style={{ maxHeight: '200px' }}
+                    />
+                  </div>
+                )}
 
                 <div className="mb-4 p-3 bg-gray-50 rounded border border-gray-200">
                   <div className="text-xs text-gray-500 mb-1">Selected Element:</div>

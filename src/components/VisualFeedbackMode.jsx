@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
+import html2canvas from 'html2canvas'
 
 const VisualFeedbackMode = ({ isActive, onElementSelected, onCancel }) => {
   const [hoveredElement, setHoveredElement] = useState(null)
@@ -116,7 +117,7 @@ const VisualFeedbackMode = ({ isActive, onElementSelected, onCancel }) => {
   }, [isActive, hoveredElement, isExcludedElement])
 
   // Handle click - select element
-  const handleClick = useCallback((e) => {
+  const handleClick = useCallback(async (e) => {
     console.log('🔵 Click detected', { isActive, target: e.target })
     
     if (!isActive) {
@@ -141,13 +142,36 @@ const VisualFeedbackMode = ({ isActive, onElementSelected, onCancel }) => {
     console.log('📍 Generated selector:', selector)
     
     if (selector) {
-      // Remove highlight
+      // Remove highlight before screenshot
       element.classList.remove('vfm-highlight')
       setHoveredElement(null)
 
+      console.log('📸 Capturing screenshot...')
+      
+      // Capture screenshot of the element
+      let screenshotDataUrl = null
+      try {
+        // Clone the element to avoid modifying the original
+        const canvas = await html2canvas(element, {
+          backgroundColor: null,
+          logging: false,
+          scale: 1.5, // Good balance between quality and performance
+          useCORS: true,
+          allowTaint: true,
+          foreignObjectRendering: false, // Prevent text alignment issues
+          imageTimeout: 0,
+          removeContainer: true // Clean up after capture
+        })
+        screenshotDataUrl = canvas.toDataURL('image/png')
+        console.log('✅ Screenshot captured')
+      } catch (error) {
+        console.error('❌ Screenshot failed:', error)
+        // Continue without screenshot
+      }
+
       console.log('✅ Calling onElementSelected')
-      // Call callback with selector and element
-      onElementSelected(selector, element)
+      // Call callback with selector, element, and screenshot
+      onElementSelected(selector, element, screenshotDataUrl)
     } else {
       console.log('❌ No selector generated')
     }
@@ -234,6 +258,16 @@ const VisualFeedbackMode = ({ isActive, onElementSelected, onCancel }) => {
         
         body.vfm-active * {
           cursor: crosshair !important;
+          pointer-events: auto !important;
+        }
+        
+        /* Ensure all interactive elements are clickable in feedback mode */
+        body.vfm-active a,
+        body.vfm-active button,
+        body.vfm-active input,
+        body.vfm-active textarea,
+        body.vfm-active select {
+          pointer-events: auto !important;
         }
       `}</style>
     </>

@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "CMS Task Context Loader",
+  "description": "Automatically loads task details when user mentions fixing a task by number (e.g., \"fix task #0002\")",
+  "version": "1",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Read the tasks from public/data/tasks.json. If the user mentioned a task number (like \"task #0002\", \"task 2\", \"fix task #2\"), find that task by its index position (task #0001 is index 0, #0002 is index 1, etc.) and provide me with the full task details including: ID, page URL, selector, comment, creator, status, screenshot path, and metadata. Then help the user fix the issue described in the task comment by making the necessary code changes to the element identified by the selector on the specified page."
+  }
+}

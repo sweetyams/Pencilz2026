@@ -102,6 +102,41 @@ const writeTasks = async (tasks) => {
   await db.write('tasks.json', { tasks })
 }
 
+// Export tasks endpoint for syncing from production
+app.get('/api/tasks/export', async (req, res) => {
+  try {
+    const tasks = await readTasks()
+    res.json({ 
+      tasks,
+      exportedAt: new Date().toISOString(),
+      source: process.env.NODE_ENV === 'production' ? 'production' : 'development'
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Import tasks endpoint for syncing to local
+app.post('/api/tasks/import', async (req, res) => {
+  try {
+    const { tasks } = req.body
+    
+    if (!Array.isArray(tasks)) {
+      return res.status(400).json({ error: 'Tasks must be an array' })
+    }
+    
+    await writeTasks(tasks)
+    
+    res.json({ 
+      success: true,
+      count: tasks.length,
+      importedAt: new Date().toISOString()
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
 // Upload image
 app.post('/api/upload', upload.single('image'), (req, res) => {
   if (req.file) {
@@ -432,7 +467,7 @@ app.get('/api/tasks', async (req, res) => {
 
 app.post('/api/tasks', async (req, res) => {
   try {
-    const { pageUrl, selector, comment, creator } = req.body
+    const { pageUrl, selector, comment, creator, screenshot, metadata } = req.body
     
     // Validate required fields
     if (!pageUrl || !selector || !comment || !creator) {
@@ -454,7 +489,9 @@ app.post('/api/tasks', async (req, res) => {
       creator,
       status: 'open',
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
+      ...(screenshot && { screenshot }), // Include screenshot if provided
+      ...(metadata && { metadata }) // Include metadata if provided
     }
     
     tasks.push(newTask)

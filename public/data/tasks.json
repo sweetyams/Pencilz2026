@@ -1,24 +1,91 @@
 {
   "tasks": [
     {
-      "id": "e1ad11fd-0b96-4dc0-b9ce-f0e22ee8eb61",
+      "id": "e2ed94d6-6a04-46dc-9b80-ca370b401b3f",
       "pageUrl": "http://localhost:5173/",
-      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div.hidden.md:grid.lg:hidden.grid-cols-2.gap-4.px-5.md:px-[20px].mt-5:nth-child(2) > button.border.border-black.flex.items-center.relative.rounded-[70px].transition-all.duration-300.ease-in-out.bg-[#89FED7].border-dashed.px-6.py-4.lg:px-6.lg:py-3.justify-between.lg:justify-start.lg:justify-between:nth-child(1)",
-      "comment": "change the hover colour effect",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div.px-5.md:px-[20px].pt-2.md:pt-[10px]:nth-child(1)",
+      "comment": "I want more padding between buttons",
       "creator": "willem",
       "status": "open",
-      "createdAt": "2026-03-03T23:20:15.469Z",
-      "updatedAt": "2026-03-03T23:20:15.469Z"
+      "createdAt": "2026-03-03T23:44:54.122Z",
+      "updatedAt": "2026-03-03T23:44:54.122Z",
+      "screenshot": "/uploads/1772581494109-feedback-1772581494104.png",
+      "metadata": {
+        "viewport": {
+          "width": 1855,
+          "height": 1024
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-03T23:44:36.922Z",
+        "url": "http://localhost:5173/",
+        "scrollPosition": {
+          "x": 0,
+          "y": 0
+        }
+      }
     },
     {
-      "id": "e7e4eb04-7acd-405e-b56d-951a2a51e1ba",
+      "id": "c1e84b0f-78a3-4012-b6ca-8d77b2662fac",
       "pageUrl": "http://localhost:5173/",
-      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div.w-full.flex.items-center.justify-center.px-5.md:px-[20px].pt-12.pb-[200px]:nth-child(6) > div.flex.flex-col.items-center.gap-6",
-      "comment": "the padding is too small",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > footer.bg-white.mt-auto.w-full > div",
+      "comment": "more padding between logo and links",
       "creator": "willem",
       "status": "open",
-      "createdAt": "2026-03-03T23:22:37.050Z",
-      "updatedAt": "2026-03-03T23:22:37.050Z"
+      "createdAt": "2026-03-03T23:45:10.942Z",
+      "updatedAt": "2026-03-03T23:45:10.942Z",
+      "screenshot": "/uploads/1772581510937-feedback-1772581510932.png",
+      "metadata": {
+        "viewport": {
+          "width": 1855,
+          "height": 1024
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-03T23:44:59.115Z",
+        "url": "http://localhost:5173/",
+        "scrollPosition": {
+          "x": 0,
+          "y": 6449
+        }
+      }
+    },
+    {
+      "id": "5ccfe592-721d-466f-8909-f02a072694a8",
+      "pageUrl": "http://localhost:5173/",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div.px-5.md:px-[20px]:nth-child(5) > div:nth-child(2) > div.relative.w-full.overflow-hidden.group.cursor-pointer.md:aspect-[2/1].aspect-[4/5] > div.absolute.bg-white.p-8.flex.flex-col.justify-between.w-[calc(100%-4px)].md:w-[400px]:nth-child(3)",
+      "comment": "need a link to the website + a logo",
+      "creator": "willem",
+      "status": "open",
+      "createdAt": "2026-03-03T23:46:19.625Z",
+      "updatedAt": "2026-03-03T23:46:19.625Z",
+      "screenshot": "/uploads/1772581579614-feedback-1772581579611.png",
+      "metadata": {
+        "viewport": {
+          "width": 1855,
+          "height": 1024
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-03T23:46:04.290Z",
+        "url": "http://localhost:5173/",
+        "scrollPosition": {
+          "x": 0,
+          "y": 4024.5
+        }
+      }
     }
   ]
 }
