@@ -94,7 +94,7 @@ const Footer = ({ onActivateFeedbackMode }) => {
               Add Comments
             </button>
           )}
-          {import.meta.env.DEV && (
+          {user && (
             <Link to="/tests" className="text-blue-600 hover:opacity-70">Tests</Link>
           )}
         </div>
