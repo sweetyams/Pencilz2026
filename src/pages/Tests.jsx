@@ -15,7 +15,12 @@ const Tests = () => {
     {
       name: 'Test Stack',
       path: '/test-stack',
-      description: 'Test the stacked project cards component'
+      description: 'Test the stacked project cards animation with placeholder content'
+    },
+    {
+      name: 'Test Stack 2 (Real Content)',
+      path: '/test-stack-2',
+      description: 'Test the stacked project cards animation with real home page content'
     },
     {
       name: 'Work List',

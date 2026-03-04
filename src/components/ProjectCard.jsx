@@ -24,7 +24,7 @@ const ProjectCard = ({ project, priority = false, isOpen = false, onToggle }) =>
       }}
     >
       {/* Background Image */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0" style={{ overflow: 'hidden', borderRadius: '20px' }}>
         <LazyImage 
           src={getImageUrl(project.image)}
           alt={project.title}
@@ -61,8 +61,8 @@ const ProjectCard = ({ project, priority = false, isOpen = false, onToggle }) =>
 
       {/* Slide-in Panel from Right */}
       <motion.div
-        initial={{ x: '100%' }}
-        animate={{ x: isOpen ? '0%' : '100%' }}
+        initial={{ x: 'calc(100% + 10px)' }}
+        animate={{ x: isOpen ? '0%' : 'calc(100% + 10px)' }}
         transition={{ type: 'tween', duration: 0.4, ease: 'easeInOut' }}
         onClick={(e) => e.stopPropagation()}
         className="absolute bg-white p-8 flex flex-col justify-between w-[calc(100%-4px)] md:w-[400px]"

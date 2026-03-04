@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from 'react'
-import { useScroll } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import ProjectCard from '../components/ProjectCard'
-import StickyCard from '../components/StickyCard'
+import StackedProjectCards from '../components/StackedProjectCards'
 import SEO from '../components/SEO'
 import Button from '../components/Button'
 import LazyImage from '../components/LazyImage'
@@ -13,12 +12,6 @@ const Home = () => {
   const [settings, setSettings] = useState({ email: '', logo: '', companyName: '' })
   const [homePage, setHomePage] = useState({ heroImage: '', heroText: 'Your start up accelerator' })
   const [openProjectId, setOpenProjectId] = useState(null)
-  const containerRef = useRef(null)
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  })
 
   useEffect(() => {
     fetch(`${API_URL}/api/projects`)
@@ -149,35 +142,26 @@ const Home = () => {
         ))}
       </div>
 
-      {/* Projects Section - Sticky Stack */}
+      {/* Projects Section - Animated Stack (First 3) */}
       {projects.length > 0 && (
-        <div 
-          ref={containerRef}
-          style={{ 
-            position: 'relative',
-            marginTop: '48px',
-            paddingBottom: '30px'
-          }}
-        >
-          {projects.slice(0, 3).map((project, i) => (
-            <StickyCard
-              key={project.id}
-              project={project}
-              index={i}
-              scrollYProgress={scrollYProgress}
-              totalCards={3}
-              isOpen={openProjectId === project.id}
-              onToggle={() => setOpenProjectId(openProjectId === project.id ? null : project.id)}
-            />
-          ))}
-        </div>
+        <StackedProjectCards
+          projects={projects}
+          openProjectId={openProjectId}
+          onToggle={(id) => setOpenProjectId(openProjectId === id ? null : id)}
+        />
       )}
       
       {/* Remaining Projects */}
       {projects.length > 3 && (
         <div className="px-5 md:px-[20px]">
-          {projects.slice(3).map(project => (
-            <div key={project.id} style={{ marginBottom: '20px' }}>
+          {projects.slice(3).map((project, idx) => (
+            <div 
+              key={project.id} 
+              style={{ 
+                marginBottom: idx === projects.slice(3).length - 1 ? 0 : '20px',
+                marginTop: idx === 0 ? '-20px' : 0
+              }}
+            >
               <ProjectCard 
                 project={project}
                 isOpen={openProjectId === project.id}

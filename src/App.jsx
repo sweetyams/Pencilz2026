@@ -9,6 +9,7 @@ import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
 import FAQ from './pages/FAQ'
 import TestStack from './pages/TestStack'
+import TestStack2 from './pages/TestStack2'
 import LinkTest from './pages/LinkTest'
 import MegaMenuTest from './pages/MegaMenuTest'
 import Tests from './pages/Tests'
@@ -28,6 +29,7 @@ function App() {
         <Routes>
           <Route path="/tests" element={<Tests />} />
           <Route path="/test-stack" element={<TestStack />} />
+          <Route path="/test-stack-2" element={<TestStack2 />} />
           <Route path="/link-test" element={<LinkTest />} />
           <Route path="/mega-menu-test" element={<MegaMenuTest />} />
           <Route path="/work-list" element={<WorkList />} />

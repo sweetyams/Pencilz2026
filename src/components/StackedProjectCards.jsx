@@ -1,76 +1,155 @@
-import { useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import ProjectCard from './ProjectCard'
 
-const StickyProjectCard = ({ project, index, progress, range, targetScale }) => {
-  const container = useRef(null)
-  const scale = useTransform(progress, range, [1, targetScale])
+// Separate component for animated card to avoid hook issues
+const AnimatedCard = ({ project, index, scrollYProgress, cardHeight, peekOffset, animStart, animEnd, cardGap, cardRef, isOpen, onToggle }) => {
+  // Account for the 20px padding on top and bottom of each card (40px total)
+  const cardPadding = 40
+  const gap = cardGap - cardPadding
+  
+  let yStart, yEnd, zIndex, rotateStart, rotateEnd, scaleStart, scaleEnd
+  
+  if (index === 0) {
+    yStart = -peekOffset // Card 1: peek above by 1x offset
+    yEnd = 0
+    rotateStart = -2
+    rotateEnd = 0
+    scaleStart = 0.92
+    scaleEnd = 1
+    zIndex = 1
+  } else if (index === 1) {
+    yStart = 0 // Card 2: at base position
+    yEnd = cardHeight + gap
+    rotateStart = 2
+    rotateEnd = 0
+    scaleStart = 0.95
+    scaleEnd = 1
+    zIndex = 2
+  } else {
+    yStart = peekOffset // Card 3: on top, offset down
+    yEnd = (cardHeight + gap) * 2
+    rotateStart = 0
+    rotateEnd = 0
+    scaleStart = 1
+    scaleEnd = 1
+    zIndex = 3
+  }
+  
+  const y = useTransform(scrollYProgress, [animStart, animEnd], [yStart, yEnd])
+  const rotate = useTransform(scrollYProgress, [animStart, animEnd], [rotateStart, rotateEnd])
+  const scale = useTransform(scrollYProgress, [animStart, animEnd], [scaleStart, scaleEnd])
 
   return (
-    <div ref={container} style={{ position: 'sticky', top: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-      <motion.div
-        style={{
-          scale,
-          top: `calc(-5vh + ${index * 25}px)`,
-          position: 'relative',
-          transformOrigin: 'top',
-        }}
-      >
-        <ProjectCard project={project} />
-      </motion.div>
-    </div>
+    <motion.div
+      ref={index === 0 ? cardRef : null}
+      style={{
+        position: 'absolute',
+        y,
+        rotate,
+        scale,
+        zIndex,
+        left: 0,
+        right: 0,
+        padding: '0 20px'
+      }}
+    >
+      <ProjectCard 
+        project={project}
+        priority={index === 0}
+        isOpen={isOpen}
+        onToggle={onToggle}
+      />
+    </motion.div>
   )
 }
 
-const StackedProjectCards = ({ projects }) => {
+const StackedProjectCards = ({ projects, openProjectId, onToggle }) => {
   const container = useRef(null)
+  const cardRef = useRef(null)
+  const [cardHeight, setCardHeight] = useState(600)
+  const [peekOffset, setPeekOffset] = useState(40)
+  const animStart = 0.15
+  const animEnd = 0.4
+  const cardGap = 20
+  
+  // Card padding constant (20px top + 20px bottom)
+  const cardPadding = 40
   
   const { scrollYProgress } = useScroll({
     target: container,
-    offset: ["start start", "end end"],
+    offset: ["start 80%", "end start"]
   })
 
-  if (!projects || projects.length === 0) return null
-  
-  const stackedProjects = projects.slice(0, 3)
-  const remainingProjects = projects.slice(3)
-  
+  // Update peek offset based on screen size
+  useEffect(() => {
+    const updatePeekOffset = () => {
+      const defaultPeek = window.innerWidth < 768 ? 20 : 40
+      setPeekOffset(defaultPeek)
+    }
+    
+    updatePeekOffset()
+    window.addEventListener('resize', updatePeekOffset)
+    return () => window.removeEventListener('resize', updatePeekOffset)
+  }, [])
+
+  // Measure actual card height on mount and resize
+  useEffect(() => {
+    const updateCardHeight = () => {
+      if (cardRef.current) {
+        const height = cardRef.current.offsetHeight
+        if (height > 0) {
+          setCardHeight(height)
+        }
+      }
+    }
+    
+    const timer = setTimeout(updateCardHeight, 100)
+    
+    window.addEventListener('resize', updateCardHeight)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('resize', updateCardHeight)
+    }
+  }, [])
+
+  const firstThreeProjects = projects.slice(0, 3)
+
   return (
-    <>
+    <section 
+      ref={container}
+      style={{
+        position: 'relative',
+        height: '300vh',
+        marginTop: '20px'
+      }}
+    >
       <div 
-        ref={container} 
         style={{ 
-          position: 'relative',
-          width: '100%',
-          paddingBottom: '100vh',
-          padding: '20px'
+          position: 'sticky', 
+          top: '150px',
+          paddingTop: `${peekOffset * 2}px`,
+          minHeight: `${cardHeight * 3 + (cardGap - cardPadding) * 2 + peekOffset * 2}px`
         }}
       >
-        {stackedProjects.map((project, i) => {
-          const targetScale = Math.max(0.85, 1 - (stackedProjects.length - i - 1) * 0.05)
-          
-          return (
-            <StickyProjectCard
-              key={project.id}
-              project={project}
-              index={i}
-              progress={scrollYProgress}
-              range={[i * 0.25, 1]}
-              targetScale={targetScale}
-            />
-          )
-        })}
-      </div>
-      
-      {/* Remaining projects */}
-      <div style={{ padding: '20px' }}>
-        {remainingProjects.map(project => (
-          <div key={project.id} style={{ marginBottom: '20px' }}>
-            <ProjectCard project={project} />
-          </div>
+        {firstThreeProjects.map((project, i) => (
+          <AnimatedCard
+            key={project.id}
+            project={project}
+            index={i}
+            scrollYProgress={scrollYProgress}
+            cardHeight={cardHeight}
+            peekOffset={peekOffset}
+            animStart={animStart}
+            animEnd={animEnd}
+            cardGap={cardGap}
+            cardRef={cardRef}
+            isOpen={openProjectId === project.id}
+            onToggle={() => onToggle(project.id)}
+          />
         ))}
       </div>
-    </>
+    </section>
   )
 }
 

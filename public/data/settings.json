@@ -167,6 +167,12 @@
       "usageCount": 0
     },
     {
+      "id": "category-9",
+      "name": "Golf",
+      "link": "",
+      "usageCount": 0
+    },
+    {
       "id": "category-7",
       "name": "Apparel",
       "link": "",
@@ -175,12 +181,6 @@
     {
       "id": "category-8",
       "name": "Supplements",
-      "link": "",
-      "usageCount": 0
-    },
-    {
-      "id": "category-9",
-      "name": "Golf",
       "link": "",
       "usageCount": 0
     },
@@ -229,6 +229,12 @@
     {
       "id": "category-17",
       "name": "Publishing",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-1772639935984",
+      "name": "Product",
       "link": "",
       "usageCount": 0
     }
