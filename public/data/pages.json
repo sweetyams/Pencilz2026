@@ -47,12 +47,132 @@
     "content": "About page content goes here"
   },
   "services": {
-    "title": "Services",
-    "content": "Services page content goes here"
+    "heroTitle": "Our Services",
+    "heroSubtitle": "Enterprise-Level Expertise, Tailored for Growing Brands",
+    "heroDescription": "Shopify Development, Marketing, Design, and Start-up Support",
+    "serviceArrowIcon": "",
+    "serviceCards": [
+      {
+        "id": "1772642233878",
+        "title": "Shopify Builds",
+        "subtitle": "Lorem Ipsum",
+        "description": "We build tailored Shopify experiences designed to support your growth at every stage. Whether you're launching a new brand or scaling an established store, our team delivers custom solutions that align with your business goals.",
+        "detailedDescription": "From bespoke theme development and advanced functionality to performance optimization and seamless integrations, we focus on creating fast, reliable, and user-friendly storefronts. Every build is crafted with scalability, clean code, and long-term success in mind.",
+        "image": "/uploads/1772642942004-Craighill.jpg",
+        "backgroundColor": "#fff0dc",
+        "invertText": false,
+        "anchor": "shopify-builds",
+        "subServicesTitle": "Frontend Development",
+        "subServices": [
+          {
+            "id": "1772642482637",
+            "name": "Shopify Development",
+            "highlighted": false
+          },
+          {
+            "id": "1772642648491",
+            "name": "Headless Development",
+            "highlighted": true
+          },
+          {
+            "id": "1772642650234",
+            "name": "Shopify Development",
+            "highlighted": false
+          }
+        ]
+      },
+      {
+        "id": "1772642233879",
+        "title": "Marketing",
+        "subtitle": "Lorem Ipsum",
+        "description": "Starter packs available",
+        "detailedDescription": "Integrated digital marketing services including SEO, paid search (Google Ads), paid social (Facebook/Instagram), email & SMS automation, and analytics-based optimization to help you scale revenue sustainably.",
+        "image": "/uploads/1772642980497-marketing.jpg",
+        "backgroundColor": "#f0bb78",
+        "invertText": false,
+        "anchor": "marketing",
+        "subServicesTitle": "Frontend Development",
+        "subServices": [
+          {
+            "id": "1772642482638",
+            "name": "Shopify Development",
+            "highlighted": false
+          },
+          {
+            "id": "1772642648492",
+            "name": "Headless Development",
+            "highlighted": true
+          },
+          {
+            "id": "1772642650235",
+            "name": "Shopify Development",
+            "highlighted": false
+          }
+        ]
+      },
+      {
+        "id": "1772642233880",
+        "title": "Design",
+        "subtitle": "Lorem Ipsum",
+        "description": "We create thoughtful, conversion-focused designs that elevate your brand and enhance the customer experience. Our approach blends strategy, creativity, and usability to ensure every visual element serves a purpose.",
+        "detailedDescription": "From brand identity and UI/UX design to fully custom Shopify storefronts, we design with clarity, consistency, and performance in mind. Every layout, interaction, and visual detail is crafted to build trust, guide users naturally, and drive measurable results.",
+        "image": "/uploads/1772642987301-design.jpg",
+        "backgroundColor": "#e7fe89",
+        "invertText": false,
+        "anchor": "design",
+        "subServicesTitle": "Frontend Development",
+        "subServices": [
+          {
+            "id": "1772642482639",
+            "name": "Shopify Development",
+            "highlighted": false
+          },
+          {
+            "id": "1772642648493",
+            "name": "Headless Development",
+            "highlighted": true
+          },
+          {
+            "id": "1772642650236",
+            "name": "Shopify Development",
+            "highlighted": false
+          }
+        ]
+      },
+      {
+        "id": "1772642233881",
+        "title": "Start-up Support",
+        "subtitle": "Lorem Ipsum",
+        "description": "Startup Enablement",
+        "detailedDescription": "End-to-end launch support for new brands — from business strategy and branding to platform setup and go-to-market planning.",
+        "image": "/uploads/1772642994775-startup.jpg",
+        "backgroundColor": "#131010",
+        "invertText": true,
+        "anchor": "startup-support",
+        "subServicesTitle": "Frontend Development",
+        "subServices": [
+          {
+            "id": "1772642482640",
+            "name": "Shopify Development",
+            "highlighted": false
+          },
+          {
+            "id": "1772642648494",
+            "name": "Headless Development",
+            "highlighted": true
+          },
+          {
+            "id": "1772642650237",
+            "name": "Shopify Development",
+            "highlighted": false
+          }
+        ]
+      }
+    ]
   },
   "faq": {
     "title": "FAQ",
-    "content": "<p><strong>Q: I’m interested! What is the first step?</strong></p><p>A: The first step is to enter your email below (or on our contact page). We will send you a brief questionnaire or a link to schedule a discovery call. This 15-minute chat helps us determine if we are the right fit for your goals.</p><p></p><p><strong>Q: Do you offer free audits or consultations?</strong></p><p>A: We offer a complimentary [15 or 30]-minute discovery call to discuss your project. However, detailed audits or strategy sessions are paid services, as they require deep analysis and expert recommendations tailored to your business.</p><p></p><p><strong>Q: How do you structure your pricing?</strong></p><p>A: Because every business is unique, we do not offer \"cookie-cutter\" packages. Our pricing is project-based or retainer-based, depending on your needs. Once we understand your goals during our initial consultation, we provide a custom proposal. Generally, our engagements start at [$ Amount].</p><p></p><p><strong>Q: Who is your ideal client?</strong></p><p>A: We work best with [Target Audience, e.g., ambitious startups, established luxury brands, non-profits] who value clear communication and are ready to invest in high-quality work. We look for clients who view us as strategic partners rather than just order takers.</p><p></p><p><strong>Q: Do you work with clients internationally?</strong></p><p>A: Yes! We are a digital-first agency and work with clients across the globe. We utilize tools like Zoom, Slack, and [Project Management Tool] to ensure seamless collaboration regardless of time zones.</p>",
+    "content": "<p><strong>Q: I'm interested! What is the first step?</strong></p><p>A: The first step is to enter your email below (or on our contact page). We will send you a brief questionnaire or a link to schedule a discovery call. This 15-minute chat helps us determine if we are the right fit for your goals.</p><p></p><p><strong>Q: Do you offer free audits or consultations?</strong></p><p>A: We offer a complimentary [15 or 30]-minute discovery call to discuss your project. However, detailed audits or strategy sessions are paid services, as they require deep analysis and expert recommendations tailored to your business.</p><p></p><p><strong>Q: How do you structure your pricing?</strong></p><p>A: Because every business is unique, we do not offer \"cookie-cutter\" packages. Our pricing is project-based or retainer-based, depending on your needs. Once we understand your goals during our initial consultation, we provide a custom proposal. Generally, our engagements start at [$ Amount].</p><p></p><p><strong>Q: Who is your ideal client?</strong></p><p>A: We work best with [Target Audience, e.g., ambitious startups, established luxury brands, non-profits] who value clear communication and are ready to invest in high-quality work. We look for clients who view us as strategic partners rather than just order takers.</p><p></p><p><strong>Q: Do you work with clients internationally?</strong></p><p>A: Yes! We are a digital-first agency and work with clients across the globe. We utilize tools like Zoom, Slack, and [Project Management Tool] to ensure seamless collaboration regardless of time zones.</p>",
     "lastUpdated": "2026-03-03T02:49:14.402Z"
   },
   "terms": {

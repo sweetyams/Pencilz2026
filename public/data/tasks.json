@@ -298,6 +298,122 @@
         }
       },
       "fixedBy": "kiro"
+    },
+    {
+      "id": "5PKX5P",
+      "pageUrl": "http://localhost:5173/services",
+      "selector": "div#shopify-builds > div.flex.flex-col.md:flex-row.min-h-[756px]:nth-child(1) > div.flex-1.relative:nth-child(2) > img.absolute.inset-0.w-full.h-full.object-cover",
+      "comment": "Image on the right should ahve square ratio and 80px margin around it, the image + margin (or padding) should take 50% of the service card",
+      "creator": "willem",
+      "status": "open",
+      "createdAt": "2026-03-04T16:43:07.264Z",
+      "updatedAt": "2026-03-04T16:43:07.264Z",
+      "screenshot": "/uploads/1772642587252-feedback-1772642587249.png",
+      "metadata": {
+        "viewport": {
+          "width": 1365,
+          "height": 1214
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-04T16:42:26.512Z",
+        "url": "http://localhost:5173/services",
+        "scrollPosition": {
+          "x": 0,
+          "y": 212
+        }
+      }
+    },
+    {
+      "id": "HU8NHU",
+      "pageUrl": "http://localhost:5173/services",
+      "selector": "div#shopify-builds > div.absolute.bottom-8.left-16.right-16.flex.justify-between:nth-child(2)",
+      "comment": "put the count and the title at the top of the card above the title",
+      "creator": "willem",
+      "status": "open",
+      "createdAt": "2026-03-04T16:43:26.363Z",
+      "updatedAt": "2026-03-04T16:43:26.363Z",
+      "screenshot": "/uploads/1772642606354-feedback-1772642606347.png",
+      "metadata": {
+        "viewport": {
+          "width": 1365,
+          "height": 1214
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-04T16:43:15.289Z",
+        "url": "http://localhost:5173/services",
+        "scrollPosition": {
+          "x": 0,
+          "y": 229
+        }
+      }
+    },
+    {
+      "id": "JKCUJK",
+      "pageUrl": "http://localhost:5173/services",
+      "selector": "div#shopify-builds > div.flex.flex-col.md:flex-row.min-h-[756px]:nth-child(1) > div.flex-1.p-16.flex.flex-col.gap-11:nth-child(1)",
+      "comment": "full card shoul dstack with image above on mobile",
+      "creator": "willem",
+      "status": "open",
+      "createdAt": "2026-03-04T16:43:49.209Z",
+      "updatedAt": "2026-03-04T16:43:49.209Z",
+      "screenshot": "/uploads/1772642629201-feedback-1772642629194.png",
+      "metadata": {
+        "viewport": {
+          "width": 1365,
+          "height": 1214
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-04T16:43:34.146Z",
+        "url": "http://localhost:5173/services",
+        "scrollPosition": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": "QKTBQK",
+      "pageUrl": "http://localhost:5173/services",
+      "selector": "div#shopify-builds > div.flex.flex-col.md:flex-row.min-h-[756px]:nth-child(1) > div.flex-1.p-16.flex.flex-col.gap-11:nth-child(1) > div.flex.flex-col.gap-4:nth-child(3) > div:nth-child(2) > div.flex.gap-4.items-center.px-2.5.py-4.rounded-md",
+      "comment": "services should have right arrow svg icon - editable from the CMS (one icon for all services)\n\nThe Services title should be editalbe from the CMS.",
+      "creator": "willem",
+      "status": "open",
+      "createdAt": "2026-03-04T16:45:21.129Z",
+      "updatedAt": "2026-03-04T16:45:21.129Z",
+      "screenshot": "/uploads/1772642721120-feedback-1772642721115.png",
+      "metadata": {
+        "viewport": {
+          "width": 1365,
+          "height": 1214
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-04T16:44:37.742Z",
+        "url": "http://localhost:5173/services",
+        "scrollPosition": {
+          "x": 0,
+          "y": 231.5
+        }
+      }
     }
   ]
 }
