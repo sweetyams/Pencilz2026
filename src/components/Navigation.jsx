@@ -205,13 +205,18 @@ const Navigation = () => {
                   onMouseEnter={handleServicesEnter}
                   onMouseLeave={handleMegamenuLeave}
                 >
-                  <button 
+                  <Link
+                    to="/services"
                     ref={servicesButtonRef}
                     className="relative transition-all"
+                    onClick={() => {
+                      setMegamenuOpen(false)
+                      setMegamenuContent(null)
+                    }}
                   >
                     <span ref={servicesTextRef}>Services</span>
                     <LinkDecoration isActive={megamenuContent === 'services'} textRef={servicesTextRef} />
-                  </button>
+                  </Link>
                 </div>
 
                 {/* About */}
@@ -220,13 +225,18 @@ const Navigation = () => {
                   onMouseEnter={handleAboutEnter}
                   onMouseLeave={handleMegamenuLeave}
                 >
-                  <button 
+                  <Link
+                    to="/about"
                     ref={aboutButtonRef}
                     className="relative transition-all"
+                    onClick={() => {
+                      setMegamenuOpen(false)
+                      setMegamenuContent(null)
+                    }}
                   >
                     <span ref={aboutTextRef}>About</span>
                     <LinkDecoration isActive={megamenuContent === 'about'} textRef={aboutTextRef} />
-                  </button>
+                  </Link>
                 </div>
 
                 <div
@@ -234,10 +244,13 @@ const Navigation = () => {
                   onMouseEnter={() => setHoveredProject(true)}
                   onMouseLeave={() => setHoveredProject(false)}
                 >
-                  <Link to="/" className="relative transition-all">
+                  <a 
+                    href={`mailto:${settings.email || 'hello@pencilz.works'}`}
+                    className="relative transition-all"
+                  >
                     <span ref={projectTextRef}>Start a project</span>
                     <LinkDecoration isActive={hoveredProject} textRef={projectTextRef} />
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>

@@ -43,13 +43,13 @@ node scripts/sync-tasks-from-production.js https://pencilz.vercel.app
 1. Open the CMS Tasks page
 2. Find the task you want to fix
 3. Click the "🤖 Fix" button - this copies the command
-4. Paste in Kiro chat (e.g., "Fix task #0002")
+4. Paste in Kiro chat (e.g., "Fix task #A3B9K2")
 5. Kiro automatically:
    - Reads `public/data/tasks.json`
-   - Finds task #0002 (index 1 in the array)
+   - Finds task by its 6-character ID (e.g., #A3B9K2)
    - Loads all task details (comment, selector, screenshot, metadata)
    - Makes the necessary code changes
-   - Can optionally mark task as completed
+   - Marks task as completed with "Fixed by Kiro" note
 
 ### 4. Reviewing and Deploying
 
@@ -63,7 +63,7 @@ node scripts/sync-tasks-from-production.js https://pencilz.vercel.app
 
 ```json
 {
-  "id": "uuid",
+  "id": "A3B9K2",
   "pageUrl": "http://localhost:5173/",
   "selector": "div.footer > p.text-sm",
   "comment": "Increase padding here",
@@ -78,11 +78,14 @@ node scripts/sync-tasks-from-production.js https://pencilz.vercel.app
     "devicePixelRatio": 2,
     "userAgent": "Mozilla/5.0...",
     "scrollPosition": { "x": 0, "y": 500 }
-  },
-  "fixedBy": "kiro",
-  "fixedAt": "2026-03-04T10:30:00Z"
+  }
 }
 ```
+
+Task IDs are 6-character alphanumeric codes (e.g., A3B9K2, X7Y2M9) that are:
+- Easy to reference and communicate
+- Unique across local and production environments
+- Collision-resistant (36^6 = 2.1 billion possible combinations)
 
 ## API Endpoints
 
@@ -104,19 +107,26 @@ node scripts/sync-tasks-from-production.js https://pencilz.vercel.app
 
 ### Agent Hook
 
-The `cms-task-context` hook automatically triggers when you mention a task number:
-- Detects patterns: "fix task #0002", "task 2", "work on task #2"
+The `cms-task-context` hook automatically triggers when you mention a task ID:
+- Detects patterns: "fix task #A3B9K2", "task A3B9K2", "work on task #X7Y2M9"
 - Reads `public/data/tasks.json`
-- Finds task by index (task #0001 = index 0, #0002 = index 1)
+- Finds task by its 6-character ID
 - Provides full context to Kiro
 
 ### Automatic Status Updates
 
-When Kiro fixes a task, it can automatically:
-1. Update task status to "completed"
-2. Set `fixedBy: "kiro"`
-3. Set `fixedAt` timestamp
-4. Add git commit hash (optional)
+When Kiro fixes a task, it automatically:
+1. Updates task status to "completed"
+2. Appends " - Fixed by Kiro: [description of changes]" to the comment
+3. Sets the `updatedAt` timestamp
+4. Makes the API call using curl or fetch
+
+Example:
+```bash
+curl -X PUT http://localhost:3001/api/tasks/{taskId} \
+  -H "Content-Type: application/json" \
+  -d '{"status": "completed", "comment": "Original comment - Fixed by Kiro: Changed mb-8 to mb-4"}'
+```
 
 ## Best Practices
 
@@ -135,7 +145,7 @@ When Kiro fixes a task, it can automatically:
 
 ### Kiro can't find task
 - Ensure `public/data/tasks.json` exists locally
-- Verify task number matches (use #0001, #0002 format)
+- Verify task ID matches exactly (case-sensitive: #A3B9K2 not #a3b9k2)
 - Check hook is enabled in `.kiro/hooks/`
 
 ### Screenshot not loading

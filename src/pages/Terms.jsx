@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Button from '../components/Button'
 import { API_URL } from '../config'
 
 const Terms = () => {
@@ -36,8 +35,8 @@ const Terms = () => {
   }
 
   return (
-    <div className="bg-white min-h-screen px-5 py-14">
-      <div className="max-w-[1004px]">
+    <div className="bg-white min-h-screen">
+      <div className="px-5 md:px-[20px] py-14" style={{ maxWidth: '1600px', margin: '0 auto' }}>
         <h1 className="text-[32px] text-[#191919] mb-16">{pageData.title}</h1>
         
         <p className="text-[20px] text-[#191919] mb-20">
@@ -49,17 +48,6 @@ const Terms = () => {
           className="text-[32px] text-[#191919] space-y-0"
           dangerouslySetInnerHTML={{ __html: pageData.content }}
         />
-
-        <div className="mt-32 text-center">
-          <p className="text-[24px] text-black mb-12">Start a project</p>
-          <Button
-            href={`mailto:${settings.email}`}
-            variant="primary"
-            className="min-w-[481px]"
-          >
-            {settings.email}
-          </Button>
-        </div>
       </div>
     </div>
   )

@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Tasks: fix all open tasks",
+  "description": "Automatically analyzes and fixes all open tasks from the CMS task dashboard by reading task details and implementing the requested changes",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Read all tasks from public/data/tasks.json and identify all tasks with status \"open\". For each open task, analyze the comment, selector, and page URL to understand what needs to be fixed. Then systematically fix each issue by:\n\n1. Identifying the correct component file based on the page URL\n2. Understanding the CSS selector to locate the exact element\n3. Implementing the fix described in the comment\n4. After fixing all tasks, update tasks.json to mark them as completed with status=\"completed\" and fixedBy=\"kiro\"\n\nWork through all open tasks one by one, making the necessary code changes to address each issue."
+  },
+  "workspaceFolderName": "Pencilz2026",
+  "shortName": "fix-all-open-tasks"
+}

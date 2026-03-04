@@ -12,6 +12,7 @@ const Home = () => {
   const [projects, setProjects] = useState([])
   const [settings, setSettings] = useState({ email: '', logo: '', companyName: '' })
   const [homePage, setHomePage] = useState({ heroImage: '', heroText: 'Your start up accelerator' })
+  const [openProjectId, setOpenProjectId] = useState(null)
   const containerRef = useRef(null)
   
   const { scrollYProgress } = useScroll({
@@ -161,6 +162,8 @@ const Home = () => {
               index={i}
               scrollYProgress={scrollYProgress}
               totalCards={3}
+              isOpen={openProjectId === project.id}
+              onToggle={() => setOpenProjectId(openProjectId === project.id ? null : project.id)}
             />
           ))}
         </div>
@@ -171,34 +174,15 @@ const Home = () => {
         <div className="px-5 md:px-[20px]">
           {projects.slice(3).map(project => (
             <div key={project.id} style={{ marginBottom: '20px' }}>
-              <ProjectCard project={project} />
+              <ProjectCard 
+                project={project}
+                isOpen={openProjectId === project.id}
+                onToggle={() => setOpenProjectId(openProjectId === project.id ? null : project.id)}
+              />
             </div>
           ))}
         </div>
       )}
-
-      {/* Contact Section */}
-      <div 
-        className="w-full flex items-center justify-center px-5 md:px-[20px] pt-12 pb-[200px]"
-      >
-        <div 
-          className="flex flex-col items-center gap-6"
-          style={{ width: '481px' }}
-        >
-          <p className="text-2xl text-black text-center w-full">
-            {homePage.contactHeading || 'Start a project'}
-          </p>
-          <Button
-            href={`mailto:${contactEmail}?subject=${emailSubject}&body=${emailBody}`}
-            variant="primary"
-            className="w-full"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {homePage.contactButtonText || contactEmail}
-          </Button>
-        </div>
-      </div>
     </div>
   )
 }

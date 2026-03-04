@@ -3,14 +3,10 @@ import { useState } from 'react'
 import LazyImage from './LazyImage'
 import { getImageUrl } from '../utils/imageUrl'
 
-const ProjectCard = ({ project, priority = false }) => {
-  const [isOpen, setIsOpen] = useState(false)
-
+const ProjectCard = ({ project, priority = false, isOpen = false, onToggle }) => {
   const handleCardClick = () => {
-    if (isOpen) {
-      setIsOpen(false)
-    } else {
-      setIsOpen(true)
+    if (onToggle) {
+      onToggle()
     }
   }
 
@@ -19,10 +15,12 @@ const ProjectCard = ({ project, priority = false }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       onClick={handleCardClick}
-      className="relative w-full overflow-hidden group cursor-pointer md:aspect-[2/1] aspect-[4/5]"
+      className="relative w-full group cursor-pointer md:aspect-[2/1] aspect-[4/5]"
       style={{ 
         borderRadius: '20px',
-        margin: '20px 0'
+        margin: '20px 0',
+        isolation: 'isolate',
+        overflow: 'hidden'
       }}
     >
       {/* Background Image */}
@@ -80,7 +78,7 @@ const ProjectCard = ({ project, priority = false }) => {
         <button
           onClick={(e) => {
             e.stopPropagation()
-            setIsOpen(false)
+            if (onToggle) onToggle()
           }}
           className="absolute top-6 right-6 text-gray-500 hover:text-gray-700 text-xl"
         >

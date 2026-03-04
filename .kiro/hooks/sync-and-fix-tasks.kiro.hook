@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Tasks: sync and fix all tasks",
+  "description": "Syncs tasks from production and then automatically fixes all open tasks in one go",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "First, sync tasks from production by calling the endpoint: curl http://localhost:3001/api/tasks/sync-from-production\n\nThen, read all tasks from public/data/tasks.json and identify all tasks with status \"open\". For each open task, analyze the comment, selector, and page URL to understand what needs to be fixed. Then systematically fix each issue by:\n\n1. Identifying the correct component file based on the page URL\n2. Understanding the CSS selector to locate the exact element  \n3. Implementing the fix described in the comment\n4. After fixing all tasks, update tasks.json to mark them as completed with status=\"completed\" and fixedBy=\"kiro\"\n\nWork through all open tasks one by one, making the necessary code changes to address each issue."
+  },
+  "workspaceFolderName": "Pencilz2026",
+  "shortName": "sync-and-fix-tasks"
+}

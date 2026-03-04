@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Outlet, useSearchParams } from 'react-router-dom'
+import { Outlet, useSearchParams, useLocation } from 'react-router-dom'
 import Navigation from './Navigation'
 import Footer from './Footer'
 import VisualFeedbackMode from './VisualFeedbackMode'
@@ -12,6 +12,12 @@ const Layout = () => {
   const [showCommentDialog, setShowCommentDialog] = useState(false)
   const { user } = useAuth()
   const [searchParams] = useSearchParams()
+  const location = useLocation()
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
 
   // Highlight element if highlightTask parameter is present
   useEffect(() => {

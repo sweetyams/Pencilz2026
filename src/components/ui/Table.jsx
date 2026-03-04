@@ -1,7 +1,7 @@
 const Table = ({ children, className = '' }) => {
   return (
-    <div className={`overflow-hidden border border-gray-200 rounded-lg ${className}`}>
-      <table className="min-w-full divide-y divide-gray-200">
+    <div className={`border border-gray-200 rounded-lg ${className}`}>
+      <table className="w-full divide-y divide-gray-200" style={{ minWidth: '1200px' }}>
         {children}
       </table>
     </div>

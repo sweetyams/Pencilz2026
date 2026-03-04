@@ -58,7 +58,12 @@ const SettingsForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
           hamburgerIcon: data.hamburgerIcon || '',
           buttonIcon: data.buttonIcon || '',
           servicesDescription: data.servicesDescription || '',
-          aboutDescription: data.aboutDescription || ''
+          aboutDescription: data.aboutDescription || '',
+          footerContactHeading: data.footerContactHeading || '',
+          footerContactButtonText: data.footerContactButtonText || '',
+          footerEmailSubject: data.footerEmailSubject || '',
+          footerEmailBody: data.footerEmailBody || '',
+          visualFeedbackEnabled: data.visualFeedbackEnabled || false
         }
         reset(formData)
         console.log('SettingsForm: Form reset with data')
@@ -66,7 +71,11 @@ const SettingsForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
         setAboutItems(data.aboutItems || [])
         setInitialServices(data.services || [])
         setInitialAboutItems(data.aboutItems || [])
-        setIsInitialized(true)
+        // Mark as initialized after a delay to avoid false positives
+        setTimeout(() => {
+          setIsInitialized(true)
+          console.log('SettingsForm: Initialized set to true')
+        }, 100)
       })
   }
 
@@ -133,7 +142,12 @@ const SettingsForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
           hamburgerIcon: savedData.hamburgerIcon || '',
           buttonIcon: savedData.buttonIcon || '',
           servicesDescription: savedData.servicesDescription || '',
-          aboutDescription: savedData.aboutDescription || ''
+          aboutDescription: savedData.aboutDescription || '',
+          footerContactHeading: savedData.footerContactHeading || '',
+          footerContactButtonText: savedData.footerContactButtonText || '',
+          footerEmailSubject: savedData.footerEmailSubject || '',
+          footerEmailBody: savedData.footerEmailBody || '',
+          visualFeedbackEnabled: savedData.visualFeedbackEnabled || false
         }
         reset(formData)
         if (onSaveSuccess) {
@@ -209,15 +223,6 @@ const SettingsForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
               onChange={(url) => setValue('hamburgerIcon', url)}
               helperText="Upload hamburger icon (SVG recommended)"
             />
-
-            <FileInput
-              label="Button Arrow Icon (SVG)"
-              accept="image/svg+xml,.svg"
-              onUpload={handleImageUpload}
-              value={buttonIconValue}
-              onChange={(url) => setValue('buttonIcon', url)}
-              helperText="Upload button icon (SVG only)"
-            />
           </FormSection>
         </Card>
 
@@ -239,6 +244,45 @@ const SettingsForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
               label="Location"
               {...register('location')}
               placeholder="e.g., Montreal"
+            />
+          </FormSection>
+        </Card>
+
+        {/* Footer Contact Section */}
+        <Card>
+          <FormSection title="Footer Contact Section">
+            <Input
+              label="Contact Heading"
+              {...register('footerContactHeading')}
+              placeholder="e.g., Start a project"
+              helperText="The heading text above the contact button in the footer"
+            />
+            <Input
+              label="Contact Button Text"
+              {...register('footerContactButtonText')}
+              placeholder="Leave blank to use email address"
+              helperText="The text shown on the contact button. Defaults to the contact email above."
+            />
+            <FileInput
+              label="Button Icon (SVG)"
+              accept="image/svg+xml,.svg"
+              onUpload={handleImageUpload}
+              value={buttonIconValue}
+              onChange={(url) => setValue('buttonIcon', url)}
+              helperText="Upload button arrow icon (SVG only, 36px wide recommended)"
+            />
+            <Input
+              label="Email Subject"
+              {...register('footerEmailSubject')}
+              placeholder="e.g., Let's Create Something Amazing Together! 🚀"
+              helperText="The subject line for the email"
+            />
+            <Textarea
+              label="Email Body"
+              {...register('footerEmailBody')}
+              rows={6}
+              placeholder="Hi there!&#10;&#10;I'm excited to explore the possibility of working together on a project.&#10;&#10;Here's what I'm thinking:&#10;&#10;[Tell us about your project vision]&#10;&#10;Looking forward to bringing this to life!&#10;&#10;Best regards"
+              helperText="The pre-filled email body text. Use line breaks for formatting."
             />
           </FormSection>
         </Card>

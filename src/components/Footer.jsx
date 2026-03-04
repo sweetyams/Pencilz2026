@@ -6,7 +6,16 @@ import { API_URL } from '../config'
 import { getImageUrl } from '../utils/imageUrl'
 
 const Footer = ({ onActivateFeedbackMode }) => {
-  const [settings, setSettings] = useState({ email: '', logo: '', companyName: '', visualFeedbackEnabled: false })
+  const [settings, setSettings] = useState({ 
+    email: '', 
+    logo: '', 
+    companyName: '', 
+    visualFeedbackEnabled: false,
+    footerContactHeading: 'Start a project',
+    footerContactButtonText: '',
+    footerEmailSubject: "Let's Create Something Amazing Together! 🚀",
+    footerEmailBody: `Hi there!\n\nI'm excited to explore the possibility of working together on a project.\n\nHere's what I'm thinking:\n\n[Tell us about your project vision]\n\nLooking forward to bringing this to life!\n\nBest regards`
+  })
   const { user } = useAuth()
 
   useEffect(() => {
@@ -18,11 +27,41 @@ const Footer = ({ onActivateFeedbackMode }) => {
 
   const showAddComments = user && settings.visualFeedbackEnabled
 
+  const emailSubject = encodeURIComponent(settings.footerEmailSubject || "Let's Create Something Amazing Together! 🚀")
+  const emailBody = encodeURIComponent(settings.footerEmailBody || `Hi there!\n\nI'm excited to explore the possibility of working together on a project.\n\nHere's what I'm thinking:\n\n[Tell us about your project vision]\n\nLooking forward to bringing this to life!\n\nBest regards`)
+  const contactHeading = settings.footerContactHeading || 'Start a project'
+  const buttonText = settings.footerContactButtonText || settings.email
+
   return (
     <footer className="bg-white mt-auto w-full">
       <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '20px' }}>
+        {/* Contact Section */}
+        <div className="w-full flex items-center justify-center pt-12 pb-[100px]">
+          <div className="flex flex-col items-center gap-6" style={{ width: '481px', maxWidth: '100%' }}>
+            <p className="text-2xl text-black text-center w-full">
+              {contactHeading}
+            </p>
+            <a
+              href={`mailto:${settings.email}?subject=${emailSubject}&body=${emailBody}`}
+              className="w-full border border-black flex items-center relative rounded-[70px] transition-all duration-300 ease-in-out bg-[#89FED7] border-dashed px-6 py-4 justify-between hover:bg-[#6ee5c3]"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="text-[24px] font-normal text-black">{buttonText}</span>
+              {settings.buttonIcon && (
+                <img 
+                  src={getImageUrl(settings.buttonIcon)} 
+                  alt="" 
+                  className="w-9 h-auto"
+                  style={{ flexShrink: 0 }}
+                />
+              )}
+            </a>
+          </div>
+        </div>
+
         {/* Logo - Full Width */}
-        <div className="mb-8 w-full">
+        <div className="mb-4 w-full">
           <Link to="/">
             {settings.logo ? (
               <LazyImage 

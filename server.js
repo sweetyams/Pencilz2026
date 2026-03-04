@@ -88,6 +88,17 @@ const verifyPassword = async (password, hash) => {
   return bcrypt.compareSync(password, hash)
 }
 
+// Generate a 6-character alphanumeric ID
+const generateShortId = () => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let result = ''
+  const randomBytes = crypto.randomBytes(4)
+  for (let i = 0; i < 6; i++) {
+    result += chars[randomBytes[i % 4] % chars.length]
+  }
+  return result
+}
+
 // Helper functions for task management
 const readTasks = async () => {
   try {
@@ -130,6 +141,142 @@ app.post('/api/tasks/import', async (req, res) => {
     res.json({ 
       success: true,
       count: tasks.length,
+      importedAt: new Date().toISOString()
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Quick sync endpoint - just hit this URL to sync from production
+app.get('/api/tasks/sync-from-production', async (req, res) => {
+  const productionUrl = process.env.PRODUCTION_URL || 'https://pencilz2026.vercel.app'
+  
+  try {
+    console.log(`🔄 Syncing tasks from ${productionUrl}...`)
+    
+    // Fetch from production
+    const response = await fetch(`${productionUrl}/api/tasks/export`)
+    if (!response.ok) {
+      throw new Error(`Failed to fetch from production: ${response.status}`)
+    }
+    
+    const data = await response.json()
+    console.log(`✅ Received ${data.tasks.length} tasks`)
+    
+    // Save locally
+    await writeTasks(data.tasks)
+    console.log(`💾 Saved to local database`)
+    
+    res.json({
+      success: true,
+      message: `Synced ${data.tasks.length} tasks from production`,
+      tasks: data.tasks,
+      source: productionUrl,
+      syncedAt: new Date().toISOString()
+    })
+  } catch (error) {
+    console.error('❌ Sync failed:', error)
+    res.status(500).json({ 
+      success: false,
+      error: error.message 
+    })
+  }
+})
+
+// Import endpoints for content migration
+app.post('/api/users/import', async (req, res) => {
+  try {
+    const { users } = req.body
+    
+    if (!Array.isArray(users)) {
+      return res.status(400).json({ error: 'Users must be an array' })
+    }
+    
+    await writeUsers(users)
+    
+    res.json({ 
+      success: true,
+      count: users.length,
+      importedAt: new Date().toISOString()
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.post('/api/projects/import', async (req, res) => {
+  try {
+    const projects = req.body
+    
+    if (!Array.isArray(projects)) {
+      return res.status(400).json({ error: 'Projects must be an array' })
+    }
+    
+    await db.write('projects.json', projects)
+    
+    res.json({ 
+      success: true,
+      count: projects.length,
+      importedAt: new Date().toISOString()
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.post('/api/news/import', async (req, res) => {
+  try {
+    const news = req.body
+    
+    if (!Array.isArray(news)) {
+      return res.status(400).json({ error: 'News must be an array' })
+    }
+    
+    await db.write('news.json', news)
+    
+    res.json({ 
+      success: true,
+      count: news.length,
+      importedAt: new Date().toISOString()
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.post('/api/pages/import', async (req, res) => {
+  try {
+    const pages = req.body
+    
+    if (typeof pages !== 'object' || Array.isArray(pages)) {
+      return res.status(400).json({ error: 'Pages must be an object' })
+    }
+    
+    await db.write('pages.json', pages)
+    
+    res.json({ 
+      success: true,
+      count: Object.keys(pages).length,
+      importedAt: new Date().toISOString()
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.post('/api/settings/import', async (req, res) => {
+  try {
+    const settings = req.body
+    
+    if (typeof settings !== 'object' || Array.isArray(settings)) {
+      return res.status(400).json({ error: 'Settings must be an object' })
+    }
+    
+    await db.write('settings.json', settings)
+    
+    res.json({ 
+      success: true,
       importedAt: new Date().toISOString()
     })
   } catch (error) {
@@ -481,8 +628,14 @@ app.post('/api/tasks', async (req, res) => {
     const tasks = await readTasks()
     const now = new Date().toISOString()
     
+    // Generate unique 6-character ID
+    let taskId = generateShortId()
+    while (tasks.some(t => t.id === taskId)) {
+      taskId = generateShortId()
+    }
+    
     const newTask = {
-      id: crypto.randomUUID(),
+      id: taskId,
       pageUrl,
       selector,
       comment,

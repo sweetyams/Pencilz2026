@@ -1,7 +1,7 @@
 import { motion, useTransform } from 'framer-motion'
 import ProjectCard from './ProjectCard'
 
-const StickyCard = ({ project, index, scrollYProgress, totalCards }) => {
+const StickyCard = ({ project, index, scrollYProgress, totalCards, isOpen, onToggle }) => {
   const targetScale = Math.max(0.85, 1 - (totalCards - index - 1) * 0.05)
   const range = [index * 0.25, 1]
   const scale = useTransform(scrollYProgress, range, [1, targetScale])
@@ -25,7 +25,12 @@ const StickyCard = ({ project, index, scrollYProgress, totalCards }) => {
           margin: '0 auto'
         }}
       >
-        <ProjectCard project={project} priority={index === 0} />
+        <ProjectCard 
+          project={project} 
+          priority={index === 0}
+          isOpen={isOpen}
+          onToggle={onToggle}
+        />
       </motion.div>
     </div>
   )

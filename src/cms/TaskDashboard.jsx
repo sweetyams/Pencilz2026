@@ -5,7 +5,7 @@ import Table from '../components/ui/Table'
 import AlertDialog from '../components/ui/AlertDialog'
 import EmptyState from '../components/ui/EmptyState'
 import Modal from '../components/ui/Modal'
-import { API_URL } from '../config'
+import { API_URL, PRODUCTION_URL } from '../config'
 import { getImageUrl } from '../utils/imageUrl'
 
 const TaskDashboard = () => {
@@ -116,29 +116,28 @@ const TaskDashboard = () => {
           <Button
             variant="secondary"
             onClick={async () => {
-              const productionUrl = prompt('Enter production URL (e.g., https://pencilz.vercel.app):')
-              if (!productionUrl) return
-              
               try {
-                const response = await fetch(`${productionUrl}/api/tasks/export`)
-                if (!response.ok) throw new Error('Failed to fetch tasks')
+                console.log('🔄 Syncing from production...')
+                const response = await fetch(`${API_URL}/api/tasks/sync-from-production`)
+                console.log('📡 Response status:', response.status)
+                
+                if (!response.ok) {
+                  const errorText = await response.text()
+                  console.error('❌ Sync error:', errorText)
+                  throw new Error(`Failed to sync: ${response.status}`)
+                }
                 
                 const data = await response.json()
+                console.log('✅ Sync result:', data)
                 
-                // Save to local tasks.json
-                const saveResponse = await fetch(`${API_URL}/api/tasks/import`, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ tasks: data.tasks })
-                })
-                
-                if (saveResponse.ok) {
-                  showSuccess(`Synced ${data.tasks.length} tasks from production`)
+                if (data.success) {
+                  showSuccess(`✅ Synced ${data.tasks.length} tasks from production`)
                   loadTasks()
                 } else {
-                  throw new Error('Failed to save tasks')
+                  throw new Error(data.error || 'Sync failed')
                 }
               } catch (error) {
+                console.error('❌ Sync failed:', error)
                 alert(`Sync failed: ${error.message}`)
               }
             }}
@@ -202,25 +201,26 @@ const TaskDashboard = () => {
           }
         />
       ) : (
-        <div className="overflow-x-auto">
-          <Table>
+        <div className="border border-gray-200 rounded-lg overflow-hidden">
+          <div className="overflow-x-auto">
+            <Table className="border-0">
           <Table.Header>
             <Table.Row>
-              <Table.Head className="w-16">ID</Table.Head>
-              <Table.Head className="w-32">Page</Table.Head>
-              <Table.Head className="min-w-[250px]">Comment</Table.Head>
-              <Table.Head className="w-24">Creator</Table.Head>
-              <Table.Head className="w-28">Date</Table.Head>
-              <Table.Head className="w-32">Status</Table.Head>
-              <Table.Head className="w-56">Actions</Table.Head>
+              <Table.Head className="w-24">ID</Table.Head>
+              <Table.Head className="w-40">Page</Table.Head>
+              <Table.Head className="min-w-[300px]">Comment</Table.Head>
+              <Table.Head className="w-28">Creator</Table.Head>
+              <Table.Head className="w-32">Date</Table.Head>
+              <Table.Head className="w-36">Status</Table.Head>
+              <Table.Head className="w-64">Actions</Table.Head>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {filteredTasks.map((task, index) => (
               <Table.Row key={task.id}>
                 <Table.Cell>
-                  <div className="text-xs font-mono text-gray-900 font-semibold select-text cursor-text" title={task.id}>
-                    #{String(index + 1).padStart(4, '0')}
+                  <div className="text-xs font-mono text-gray-900 font-semibold select-text cursor-text" title="Click to copy task ID">
+                    #{task.id}
                   </div>
                 </Table.Cell>
                 <Table.Cell>
@@ -274,7 +274,7 @@ const TaskDashboard = () => {
                   </select>
                 </Table.Cell>
                 <Table.Cell>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 flex-nowrap">
                     {/* Only show Fix button on localhost */}
                     {window.location.hostname === 'localhost' && (
                       <Button 
@@ -282,13 +282,12 @@ const TaskDashboard = () => {
                         size="sm"
                         onClick={(e) => {
                           e.stopPropagation()
-                          const taskNumber = String(index + 1).padStart(4, '0')
-                          const command = `Fix task #${taskNumber}`
+                          const command = `Fix task #${task.id}`
                           navigator.clipboard.writeText(command)
-                          showSuccess(`Copied: "${command}"`)
+                          showSuccess(`✅ Copied! Paste in Kiro: "${command}"`)
                         }}
-                        title="Copy 'Fix with Kiro' command"
-                        className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap"
+                        title="Copy command and paste in Kiro chat"
+                        className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap flex-shrink-0"
                       >
                         🤖 Fix
                       </Button>
@@ -353,6 +352,7 @@ const TaskDashboard = () => {
             ))}
           </Table.Body>
         </Table>
+          </div>
         </div>
       )}
 

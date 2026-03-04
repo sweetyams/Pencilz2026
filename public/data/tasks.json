@@ -1,19 +1,19 @@
 {
   "tasks": [
     {
-      "id": "e2ed94d6-6a04-46dc-9b80-ca370b401b3f",
-      "pageUrl": "http://localhost:5173/",
-      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div.px-5.md:px-[20px].pt-2.md:pt-[10px]:nth-child(1)",
-      "comment": "I want more padding between buttons",
-      "creator": "willem",
-      "status": "open",
-      "createdAt": "2026-03-03T23:44:54.122Z",
-      "updatedAt": "2026-03-03T23:44:54.122Z",
-      "screenshot": "/uploads/1772581494109-feedback-1772581494104.png",
+      "id": "OW6XOW",
+      "pageUrl": "https://pencilz2026.vercel.app/terms",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.bg-white.min-h-screen.px-5.py-14 > div.max-w-[1004px]",
+      "comment": "Should have the same left alignment / max width as the header and footer",
+      "creator": "yann",
+      "status": "completed",
+      "createdAt": "2026-03-04T12:20:33.925Z",
+      "updatedAt": "2026-03-04T12:35:05.908Z",
+      "screenshot": "https://dzbvitf6vl23bjkr.public.blob.vercel-storage.com/1772626833538-feedback-1772626831412.png",
       "metadata": {
         "viewport": {
           "width": 1855,
-          "height": 1024
+          "height": 1032
         },
         "screen": {
           "width": 3008,
@@ -21,24 +21,234 @@
         },
         "devicePixelRatio": 2,
         "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
-        "timestamp": "2026-03-03T23:44:36.922Z",
-        "url": "http://localhost:5173/",
+        "timestamp": "2026-03-04T12:20:16.878Z",
+        "url": "https://pencilz2026.vercel.app/terms",
+        "scrollPosition": {
+          "x": 0,
+          "y": 3042.5
+        }
+      },
+      "fixedBy": "kiro"
+    },
+    {
+      "id": "ZUWFZU",
+      "pageUrl": "https://pencilz2026.vercel.app/terms",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.bg-white.min-h-screen.px-5.py-14",
+      "comment": "When changing pages it should bring user to the top of the page (normal web behavior not react)",
+      "creator": "yann",
+      "status": "completed",
+      "createdAt": "2026-03-04T12:21:04.874Z",
+      "updatedAt": "2026-03-04T12:35:05.909Z",
+      "screenshot": "https://dzbvitf6vl23bjkr.public.blob.vercel-storage.com/1772626864519-feedback-1772626862635.png",
+      "metadata": {
+        "viewport": {
+          "width": 1855,
+          "height": 1032
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-04T12:20:45.932Z",
+        "url": "https://pencilz2026.vercel.app/terms",
+        "scrollPosition": {
+          "x": 0,
+          "y": 3251
+        }
+      },
+      "fixedBy": "kiro"
+    },
+    {
+      "id": "S30GS3",
+      "pageUrl": "https://pencilz2026.vercel.app/",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div.px-5.md:px-[20px].pt-2.md:pt-[10px]:nth-child(1) > div.relative.w-full.overflow-hidden.aspect-[4/5].md:aspect-[2/1] > div.absolute.lg:flex.hidden.flex-row.gap-4:nth-child(3) > button.border.border-black.flex.items-center.relative.rounded-[70px].transition-all.duration-300.ease-in-out.bg-[#89FED7].border-dashed.px-6.py-4.lg:px-6.lg:py-3.justify-between.lg:justify-start.lg:justify-between.flex-1:nth-child(1)",
+      "comment": "hero links should bring you to services",
+      "creator": "yann",
+      "status": "completed",
+      "createdAt": "2026-03-04T12:21:30.496Z",
+      "updatedAt": "2026-03-04T12:35:05.909Z",
+      "screenshot": "https://dzbvitf6vl23bjkr.public.blob.vercel-storage.com/1772626890208-feedback-1772626890045.png",
+      "metadata": {
+        "viewport": {
+          "width": 1855,
+          "height": 1032
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-04T12:21:17.945Z",
+        "url": "https://pencilz2026.vercel.app/",
         "scrollPosition": {
           "x": 0,
           "y": 0
         }
-      }
+      },
+      "fixedBy": "kiro"
     },
     {
-      "id": "c1e84b0f-78a3-4012-b6ca-8d77b2662fac",
+      "id": "4CMH4C",
+      "pageUrl": "https://pencilz2026.vercel.app/",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > nav.bg-white.sticky.top-0.z-50.w-full > div.px-5.md:px-[20px] > div.flex.items-center.justify-between > div.flex.items-center:nth-child(1) > div.hidden.md:flex.items-center.-mx-3 > div.relative.py-6.px-3:nth-child(3)",
+      "comment": "should open email with pre0populated (same as footer)",
+      "creator": "yann",
+      "status": "completed",
+      "createdAt": "2026-03-04T12:21:50.589Z",
+      "updatedAt": "2026-03-04T12:35:05.909Z",
+      "screenshot": "https://dzbvitf6vl23bjkr.public.blob.vercel-storage.com/1772626910419-feedback-1772626910294.png",
+      "metadata": {
+        "viewport": {
+          "width": 1855,
+          "height": 1032
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-04T12:21:39.432Z",
+        "url": "https://pencilz2026.vercel.app/",
+        "scrollPosition": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "fixedBy": "kiro"
+    },
+    {
+      "id": "WUC0WU",
+      "pageUrl": "https://pencilz2026.vercel.app/about",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > nav.bg-white.sticky.top-0.z-50.w-full > div.px-5.md:px-[20px] > div.flex.items-center.justify-between > div.flex.items-center:nth-child(1) > div.hidden.md:flex.items-center.-mx-3 > div.relative.py-6.px-3:nth-child(1)",
+      "comment": "Clicking on the link itself should being you services (same for about)",
+      "creator": "yann",
+      "status": "completed",
+      "createdAt": "2026-03-04T12:22:29.213Z",
+      "updatedAt": "2026-03-04T12:22:29.213Z",
+      "screenshot": "https://dzbvitf6vl23bjkr.public.blob.vercel-storage.com/1772626948691-feedback-1772626948628.png",
+      "metadata": {
+        "viewport": {
+          "width": 1855,
+          "height": 1032
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-04T12:22:08.658Z",
+        "url": "https://pencilz2026.vercel.app/about",
+        "scrollPosition": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "fixedBy": "kiro"
+    },
+    {
+      "id": "AZZ2AZ",
+      "pageUrl": "https://pencilz2026.vercel.app/",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div:nth-child(4) > div:nth-child(2) > div > div.relative.w-full.overflow-hidden.group.cursor-pointer.md:aspect-[2/1].aspect-[4/5] > div.absolute.inset-0:nth-child(1) > div.absolute.inset-0.transition-opacity.duration-500:nth-child(3)",
+      "comment": "openig the details on one card should close it on another",
+      "creator": "yann",
+      "status": "completed",
+      "createdAt": "2026-03-04T12:23:00.159Z",
+      "updatedAt": "2026-03-04T12:35:05.909Z",
+      "screenshot": "https://dzbvitf6vl23bjkr.public.blob.vercel-storage.com/1772626979814-feedback-1772626979663.png",
+      "metadata": {
+        "viewport": {
+          "width": 1855,
+          "height": 1032
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-04T12:22:51.116Z",
+        "url": "https://pencilz2026.vercel.app/",
+        "scrollPosition": {
+          "x": 0,
+          "y": 1390
+        }
+      },
+      "fixedBy": "kiro"
+    },
+    {
+      "id": "NSA9NS",
+      "pageUrl": "https://pencilz2026.vercel.app/",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div.px-5.md:px-[20px]:nth-child(5)",
+      "comment": "a very small portion of the modal on the right is visible before clicked on project cards",
+      "creator": "yann",
+      "status": "completed",
+      "createdAt": "2026-03-04T12:23:54.249Z",
+      "updatedAt": "2026-03-04T12:23:54.249Z",
+      "metadata": {
+        "viewport": {
+          "width": 1855,
+          "height": 1032
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-04T12:23:36.947Z",
+        "url": "https://pencilz2026.vercel.app/",
+        "scrollPosition": {
+          "x": 0,
+          "y": 5503.5
+        }
+      },
+      "fixedBy": "kiro"
+    },
+    {
+      "id": "JBW0JB",
+      "pageUrl": "https://pencilz2026.vercel.app/terms",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.bg-white.min-h-screen.px-5.py-14",
+      "comment": "Use the same base template for tertiary pages - terms, privacy, FAQ etc. it should have a max width as well as a 20px margin or padding similar to the header and footer so there is vertical alignment",
+      "creator": "yann",
+      "status": "completed",
+      "createdAt": "2026-03-04T12:38:03.491Z",
+      "updatedAt": "2026-03-04T13:15:00.000Z",
+      "screenshot": "https://dzbvitf6vl23bjkr.public.blob.vercel-storage.com/1772627883171-feedback-1772627881015.png",
+      "metadata": {
+        "viewport": {
+          "width": 1855,
+          "height": 1032
+        },
+        "screen": {
+          "width": 3008,
+          "height": 1692
+        },
+        "devicePixelRatio": 2,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "timestamp": "2026-03-04T12:37:13.674Z",
+        "url": "https://pencilz2026.vercel.app/terms",
+        "scrollPosition": {
+          "x": 0,
+          "y": 3251
+        }
+      },
+      "fixedBy": "kiro"
+    },
+    {
+      "id": "PX18PX",
       "pageUrl": "http://localhost:5173/",
-      "selector": "div#root > div.min-h-screen.flex.flex-col > footer.bg-white.mt-auto.w-full > div",
-      "comment": "more padding between logo and links",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div.w-full.flex.items-center.justify-center.px-5.md:px-[20px].pt-12.pb-[200px]:nth-child(6)",
+      "comment": "add this home 'lets start a project' section as a 'part of the global site footer, removing the similar ones in Terms, privacy, about etc. to use this instead",
       "creator": "willem",
-      "status": "open",
-      "createdAt": "2026-03-03T23:45:10.942Z",
-      "updatedAt": "2026-03-03T23:45:10.942Z",
-      "screenshot": "/uploads/1772581510937-feedback-1772581510932.png",
+      "status": "completed",
+      "createdAt": "2026-03-04T12:41:27.065Z",
+      "updatedAt": "2026-03-04T13:30:00.000Z",
+      "screenshot": "/uploads/1772628087060-feedback-1772628087052.png",
       "metadata": {
         "viewport": {
           "width": 1855,
@@ -50,24 +260,25 @@
         },
         "devicePixelRatio": 2,
         "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
-        "timestamp": "2026-03-03T23:44:59.115Z",
+        "timestamp": "2026-03-04T12:40:36.601Z",
         "url": "http://localhost:5173/",
         "scrollPosition": {
           "x": 0,
-          "y": 6449
+          "y": 6429
         }
-      }
+      },
+      "fixedBy": "kiro"
     },
     {
-      "id": "5ccfe592-721d-466f-8909-f02a072694a8",
-      "pageUrl": "http://localhost:5173/",
-      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.w-full > div.px-5.md:px-[20px]:nth-child(5) > div:nth-child(2) > div.relative.w-full.overflow-hidden.group.cursor-pointer.md:aspect-[2/1].aspect-[4/5] > div.absolute.bg-white.p-8.flex.flex-col.justify-between.w-[calc(100%-4px)].md:w-[400px]:nth-child(3)",
-      "comment": "need a link to the website + a logo",
+      "id": "54EC54",
+      "pageUrl": "http://localhost:5173/about",
+      "selector": "div#root > div.min-h-screen.flex.flex-col > main.flex-grow > div.container.mx-auto.px-4.py-12",
+      "comment": "The about page should use the same margin max with template as TOC and privacy",
       "creator": "willem",
-      "status": "open",
-      "createdAt": "2026-03-03T23:46:19.625Z",
-      "updatedAt": "2026-03-03T23:46:19.625Z",
-      "screenshot": "/uploads/1772581579614-feedback-1772581579611.png",
+      "status": "completed",
+      "createdAt": "2026-03-04T12:42:01.374Z",
+      "updatedAt": "2026-03-04T13:30:00.000Z",
+      "screenshot": "/uploads/1772628121367-feedback-1772628121363.png",
       "metadata": {
         "viewport": {
           "width": 1855,
@@ -79,13 +290,14 @@
         },
         "devicePixelRatio": 2,
         "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
-        "timestamp": "2026-03-03T23:46:04.290Z",
-        "url": "http://localhost:5173/",
+        "timestamp": "2026-03-04T12:41:41.400Z",
+        "url": "http://localhost:5173/about",
         "scrollPosition": {
           "x": 0,
-          "y": 4024.5
+          "y": 0
         }
-      }
+      },
+      "fixedBy": "kiro"
     }
   ]
 }
