@@ -10,11 +10,11 @@ const Services = () => {
   })
 
   useEffect(() => {
-    fetch(`${API_URL}/api/pages`)
+    fetch(`${API_URL}/api/pages/services`)
       .then(res => res.json())
       .then(data => {
-        if (data.services) {
-          setPageData(data.services)
+        if (data) {
+          setPageData(data)
         }
       })
       .catch(err => console.error('Error loading services:', err))
