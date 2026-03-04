@@ -46,10 +46,10 @@ const ServicePageForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
       .catch(err => console.error('Error loading settings:', err))
 
     // Load services page data
-    fetch(`${API_URL}/api/pages`)
+    fetch(`${API_URL}/api/pages/services`)
       .then(res => res.json())
       .then(data => {
-        const servicesData = data.services || {
+        const servicesData = data || {
           heroTitle: 'Our Services',
           heroSubtitle: '',
           heroDescription: '',
