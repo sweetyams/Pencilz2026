@@ -82,7 +82,7 @@ const TestStack2 = () => {
   const [animStart, setAnimStart] = useState(0.15)
   const [animEnd, setAnimEnd] = useState(0.4)
   const [cardGap, setCardGap] = useState(20)
-  const [stickyTop, setStickyTop] = useState(150)
+  const [stickyTop, setStickyTop] = useState(100)
   const [showControls, setShowControls] = useState(true)
   
   // Card padding constant (20px top + 20px bottom)

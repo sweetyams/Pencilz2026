@@ -127,7 +127,7 @@ const StackedProjectCards = ({ projects, openProjectId, onToggle }) => {
       <div 
         style={{ 
           position: 'sticky', 
-          top: '150px',
+          top: '100px',
           paddingTop: `${peekOffset * 2}px`,
           minHeight: `${cardHeight * 3 + (cardGap - cardPadding) * 2 + peekOffset * 2}px`
         }}
