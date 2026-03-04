@@ -28,6 +28,7 @@ const dataFiles = [
   { name: 'users', path: 'users.json', endpoint: '/api/users/import' },
   { name: 'projects', path: 'projects.json', endpoint: '/api/projects/import' },
   { name: 'news', path: 'news.json', endpoint: '/api/news/import' },
+  { name: 'team', path: 'team.json', endpoint: '/api/team/import' },
   { name: 'pages', path: 'pages.json', endpoint: '/api/pages/import' },
   { name: 'settings', path: 'settings.json', endpoint: '/api/settings/import' },
   { name: 'tasks', path: 'tasks.json', endpoint: '/api/tasks/import' }

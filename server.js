@@ -245,6 +245,26 @@ app.post('/api/news/import', async (req, res) => {
   }
 })
 
+app.post('/api/team/import', async (req, res) => {
+  try {
+    const team = req.body
+    
+    if (!Array.isArray(team)) {
+      return res.status(400).json({ error: 'Team must be an array' })
+    }
+    
+    await db.write('team.json', team)
+    
+    res.json({ 
+      success: true,
+      count: team.length,
+      importedAt: new Date().toISOString()
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
 app.post('/api/pages/import', async (req, res) => {
   try {
     const pages = req.body
