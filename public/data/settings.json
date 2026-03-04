@@ -99,6 +99,170 @@
       "link": "",
       "type": "general",
       "usageCount": 1
+    },
+    {
+      "id": "tag-1772630748474",
+      "name": "Marketing",
+      "link": "",
+      "type": "general",
+      "usageCount": 0
+    },
+    {
+      "id": "tag-1772630753533",
+      "name": "Development",
+      "link": "",
+      "type": "general",
+      "usageCount": 0
+    },
+    {
+      "id": "tag-1772630756832",
+      "name": "Content",
+      "link": "",
+      "type": "general",
+      "usageCount": 0
+    },
+    {
+      "id": "tag-1772630770264",
+      "name": "Apparel",
+      "link": "",
+      "type": "general",
+      "usageCount": 0
+    }
+  ],
+  "categories": [
+    {
+      "id": "category-1",
+      "name": "Skincare",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-2",
+      "name": "Fashion",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-3",
+      "name": "SaaS",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-4",
+      "name": "EDC",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-5",
+      "name": "Fragrance",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-6",
+      "name": "Coffee",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-7",
+      "name": "Apparel",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-8",
+      "name": "Supplements",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-9",
+      "name": "Golf",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-10",
+      "name": "Home Goods",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-11",
+      "name": "Chocolate",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-12",
+      "name": "Suncare",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-13",
+      "name": "Beauty",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-14",
+      "name": "Motorcycle",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-15",
+      "name": "Jewelry",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-16",
+      "name": "Footwear",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "category-17",
+      "name": "Publishing",
+      "link": "",
+      "usageCount": 0
+    }
+  ],
+  "projectServices": [
+    {
+      "id": "service-1",
+      "name": "Development",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "service-2",
+      "name": "Design",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "service-3",
+      "name": "Marketing",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "service-4",
+      "name": "Content",
+      "link": "",
+      "usageCount": 0
+    },
+    {
+      "id": "service-5",
+      "name": "Consulting",
+      "link": "",
+      "usageCount": 0
     }
   ],
   "visualFeedbackEnabled": true

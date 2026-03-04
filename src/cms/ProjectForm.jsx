@@ -10,27 +10,29 @@ import Button from '../components/ui/Button'
 import RichTextEditor from '../components/ui/RichTextEditor'
 
 const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
-  const [availableTags, setAvailableTags] = useState([])
+  const [availableCategories, setAvailableCategories] = useState([])
+  const [availableServices, setAvailableServices] = useState([])
   
-  // Load taxonomy first
+  // Load categories and services
   useEffect(() => {
     fetch(`${API_URL}/api/settings`)
       .then(res => res.json())
       .then(data => {
-        setAvailableTags(data.taxonomy || [])
+        setAvailableCategories(data.categories || [])
+        setAvailableServices(data.projectServices || [])
       })
-      .catch(err => console.error('Error loading taxonomy:', err))
+      .catch(err => console.error('Error loading categories/services:', err))
   }, [])
   
-  // Convert project services/category to tag format, filtering out removed tags
+  // Convert project services/category to tag format, filtering out removed items
   const projectServices = Array.isArray(project.services)
     ? project.services
         .map(s => {
-          const tagName = typeof s === 'string' ? s : s.name
-          // Only include if tag exists in taxonomy
-          const existsInTaxonomy = availableTags.some(t => t.name === tagName)
-          if (!existsInTaxonomy && availableTags.length > 0) {
-            console.warn(`Tag "${tagName}" no longer exists in taxonomy, filtering out`)
+          const serviceName = typeof s === 'string' ? s : s.name
+          // Only include if service exists in available services
+          const existsInServices = availableServices.some(srv => srv.name === serviceName)
+          if (!existsInServices && availableServices.length > 0) {
+            console.warn(`Service "${serviceName}" no longer exists, filtering out`)
             return null
           }
           return typeof s === 'string' ? { id: s, name: s, link: '' } : s
@@ -41,10 +43,10 @@ const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
   const projectCategory = project.category 
     ? (() => {
         const categoryName = typeof project.category === 'string' ? project.category : project.category.name
-        // Only include if tag exists in taxonomy
-        const existsInTaxonomy = availableTags.some(t => t.name === categoryName)
-        if (!existsInTaxonomy && availableTags.length > 0) {
-          console.warn(`Category "${categoryName}" no longer exists in taxonomy, filtering out`)
+        // Only include if category exists in available categories
+        const existsInCategories = availableCategories.some(cat => cat.name === categoryName)
+        if (!existsInCategories && availableCategories.length > 0) {
+          console.warn(`Category "${categoryName}" no longer exists, filtering out`)
           return []
         }
         return [typeof project.category === 'string' ? { id: project.category, name: project.category, link: '' } : project.category]
@@ -60,6 +62,10 @@ const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
       description: project.description || '',
       services: projectServices,
       image: project.image || '',
+      swatchColor: project.swatchColor || '#000000',
+      startYear: project.startYear || new Date().getFullYear(),
+      endYear: project.endYear || 'Present',
+      featuredOnHome: project.featuredOnHome || false,
       metaTitle: project.metaTitle || '',
       metaDescription: project.metaDescription || '',
       metaKeywords: project.metaKeywords || '',
@@ -81,8 +87,8 @@ const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
 
   // Reset form when project changes (for cancel/discard)
   useEffect(() => {
-    // Only reset if we have taxonomy loaded to properly filter tags
-    if (availableTags.length === 0) return
+    // Only reset if we have categories and services loaded
+    if (availableCategories.length === 0 && availableServices.length === 0) return
     
     reset({
       id: project.id || undefined,
@@ -92,22 +98,25 @@ const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
       description: project.description || '',
       services: projectServices,
       image: project.image || '',
+      swatchColor: project.swatchColor || '#000000',
+      startYear: project.startYear || new Date().getFullYear(),
+      endYear: project.endYear || 'Present',
+      featuredOnHome: project.featuredOnHome || false,
       metaTitle: project.metaTitle || '',
       metaDescription: project.metaDescription || '',
       metaKeywords: project.metaKeywords || '',
       ogImage: project.ogImage || ''
     })
-  }, [project, reset, availableTags])
+  }, [project, reset, availableCategories, availableServices])
 
-  const handleCreateTag = (name) => {
-    const newTag = {
-      id: `tag-${Date.now()}`,
+  const handleCreateCategory = (name) => {
+    const newCategory = {
+      id: `category-${Date.now()}`,
       name: name,
       link: '',
-      type: 'general',
       usageCount: 0
     }
-    setAvailableTags([...availableTags, newTag])
+    setAvailableCategories([...availableCategories, newCategory])
     
     // Save to settings
     fetch(`${API_URL}/api/settings`)
@@ -115,7 +124,7 @@ const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
       .then(settings => {
         const updated = {
           ...settings,
-          taxonomy: [...(settings.taxonomy || []), newTag]
+          categories: [...(settings.categories || []), newCategory]
         }
         return fetch(`${API_URL}/api/settings`, {
           method: 'PUT',
@@ -123,9 +132,37 @@ const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
           body: JSON.stringify(updated)
         })
       })
-      .catch(err => console.error('Error saving new tag:', err))
+      .catch(err => console.error('Error saving new category:', err))
     
-    return newTag
+    return newCategory
+  }
+
+  const handleCreateService = (name) => {
+    const newService = {
+      id: `service-${Date.now()}`,
+      name: name,
+      link: '',
+      usageCount: 0
+    }
+    setAvailableServices([...availableServices, newService])
+    
+    // Save to settings
+    fetch(`${API_URL}/api/settings`)
+      .then(res => res.json())
+      .then(settings => {
+        const updated = {
+          ...settings,
+          projectServices: [...(settings.projectServices || []), newService]
+        }
+        return fetch(`${API_URL}/api/settings`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated)
+        })
+      })
+      .catch(err => console.error('Error saving new service:', err))
+    
+    return newService
   }
 
   const handleImageUpload = async (file) => {
@@ -159,15 +196,19 @@ const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
   }
 
   const onSubmit = (data) => {
-    // Convert tags back to simple format for storage
+    // Format data for storage
     const formattedData = {
       ...data,
       services: Array.isArray(data.services) 
-        ? data.services.map(s => s.name)
+        ? data.services.map(s => s.name || s)
         : [],
       category: Array.isArray(data.category) && data.category.length > 0
-        ? data.category[0].name
-        : ''
+        ? data.category[0].name || data.category[0]
+        : data.category || '',
+      swatchColor: data.swatchColor || '#000000',
+      startYear: parseInt(data.startYear) || new Date().getFullYear(),
+      endYear: data.endYear === 'Present' ? 'Present' : parseInt(data.endYear),
+      featuredOnHome: Boolean(data.featuredOnHome)
     }
     onSave(formattedData)
   }
@@ -196,28 +237,28 @@ const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
               )}
             />
             
+            <Controller
+              name="category"
+              control={control}
+              rules={{ 
+                required: 'Category is required',
+                validate: value => (Array.isArray(value) && value.length > 0) || 'Category is required'
+              }}
+              render={({ field }) => (
+                <TagInput
+                  label="Category"
+                  value={field.value || []}
+                  onChange={(tags) => field.onChange(tags.slice(0, 1))} // Only allow one category
+                  availableTags={availableCategories}
+                  onCreateTag={handleCreateCategory}
+                  placeholder="Select or create category..."
+                  error={errors.category?.message}
+                  helperText="Select one category (e.g., Skincare, Fashion, SaaS)"
+                />
+              )}
+            />
+            
             <div className="grid md:grid-cols-2 gap-4">
-              <Controller
-                name="category"
-                control={control}
-                rules={{ 
-                  required: 'Category is required',
-                  validate: value => (Array.isArray(value) && value.length > 0) || 'Category is required'
-                }}
-                render={({ field }) => (
-                  <TagInput
-                    label="Category"
-                    value={field.value || []}
-                    onChange={(tags) => field.onChange(tags.slice(0, 1))} // Only allow one category
-                    availableTags={availableTags}
-                    onCreateTag={handleCreateTag}
-                    placeholder="Select or create category..."
-                    error={errors.category?.message}
-                    helperText="Select one category (e.g., Shopify Migration, E-commerce)"
-                  />
-                )}
-              />
-              
               <Controller
                 name="link"
                 control={control}
@@ -229,6 +270,32 @@ const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
                     placeholder="https://example.com"
                     helperText="Optional external link to the live project"
                   />
+                )}
+              />
+              
+              <Controller
+                name="swatchColor"
+                control={control}
+                render={({ field }) => (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Brand Color
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        {...field}
+                        type="color"
+                        className="h-10 w-20 rounded border border-gray-300 cursor-pointer"
+                      />
+                      <Input
+                        value={field.value}
+                        onChange={(e) => field.onChange(e.target.value)}
+                        placeholder="#000000"
+                        className="flex-1"
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">Brand or accent color for this project</p>
+                  </div>
                 )}
               />
             </div>
@@ -258,13 +325,74 @@ const ProjectForm = ({ project = {}, onSave, onCancel, onFormChange }) => {
                   label="Services Provided"
                   value={field.value || []}
                   onChange={field.onChange}
-                  availableTags={availableTags}
-                  onCreateTag={handleCreateTag}
+                  availableTags={availableServices}
+                  onCreateTag={handleCreateService}
                   placeholder="Select or create services..."
-                  helperText="Select multiple services (e.g., Design, Development, Branding)"
+                  helperText="Select multiple services (e.g., Development, Design, Marketing)"
                 />
               )}
             />
+            
+            <div className="grid md:grid-cols-3 gap-4">
+              <Controller
+                name="startYear"
+                control={control}
+                rules={{ required: 'Start year is required' }}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    type="number"
+                    label="Start Year"
+                    placeholder="2024"
+                    min="2000"
+                    max="2100"
+                    error={errors.startYear?.message}
+                    helperText="Year project started"
+                  />
+                )}
+              />
+              
+              <Controller
+                name="endYear"
+                control={control}
+                rules={{ required: 'End year is required' }}
+                render={({ field }) => (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      End Year
+                    </label>
+                    <select
+                      {...field}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="Present">Present</option>
+                      {Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                        <option key={year} value={year}>{year}</option>
+                      ))}
+                    </select>
+                    <p className="text-xs text-gray-500 mt-1">Select 'Present' if ongoing</p>
+                  </div>
+                )}
+              />
+              
+              <Controller
+                name="featuredOnHome"
+                control={control}
+                render={({ field }) => (
+                  <div className="flex items-center pt-6">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-5 w-5"
+                      />
+                      <span className="text-sm font-medium text-gray-700">Feature on Home Page</span>
+                    </label>
+                  </div>
+                )}
+              />
+            </div>
           </FormSection>
 
           {/* Media Section */}
