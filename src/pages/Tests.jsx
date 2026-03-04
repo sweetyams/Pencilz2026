@@ -16,6 +16,16 @@ const Tests = () => {
       name: 'Test Stack',
       path: '/test-stack',
       description: 'Test the stacked project cards component'
+    },
+    {
+      name: 'Work List',
+      path: '/work-list',
+      description: 'View all projects in a sortable table format'
+    },
+    {
+      name: 'Team',
+      path: '/team-test',
+      description: 'View team members page'
     }
   ]
 

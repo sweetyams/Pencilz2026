@@ -23,7 +23,11 @@ const Home = () => {
   useEffect(() => {
     fetch(`${API_URL}/api/projects`)
       .then(res => res.json())
-      .then(data => setProjects(data))
+      .then(data => {
+        // Filter for featured projects only
+        const featuredProjects = data.filter(project => project.featuredOnHome === true)
+        setProjects(featuredProjects)
+      })
       .catch(() => setProjects([]))
     
     fetch(`${API_URL}/api/settings`)

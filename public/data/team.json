@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "name": "Yann",
+    "role": "Founder",
+    "image": "/uploads/YANN_4e83bead3e_bb9409a2f4.jpg",
+    "bio": "",
+    "order": 1
+  },
+  {
+    "id": 2,
+    "name": "Chiu",
+    "role": "Marketing and Operations",
+    "image": "/uploads/CHIU_43b97b2231_b74e936b03.jpg",
+    "bio": "",
+    "order": 2
+  },
+  {
+    "id": 3,
+    "name": "Woody",
+    "role": "Art Director",
+    "image": "/uploads/WODDY_8931e52eae_eb8f43c2fb.jpg",
+    "bio": "",
+    "order": 3
+  },
+  {
+    "id": 4,
+    "name": "Jhon",
+    "role": "Lead Engineer",
+    "image": "/uploads/JHON_bd3f98212e_0d8d32cac7.jpg",
+    "bio": "",
+    "order": 4
+  },
+  {
+    "id": 5,
+    "name": "Willem",
+    "role": "Director of UX",
+    "image": "/uploads/WILLIEM_e82e6617ad.jpg",
+    "bio": "",
+    "order": 5
+  },
+  {
+    "id": 6,
+    "name": "Sergio",
+    "role": "Shopify Technical Lead",
+    "image": "/uploads/SERGIO_8539e44639.jpg",
+    "bio": "",
+    "order": 6
+  },
+  {
+    "id": 7,
+    "name": "Ian",
+    "role": "Shopify Developer",
+    "image": "/uploads/IAN_64e7bdc57a.jpg",
+    "bio": "",
+    "order": 7
+  },
+  {
+    "id": 8,
+    "name": "Daniel",
+    "role": "Visual Designer",
+    "image": "/uploads/DANIEL_b728266608.jpg",
+    "bio": "",
+    "order": 8
+  },
+  {
+    "id": 9,
+    "name": "David",
+    "role": "Team Lead",
+    "image": "/uploads/DAVID_eeee82f8ca.jpg",
+    "bio": "",
+    "order": 9
+  },
+  {
+    "id": 10,
+    "name": "Ximena",
+    "role": "Product Owner",
+    "image": "/uploads/Ximena_9f1e308dd5.jpg",
+    "bio": "",
+    "order": 10
+  },
+  {
+    "id": 11,
+    "name": "Esneider",
+    "role": "FullStack Developer",
+    "image": "/uploads/ESNEIDER_483bf2e0b1.jpg",
+    "bio": "",
+    "order": 11
+  },
+  {
+    "id": 12,
+    "name": "Jesus M.",
+    "role": "Lead Shopify",
+    "image": "/uploads/JESUS_1ff8660496.jpg",
+    "bio": "",
+    "order": 12
+  },
+  {
+    "id": 13,
+    "name": "Miguel",
+    "role": "UI/UX Designer",
+    "image": "/uploads/MIGUEL_a8649e4c0c.png",
+    "bio": "",
+    "order": 13
+  },
+  {
+    "id": 14,
+    "name": "Gabriela",
+    "role": "Web QA Analyst",
+    "image": "/uploads/GABRIELA_1a1b3b7692.jpg",
+    "bio": "",
+    "order": 14
+  },
+  {
+    "id": 15,
+    "name": "Anthony",
+    "role": "FullStack Developer",
+    "image": "/uploads/ANTHONY_abd289c174.jpg",
+    "bio": "",
+    "order": 15
+  },
+  {
+    "id": 16,
+    "name": "Jesus L.",
+    "role": "FullStack Developer",
+    "image": "/uploads/JESUSLOZANO_041af9f0cd.png",
+    "bio": "",
+    "order": 16
+  },
+  {
+    "id": 17,
+    "name": "Carlos",
+    "role": "React Native FullStack",
+    "image": "/uploads/CARLOS_de4ed4d797.png",
+    "bio": "",
+    "order": 17
+  },
+  {
+    "id": 18,
+    "name": "Sachin",
+    "role": "Technical Architect",
+    "image": "/uploads/Sachin_Cartoon_cbe7fd0048.jpg",
+    "bio": "",
+    "order": 18
+  }
+]

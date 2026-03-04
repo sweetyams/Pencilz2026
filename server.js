@@ -418,6 +418,55 @@ app.delete('/api/news/:id', async (req, res) => {
   }
 })
 
+// Team endpoints
+app.get('/api/team', async (req, res) => {
+  try {
+    const data = await db.read('team.json')
+    res.json(data || [])
+  } catch (error) {
+    res.json([])
+  }
+})
+
+app.post('/api/team', async (req, res) => {
+  try {
+    const team = await db.read('team.json') || []
+    const newMember = { ...req.body, id: Date.now() }
+    team.push(newMember)
+    await db.write('team.json', team)
+    res.json(newMember)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.put('/api/team/:id', async (req, res) => {
+  try {
+    const team = await db.read('team.json') || []
+    const index = team.findIndex(m => m.id === parseInt(req.params.id))
+    if (index !== -1) {
+      team[index] = { ...req.body, id: parseInt(req.params.id) }
+      await db.write('team.json', team)
+      res.json(team[index])
+    } else {
+      res.status(404).json({ error: 'Team member not found' })
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.delete('/api/team/:id', async (req, res) => {
+  try {
+    const team = await db.read('team.json') || []
+    const filtered = team.filter(m => m.id !== parseInt(req.params.id))
+    await db.write('team.json', filtered)
+    res.json({ success: true })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
 // Settings endpoints
 app.get('/api/settings', async (req, res) => {
   try {

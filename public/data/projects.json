@@ -1,95 +1,552 @@
 [
   {
     "id": 1,
-    "title": "Waschies ",
-    "category": "Shopify Migration",
-    "link": "",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. test",
-    "services": [
-      "Design"
-    ],
-    "image": "/uploads/1772041914943-waschies-bis-besteller-hero-desktop.jpg",
-    "metaTitle": "",
-    "metaDescription": "",
-    "metaKeywords": "",
-    "ogImage": ""
-  },
-  {
-    "id": 1771962369695,
     "title": "Humanrace",
-    "category": "Shopify Development",
+    "category": "Skincare",
     "link": "",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
     "services": [
-      "Design",
-      "Strategy",
-      "Shopify Development"
+      "Development",
+      "Design"
     ],
     "image": "/uploads/1772032319828-Humanrace.jpg",
+    "swatchColor": "#2E8B57",
+    "startYear": 2021,
+    "endYear": "Present",
+    "featuredOnHome": true,
     "metaTitle": "",
     "metaDescription": "",
     "metaKeywords": "",
     "ogImage": ""
   },
   {
+    "id": 2,
+    "title": "Masava",
+    "category": "SaaS",
     "services": [
-      ""
+      "Development",
+      "Design",
+      "Marketing",
+      "Content"
     ],
-    "title": "Khloud",
-    "category": "React native app",
-    "description": "test",
-    "image": "/uploads/1771968320858-Fanova.jpg",
     "link": "",
-    "id": 1771964703424
-  },
-  {
-    "id": 1771968348377,
-    "title": "Libertine",
-    "category": "Design",
-    "link": "",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-    "services": [],
-    "image": "/uploads/1771968339978-Libertine.jpg",
+    "description": "",
+    "image": "",
+    "swatchColor": "#3B2ED6",
+    "startYear": 2023,
+    "endYear": "Present",
+    "featuredOnHome": false,
     "metaTitle": "",
     "metaDescription": "",
     "metaKeywords": "",
     "ogImage": ""
   },
   {
-    "id": 1771968365855,
+    "id": 3,
     "title": "Craighill",
-    "category": "Shopify Development",
+    "category": "EDC",
+    "services": [
+      "Development",
+      "Design",
+      "Marketing",
+      "Content"
+    ],
     "link": "",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+    "image": "/uploads/1771968364784-Craighill.jpg",
+    "swatchColor": "#FF6A13",
+    "startYear": 2022,
+    "endYear": "Present",
+    "featuredOnHome": true,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 4,
+    "title": "We Are Future Society",
+    "category": "Fragrance",
+    "services": [
+      "Development",
+      "Design"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#5B1A8E",
+    "startYear": 2023,
+    "endYear": "Present",
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 5,
+    "title": "Libertine",
+    "category": "Fashion",
+    "services": [
+      "Development",
+      "Design",
+      "Marketing",
+      "Content"
+    ],
+    "link": "",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+    "image": "/uploads/1771968339978-Libertine.jpg",
+    "swatchColor": "#FF2DA3",
+    "startYear": 2020,
+    "endYear": "Present",
+    "featuredOnHome": true,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 6,
+    "title": "Downeast",
+    "category": "Coffee",
+    "services": [
+      "Development",
+      "Design",
+      "Marketing",
+      "Content"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#3B2A23",
+    "startYear": 2023,
+    "endYear": "Present",
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 7,
+    "title": "For Days",
+    "category": "Apparel",
+    "services": [
+      "Development",
+      "Design",
+      "Marketing"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#F4D21F",
+    "startYear": 2022,
+    "endYear": "Present",
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 8,
+    "title": "Goodlight",
+    "category": "Skincare",
+    "services": [
+      "Development",
+      "Design"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#D8A6A6",
+    "startYear": 2022,
+    "endYear": 2023,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 9,
+    "title": "ATP",
+    "category": "Supplements",
+    "services": [
+      "Development",
+      "Design",
+      "Marketing",
+      "Content"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#E13A3A",
+    "startYear": 2020,
+    "endYear": "Present",
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 10,
+    "title": "Snaps Golf",
+    "category": "Golf",
+    "services": [
+      "Development",
+      "Design",
+      "Content"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#5B63FF",
+    "startYear": 2023,
+    "endYear": "Present",
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 11,
+    "title": "Gala Gala",
+    "category": "Skincare",
+    "services": [
+      "Development",
+      "Design",
+      "Consulting"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#6FA88A",
+    "startYear": 2022,
+    "endYear": 2023,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 12,
+    "title": "Joanna Vargas",
+    "category": "Skincare",
+    "services": [
+      "Development",
+      "Design"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#BFBFBF",
+    "startYear": 2022,
+    "endYear": 2023,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 13,
+    "title": "LePERE",
+    "category": "Apparel",
+    "services": [
+      "Consulting"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#2E6DB4",
+    "startYear": 2022,
+    "endYear": 2022,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 14,
+    "title": "Porta NYC",
+    "category": "Home Goods",
+    "services": [
+      "Development",
+      "Design"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#C9C3B8",
+    "startYear": 2022,
+    "endYear": 2023,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 15,
+    "title": "Recchiuti",
+    "category": "Chocolate",
+    "services": [
+      "Development",
+      "Design"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#B5532E",
+    "startYear": 2022,
+    "endYear": 2022,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 16,
+    "title": "Bask Suncare",
+    "category": "Suncare",
+    "services": [
+      "Development",
+      "Design"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#A9DDE4",
+    "startYear": 2021,
+    "endYear": 2021,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 17,
+    "title": "TOOD Beauty",
+    "category": "Beauty",
+    "services": [
+      "Development"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#7A1F5C",
+    "startYear": 2021,
+    "endYear": 2021,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 18,
+    "title": "Biltwell",
+    "category": "Motorcycle",
+    "services": [
+      "Development",
+      "Design"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#0E6B3A",
+    "startYear": 2020,
+    "endYear": "Present",
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 19,
+    "title": "Bones Coffee",
+    "category": "Coffee",
+    "services": [
+      "Development"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#3A2723",
+    "startYear": 2020,
+    "endYear": 2021,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 20,
+    "title": "BYCHARI",
+    "category": "Jewelry",
+    "services": [
+      "Development",
+      "Design"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#D2C1A8",
+    "startYear": 2020,
+    "endYear": 2022,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 21,
+    "title": "Childrenchic",
+    "category": "Footwear",
+    "services": [
+      "Development",
+      "Design",
+      "Consulting"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#2FA55F",
+    "startYear": 2020,
+    "endYear": 2023,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 22,
+    "title": "Dumais Made",
+    "category": "Home Goods",
+    "services": [
+      "Marketing"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#2B6FAF",
+    "startYear": 2020,
+    "endYear": "Present",
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 23,
+    "title": "Floral Street",
+    "category": "Fragrance",
+    "services": [
+      "Development",
+      "Design"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#1FA3B6",
+    "startYear": 2020,
+    "endYear": "Present",
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 24,
+    "title": "People Footwear",
+    "category": "Footwear",
+    "services": [
+      "Development",
+      "Design",
+      "Content"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#1596B3",
+    "startYear": 2020,
+    "endYear": 2022,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 25,
+    "title": "Very Good Light",
+    "category": "Publishing",
+    "services": [
+      "Development",
+      "Design"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#CFE3E6",
+    "startYear": 2020,
+    "endYear": 2020,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 26,
+    "title": "Po Jewels",
+    "category": "Jewelry",
+    "services": [
+      "Development",
+      "Design"
+    ],
+    "link": "",
+    "description": "",
+    "image": "",
+    "swatchColor": "#C9922E",
+    "startYear": 2024,
+    "endYear": 2024,
+    "featuredOnHome": false,
+    "metaTitle": "",
+    "metaDescription": "",
+    "metaKeywords": "",
+    "ogImage": ""
+  },
+  {
+    "id": 27,
+    "title": "Waschies",
+    "category": "Skincare",
     "services": [
       "Design"
     ],
-    "image": "/uploads/1771968364784-Craighill.jpg",
+    "link": "",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. test",
+    "image": "/uploads/1772041914943-waschies-bis-besteller-hero-desktop.jpg",
+    "swatchColor": "#87CEEB",
+    "startYear": 2023,
+    "endYear": "Present",
+    "featuredOnHome": true,
     "metaTitle": "",
     "metaDescription": "",
     "metaKeywords": "",
     "ogImage": ""
-  },
-  {
-    "services": [
-      ""
-    ],
-    "title": "Thensome",
-    "category": "Design, development",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-    "image": "/uploads/1771968377820-Thensome.jpg",
-    "link": "",
-    "id": 1771968385273
-  },
-  {
-    "services": [
-      ""
-    ],
-    "title": "Janine",
-    "category": "Internal project",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-    "image": "/uploads/1771968398331-Janine.jpg",
-    "link": "",
-    "id": 1771968401452
   }
 ]

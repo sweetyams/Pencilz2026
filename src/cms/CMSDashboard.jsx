@@ -3,7 +3,9 @@ import { useAuth } from '../contexts/AuthContext'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import SettingsForm from './SettingsForm'
 import HomePageForm from './HomePageForm'
-import TaxonomyForm from './TaxonomyForm'
+import CategoryForm from './CategoryForm'
+import ServiceForm from './ServiceForm'
+import TeamDashboard from './TeamDashboard'
 import UserDashboard from './UserDashboard'
 import TaskDashboard from './TaskDashboard'
 import Button from '../components/ui/Button'
@@ -49,11 +51,13 @@ const CMSDashboard = () => {
   const navigation = [
     { id: 'projects', label: 'Projects', icon: '📁' },
     { id: 'news', label: 'News', icon: '📰' },
+    { id: 'team', label: 'Team', icon: '👥' },
     { id: 'tasks', label: 'Tasks', icon: '✓' },
     { id: 'pages', label: 'Pages', icon: '📄' },
     { id: 'home', label: 'Home Page', icon: '🏠' },
-    { id: 'taxonomy', label: 'Tags & Taxonomy', icon: '🏷️' },
-    { id: 'users', label: 'Users', icon: '👥' },
+    { id: 'categories', label: 'Categories', icon: '🏷️' },
+    { id: 'services', label: 'Services', icon: '⚡' },
+    { id: 'users', label: 'Users', icon: '👤' },
     { id: 'settings', label: 'Settings', icon: '⚙️' }
   ]
 
@@ -220,9 +224,12 @@ const CMSDashboard = () => {
               <Table>
                 <Table.Header>
                   <Table.Row>
-                    <Table.Head>Project</Table.Head>
+                    <Table.Head>Image</Table.Head>
+                    <Table.Head>Title</Table.Head>
                     <Table.Head>Category</Table.Head>
-                    <Table.Head>Link</Table.Head>
+                    <Table.Head>Services</Table.Head>
+                    <Table.Head>Start Date</Table.Head>
+                    <Table.Head>End Date</Table.Head>
                     <Table.Head className="w-20"></Table.Head>
                   </Table.Row>
                 </Table.Header>
@@ -233,24 +240,22 @@ const CMSDashboard = () => {
                       onClick={() => navigate(`/cms/projects/${project.id}`)}
                     >
                       <Table.Cell>
-                        <div className="flex items-center gap-3">
-                          {project.image && (
-                            <img 
-                              src={getImageUrl(project.image)}
-                              alt={project.title}
-                              className="w-10 h-10 rounded object-cover"
-                            />
-                          )}
-                          <div>
-                            <div className="font-medium text-gray-900">{project.title}</div>
-                            <div 
-                              className="text-xs text-gray-500 line-clamp-1"
-                              dangerouslySetInnerHTML={{ 
-                                __html: project.description?.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim() || '' 
-                              }}
-                            />
+                        {project.image ? (
+                          <img 
+                            src={getImageUrl(project.image)}
+                            alt={project.title}
+                            className="w-16 h-16 rounded object-cover"
+                          />
+                        ) : (
+                          <div className="w-16 h-16 rounded bg-gray-100 flex items-center justify-center">
+                            <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
                           </div>
-                        </div>
+                        )}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <div className="font-medium text-gray-900">{project.title}</div>
                       </Table.Cell>
                       <Table.Cell>
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -258,19 +263,31 @@ const CMSDashboard = () => {
                         </span>
                       </Table.Cell>
                       <Table.Cell>
-                        {project.link && (
-                          <a 
-                            href={project.link} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1"
-                          >
-                            View
-                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                          </a>
+                        <div className="flex flex-wrap gap-1">
+                          {Array.isArray(project.services) && project.services.length > 0 ? (
+                            project.services.slice(0, 3).map((service, idx) => (
+                              <span key={idx} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                                {service}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-xs text-gray-400">None</span>
+                          )}
+                          {Array.isArray(project.services) && project.services.length > 3 && (
+                            <span className="text-xs text-gray-500">+{project.services.length - 3}</span>
+                          )}
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell className="text-gray-600">
+                        {project.startYear || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="text-gray-600">
+                        {project.endYear === 'Present' ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                            Present
+                          </span>
+                        ) : (
+                          project.endYear || '—'
                         )}
                       </Table.Cell>
                       <Table.Cell>
@@ -505,21 +522,40 @@ const CMSDashboard = () => {
           </div>
         )}
 
-        {/* Taxonomy Section */}
-        {activeSection === 'taxonomy' && (
+        {/* Categories Section */}
+        {activeSection === 'categories' && (
           <div>
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Tags & Taxonomy</h2>
-              <p className="text-sm text-gray-600 mt-1">Manage reusable tags for projects</p>
+              <h2 className="text-2xl font-bold text-gray-900">Project Categories</h2>
+              <p className="text-sm text-gray-600 mt-1">Manage project categories (each project has one category)</p>
             </div>
-            <TaxonomyForm 
-              key={`taxonomy-form-${formKey}`}
+            <CategoryForm 
+              key={`category-form-${formKey}`}
               onFormChange={() => setHasUnsavedChanges(true)}
               onSaveSuccess={() => setHasUnsavedChanges(false)}
               onCancelRef={formCancelRef}
             />
           </div>
         )}
+
+        {/* Services Section */}
+        {activeSection === 'services' && (
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Project Services</h2>
+              <p className="text-sm text-gray-600 mt-1">Manage project services (each project can have multiple services)</p>
+            </div>
+            <ServiceForm 
+              key={`service-form-${formKey}`}
+              onFormChange={() => setHasUnsavedChanges(true)}
+              onSaveSuccess={() => setHasUnsavedChanges(false)}
+              onCancelRef={formCancelRef}
+            />
+          </div>
+        )}
+
+        {/* Team Section */}
+        {activeSection === 'team' && <TeamDashboard />}
 
         {/* Users Section */}
         {activeSection === 'users' && <UserDashboard />}

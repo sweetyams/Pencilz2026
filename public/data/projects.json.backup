@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" data-theme="pencilz-arcade">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+			rel="stylesheet"
+		/>
+		
+		<link href="/_app/immutable/assets/0.BwihG0Bj.css" rel="stylesheet"><!--[--><meta name="description" content="Take fixed contracts, deliver on time, and build reputation in the Pencilz overhaul loop."><!--]--><title>Pencilz Mission Board</title>
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents"><!--[--><!--[--><!----><div class="min-h-screen"><!----><!----><h1>404</h1> <p>Not Found</p><!----><!----></div><!----><!--]--> <!--[!--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_ap02s0 = {
+						base: "",
+						env: {"PUBLIC_ANALYTICS_ENABLED":"true","PUBLIC_POSTHOG_HOST":"https://us.i.posthog.com","PUBLIC_POSTHOG_KEY":"phc_PmWGONIg1xGKLbnfO4scTKWGX0UrwgygoyG0dUPuLn4"}
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("/_app/immutable/entry/start.By7HNnVL.js"),
+						import("/_app/immutable/entry/app.DylYrxp1.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 1],
+							data: [null,null],
+							form: null,
+							error: {message:"Not Found",status:404},
+							status: 404
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>

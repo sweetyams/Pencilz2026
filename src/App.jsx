@@ -12,6 +12,8 @@ import TestStack from './pages/TestStack'
 import LinkTest from './pages/LinkTest'
 import MegaMenuTest from './pages/MegaMenuTest'
 import Tests from './pages/Tests'
+import Team from './pages/Team'
+import WorkList from './pages/WorkList'
 import CMSLogin from './cms/CMSLogin'
 import CMSDashboard from './cms/CMSDashboard'
 import ProjectEditPage from './cms/ProjectEditPage'
@@ -28,6 +30,8 @@ function App() {
           <Route path="/test-stack" element={<TestStack />} />
           <Route path="/link-test" element={<LinkTest />} />
           <Route path="/mega-menu-test" element={<MegaMenuTest />} />
+          <Route path="/work-list" element={<WorkList />} />
+          <Route path="/team-test" element={<Team />} />
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="services" element={<Services />} />
