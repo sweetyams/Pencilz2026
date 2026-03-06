@@ -20,6 +20,7 @@ const SettingsForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
   const logoValue = watch('logo')
   const hamburgerIconValue = watch('hamburgerIcon')
   const buttonIconValue = watch('buttonIcon')
+  const primaryButtonIconValue = watch('primaryButtonIcon')
 
   // Track changes in services and about items
   const servicesChanged = JSON.stringify(services) !== JSON.stringify(initialServices)
@@ -57,6 +58,8 @@ const SettingsForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
           logo: data.logo || '',
           hamburgerIcon: data.hamburgerIcon || '',
           buttonIcon: data.buttonIcon || '',
+          primaryButtonColor: data.primaryButtonColor || '#E7FE89',
+          primaryButtonIcon: data.primaryButtonIcon || '',
           servicesDescription: data.servicesDescription || '',
           aboutDescription: data.aboutDescription || '',
           footerContactHeading: data.footerContactHeading || '',
@@ -141,6 +144,8 @@ const SettingsForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
           logo: savedData.logo || '',
           hamburgerIcon: savedData.hamburgerIcon || '',
           buttonIcon: savedData.buttonIcon || '',
+          primaryButtonColor: savedData.primaryButtonColor || '#E7FE89',
+          primaryButtonIcon: savedData.primaryButtonIcon || '',
           servicesDescription: savedData.servicesDescription || '',
           aboutDescription: savedData.aboutDescription || '',
           footerContactHeading: savedData.footerContactHeading || '',
@@ -222,6 +227,52 @@ const SettingsForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
               value={hamburgerIconValue}
               onChange={(url) => setValue('hamburgerIcon', url)}
               helperText="Upload hamburger icon (SVG recommended)"
+            />
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Primary Button Color
+              </label>
+              <div className="flex gap-3 items-center">
+                <div className="relative">
+                  <input
+                    type="color"
+                    {...register('primaryButtonColor')}
+                    className="sr-only"
+                    id="primaryButtonColor"
+                  />
+                  <label
+                    htmlFor="primaryButtonColor"
+                    className="block w-12 h-12 rounded-lg border-2 border-gray-300 cursor-pointer hover:border-gray-400 transition-colors"
+                    style={{ backgroundColor: watch('primaryButtonColor') || '#E7FE89' }}
+                    title="Click to choose color"
+                  />
+                </div>
+                <Input
+                  value={watch('primaryButtonColor') || '#E7FE89'}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    // Allow hex color format
+                    if (/^#[0-9A-Fa-f]{0,6}$/.test(value) || value === '') {
+                      setValue('primaryButtonColor', value, { shouldDirty: true })
+                    }
+                  }}
+                  placeholder="#E7FE89"
+                  className="flex-1"
+                />
+              </div>
+              <p className="text-xs text-gray-500">
+                Color for hero buttons and footer button on hover (default: #E7FE89)
+              </p>
+            </div>
+
+            <FileInput
+              label="Primary Button Icon (Deprecated)"
+              accept="image/svg+xml,.svg"
+              onUpload={handleImageUpload}
+              value={primaryButtonIconValue}
+              onChange={(url) => setValue('primaryButtonIcon', url)}
+              helperText="Note: Individual button icons are now set per button in Home Page settings"
             />
           </FormSection>
         </Card>

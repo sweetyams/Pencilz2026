@@ -4,6 +4,7 @@ import StackedProjectCards from '../components/StackedProjectCards'
 import SEO from '../components/SEO'
 import Button from '../components/Button'
 import LazyImage from '../components/LazyImage'
+import ExperienceSection from '../components/ExperienceSection'
 import { API_URL } from '../config'
 import { getImageUrl } from '../utils/imageUrl'
 
@@ -100,6 +101,7 @@ const Home = () => {
                 href={button.link.startsWith('http') ? button.link : undefined}
                 icon={button.icon}
                 subtext={button.subtext}
+                variant="primary"
                 className="flex-1"
                 style={{ minHeight: '72px' }}
               >
@@ -119,6 +121,7 @@ const Home = () => {
             href={button.link.startsWith('http') ? button.link : undefined}
             icon={button.icon}
             subtext={button.subtext}
+            variant="primary"
             style={{ minHeight: '72px' }}
           >
             {button.text}
@@ -135,12 +138,16 @@ const Home = () => {
             href={button.link.startsWith('http') ? button.link : undefined}
             icon={button.icon}
             subtext={button.subtext}
+            variant="primary"
             style={{ minHeight: '72px' }}
           >
             {button.text}
           </Button>
         ))}
       </div>
+
+      {/* Experience Section */}
+      <ExperienceSection data={homePage.experienceSection} />
 
       {/* Projects Section - Animated Stack (First 3) */}
       {projects.length > 0 && (

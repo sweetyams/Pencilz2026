@@ -5,6 +5,8 @@
   "logo": "/uploads/1772037709602-logo.svg",
   "hamburgerIcon": "/uploads/1771969143564-hamburger.svg",
   "buttonIcon": "/uploads/1771983568485-button.svg",
+  "primaryButtonColor": "#E7FE89",
+  "primaryButtonIcon": "",
   "servicesDescription": "We help startups and established businesses build, grow, and scale with custom Shopify solutions, strategic marketing, thoughtful design, and comprehensive startup support.",
   "aboutDescription": "Pencilz + Friends is a creative agency based in Montreal, dedicated to helping businesses thrive through innovative digital solutions and strategic partnerships.",
   "footerContactHeading": "Start a project",

@@ -10,7 +10,7 @@ import { getImageUrl } from '../utils/imageUrl'
 
 const TaskDashboard = () => {
   const [tasks, setTasks] = useState([])
-  const [filter, setFilter] = useState('all')
+  const [filter, setFilter] = useState('open')
   const [isLoading, setIsLoading] = useState(true)
   const [deleteDialog, setDeleteDialog] = useState({ open: false, taskId: null })
   const [screenshotModal, setScreenshotModal] = useState({ open: false, screenshot: null })
@@ -161,11 +161,11 @@ const TaskDashboard = () => {
       <div className="mb-6 border-b border-gray-200">
         <nav className="-mb-px flex space-x-8">
           {[
-            { id: 'all', label: 'All' },
             { id: 'open', label: 'Open' },
             { id: 'in-progress', label: 'In Progress' },
             { id: 'completed', label: 'Completed' },
-            { id: 'archived', label: 'Archived' }
+            { id: 'archived', label: 'Archived' },
+            { id: 'all', label: 'All' }
           ].map(tab => (
             <button
               key={tab.id}

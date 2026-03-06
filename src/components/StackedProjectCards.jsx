@@ -121,7 +121,7 @@ const StackedProjectCards = ({ projects, openProjectId, onToggle }) => {
       style={{
         position: 'relative',
         height: '300vh',
-        marginTop: '20px'
+        marginTop: '-40px'
       }}
     >
       <div 

@@ -177,7 +177,7 @@ const Navigation = () => {
             <div className="flex items-center">
               {/* Mobile Hamburger */}
               <button 
-                className="md:hidden py-6"
+                className="md:hidden py-3"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Toggle menu"
               >
@@ -201,7 +201,7 @@ const Navigation = () => {
               <div className="hidden md:flex items-center -mx-3">
                 {/* Services */}
                 <div
-                  className="relative py-6 px-3"
+                  className="relative py-3 px-3"
                   onMouseEnter={handleServicesEnter}
                   onMouseLeave={handleMegamenuLeave}
                 >
@@ -221,7 +221,7 @@ const Navigation = () => {
 
                 {/* About */}
                 <div
-                  className="relative py-6 px-3"
+                  className="relative py-3 px-3"
                   onMouseEnter={handleAboutEnter}
                   onMouseLeave={handleMegamenuLeave}
                 >
@@ -240,7 +240,7 @@ const Navigation = () => {
                 </div>
 
                 <div
-                  className="relative py-6 px-3"
+                  className="relative py-3 px-3"
                   onMouseEnter={() => setHoveredProject(true)}
                   onMouseLeave={() => setHoveredProject(false)}
                 >

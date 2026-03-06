@@ -43,7 +43,8 @@ const Footer = ({ onActivateFeedbackMode }) => {
             </p>
             <a
               href={`mailto:${settings.email}?subject=${emailSubject}&body=${emailBody}`}
-              className="w-full border border-black flex items-center relative rounded-[70px] transition-all duration-300 ease-in-out bg-[#89FED7] border-dashed px-6 py-4 justify-between hover:bg-[#6ee5c3]"
+              className="w-full border border-black flex items-center relative rounded-[70px] transition-all duration-300 ease-in-out border-dashed px-6 py-4 justify-between"
+              style={{ backgroundColor: settings.primaryButtonColor || '#E7FE89' }}
               target="_blank"
               rel="noopener noreferrer"
             >

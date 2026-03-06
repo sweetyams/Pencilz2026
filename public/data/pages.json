@@ -2,6 +2,8 @@
   "home": {
     "heroImage": "/uploads/1772486721541-Hero.jpg",
     "heroText": "",
+    "experienceText": "We start every project with a foundation of experience. We don't only help brands and companies but we build them as well. Our current project is a Test Kitchen that services over 200 people daily with a 5 Star rating.",
+    "experienceIcon": "/uploads/1772826024818-foundation.svg",
     "contactHeading": "Lets start a project",
     "contactButtonText": "",
     "contactEmail": "",
@@ -40,7 +42,16 @@
         "icon": "",
         "link": "/services"
       }
-    ]
+    ],
+    "experienceSection": {
+      "text": "We start every project with a foundation of experience. We don't only help brands and companies but we build them as well. Our current project is a Test Kitchen that services over 200 people daily with a 5 Star rating.",
+      "icon": "/uploads/1772826024818-foundation.svg",
+      "tags": [
+        "100+ Brands",
+        "45+ Full Time Global Team",
+        "10+ Years in Business"
+      ]
+    }
   },
   "about": {
     "title": "About",

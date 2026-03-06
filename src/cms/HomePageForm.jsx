@@ -14,11 +14,15 @@ const HomePageForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
   const [homePage, setHomePage] = useState({})
   const [heroButtons, setHeroButtons] = useState([])
   const [initialHeroButtons, setInitialHeroButtons] = useState([])
+  const [experienceTags, setExperienceTags] = useState([])
+  const [initialExperienceTags, setInitialExperienceTags] = useState([])
   const [isInitialized, setIsInitialized] = useState(false)
   const heroImageValue = watch('heroImage')
+  const experienceIconValue = watch('experienceIcon')
 
-  // Track changes in hero buttons
+  // Track changes in hero buttons and experience tags
   const heroButtonsChanged = JSON.stringify(heroButtons) !== JSON.stringify(initialHeroButtons)
+  const experienceTagsChanged = JSON.stringify(experienceTags) !== JSON.stringify(initialExperienceTags)
 
   // Expose cancel function to parent
   useEffect(() => {
@@ -36,10 +40,10 @@ const HomePageForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
 
   // Notify parent of changes (only after initialization)
   useEffect(() => {
-    if (isInitialized && (isDirty || heroButtonsChanged) && onFormChange) {
+    if (isInitialized && (isDirty || heroButtonsChanged || experienceTagsChanged) && onFormChange) {
       onFormChange()
     }
-  }, [isDirty, heroButtonsChanged, onFormChange, isInitialized])
+  }, [isDirty, heroButtonsChanged, experienceTagsChanged, onFormChange, isInitialized])
 
   const loadData = () => {
     console.log('HomePageForm: loadData called')
@@ -57,6 +61,8 @@ const HomePageForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
         const formData = {
           heroImage: data.heroImage || '',
           heroText: data.heroText || '',
+          experienceText: data.experienceSection?.text || '',
+          experienceIcon: data.experienceSection?.icon || '',
           contactHeading: data.contactHeading || '',
           contactButtonText: data.contactButtonText || '',
           contactEmail: data.contactEmail || '',
@@ -71,6 +77,8 @@ const HomePageForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
         console.log('HomePageForm: Form reset with data')
         setHeroButtons(data.heroButtons || [])
         setInitialHeroButtons(data.heroButtons || [])
+        setExperienceTags(data.experienceSection?.tags || [])
+        setInitialExperienceTags(data.experienceSection?.tags || [])
         // Mark as initialized after a delay to avoid false positives
         setTimeout(() => {
           setIsInitialized(true)
@@ -118,7 +126,12 @@ const HomePageForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
     try {
       const payload = {
         ...data,
-        heroButtons
+        heroButtons,
+        experienceSection: {
+          text: data.experienceText,
+          icon: data.experienceIcon,
+          tags: experienceTags
+        }
       }
       
       const response = await fetch(`${API_URL}/api/pages/home`, {
@@ -134,10 +147,14 @@ const HomePageForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
         setHomePage(savedData)
         setHeroButtons(savedData.heroButtons || [])
         setInitialHeroButtons(savedData.heroButtons || [])
+        setExperienceTags(savedData.experienceSection?.tags || [])
+        setInitialExperienceTags(savedData.experienceSection?.tags || [])
         // Reset form dirty state
         const formData = {
           heroImage: savedData.heroImage || '',
           heroText: savedData.heroText || '',
+          experienceText: savedData.experienceSection?.text || '',
+          experienceIcon: savedData.experienceSection?.icon || '',
           contactHeading: savedData.contactHeading || '',
           contactButtonText: savedData.contactButtonText || '',
           contactEmail: savedData.contactEmail || '',
@@ -300,6 +317,68 @@ const HomePageForm = ({ onFormChange, onSaveSuccess, onCancelRef }) => {
                 </div>
               )}
             />
+          </FormSection>
+        </Card>
+
+        {/* Experience Section */}
+        <Card>
+          <FormSection title="Experience Section">
+            <Textarea
+              label="Experience Text"
+              {...register('experienceText')}
+              rows={4}
+              placeholder="We start every project with a foundation of experience..."
+              helperText="The main text describing your experience and credentials"
+            />
+            <FileInput
+              label="Icon (optional)"
+              accept="image/*"
+              onUpload={handleImageUpload}
+              value={experienceIconValue}
+              onChange={(url) => setValue('experienceIcon', url, { shouldDirty: true })}
+              helperText="Optional decorative icon"
+            />
+            
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Experience Tags
+              </label>
+              <p className="text-xs text-gray-500 mb-2">
+                Add tags like "100+ Brands", "10+ Years in Business", etc.
+              </p>
+              
+              {experienceTags.map((tag, index) => (
+                <div key={index} className="flex gap-2 items-center">
+                  <Input
+                    value={tag}
+                    onChange={(e) => {
+                      const newTags = [...experienceTags]
+                      newTags[index] = e.target.value
+                      setExperienceTags(newTags)
+                    }}
+                    placeholder="e.g., 100+ Brands"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setExperienceTags(experienceTags.filter((_, i) => i !== index))
+                    }}
+                    className="text-red-600 hover:text-red-800 text-xl px-2"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              
+              <Button
+                type="button"
+                onClick={() => setExperienceTags([...experienceTags, ''])}
+                variant="secondary"
+                size="sm"
+              >
+                + Add Tag
+              </Button>
+            </div>
           </FormSection>
         </Card>
 

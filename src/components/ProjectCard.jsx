@@ -20,7 +20,8 @@ const ProjectCard = ({ project, priority = false, isOpen = false, onToggle }) =>
         borderRadius: '20px',
         margin: '20px 0',
         isolation: 'isolate',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        border: '1px solid rgba(61, 61, 61, 0.2)'
       }}
     >
       {/* Background Image */}

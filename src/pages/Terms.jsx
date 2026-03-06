@@ -45,7 +45,7 @@ const Terms = () => {
         </p>
 
         <div 
-          className="text-[32px] text-[#191919] space-y-0"
+          className="text-[32px] md:text-[32px] text-[16px] text-[#191919] space-y-0"
           dangerouslySetInnerHTML={{ __html: pageData.content }}
         />
       </div>
